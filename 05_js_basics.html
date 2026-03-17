@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>05 — JavaScript 基礎</title>
+    <title>05 — JavaScript 基礎（互動版）</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Segoe UI', sans-serif; background: #0f0f1a; color: #e0e0e0; line-height: 1.7; }
@@ -12,28 +12,58 @@
         .hero { background: linear-gradient(135deg, #1a1a2e, #16213e); padding: 56px 40px; text-align: center; }
         .hero h1 { font-size: 2.4rem; color: #f99d26; margin-bottom: 10px; }
         .hero p { color: rgba(255,255,255,0.45); }
-        .content { max-width: 860px; margin: 0 auto; padding: 40px 32px 100px; }
-        h2 { font-size: 1.4rem; color: #f99d26; margin: 48px 0 18px; padding-left: 14px; border-left: 3px solid #f99d26; }
+        .hero .badge { display: inline-block; background: rgba(249,157,38,0.15); border: 1px solid rgba(249,157,38,0.3); color: #f99d26; font-size: 0.75rem; padding: 4px 14px; border-radius: 20px; margin-top: 14px; letter-spacing: 1px; }
+        .content { max-width: 920px; margin: 0 auto; padding: 40px 32px 100px; }
+        h2 { font-size: 1.4rem; color: #f99d26; margin: 52px 0 18px; padding-left: 14px; border-left: 3px solid #f99d26; }
         h3 { font-size: 1.05rem; color: rgba(249,157,38,0.8); margin: 28px 0 10px; }
         p { color: rgba(255,255,255,0.7); margin-bottom: 14px; }
         ul { color: rgba(255,255,255,0.65); padding-left: 22px; margin-bottom: 14px; }
         li { margin-bottom: 6px; }
-        strong { color: #f99d26; }
+        strong { color: #f99d26; font-weight: 600; }
         code { background: rgba(249,157,38,0.12); color: #f99d26; padding: 2px 7px; border-radius: 5px; font-family: 'Courier New', monospace; font-size: 0.92em; }
-        .code-block { background: #12121f; border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 24px 28px; margin: 16px 0 24px; font-family: 'Courier New', monospace; font-size: 0.88rem; line-height: 1.85; overflow-x: auto; }
-        .cm { color: #5a6a8a; } .cs { color: #7ecfff; } .ck { color: #c792ea; } .cn { color: #a8e6a3; }
-        .cf { color: #82aaff; } .cx { color: #e0e0e0; } .cst { color: #f8c57a; }
         .tip { background: rgba(249,157,38,0.07); border-left: 3px solid rgba(249,157,38,0.5); padding: 14px 18px; border-radius: 0 10px 10px 0; margin: 16px 0; font-size: 0.88rem; color: rgba(255,255,255,0.6); }
         .tip strong { color: #f99d26; }
-        .demo { background: #1e1e32; border: 1px solid rgba(249,157,38,0.2); border-radius: 12px; padding: 24px 28px; margin: 8px 0 28px; }
-        .demo .label { font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; color: rgba(249,157,38,0.5); margin-bottom: 16px; }
-        .demo-btn { padding: 10px 24px; background: #f99d26; color: white; border: none; border-radius: 8px; font-size: 0.95rem; font-weight: bold; cursor: pointer; transition: background 0.2s; }
-        .demo-btn:hover { background: #e07b00; }
-        .output { margin-top: 14px; padding: 12px 16px; background: #12121f; border-radius: 8px; font-family: 'Courier New', monospace; font-size: 0.85rem; color: #a8e6a3; min-height: 40px; }
-        .tag-table { width: 100%; border-collapse: collapse; margin: 16px 0 28px; }
+        .tag-table { width: 100%; border-collapse: collapse; margin: 16px 0 24px; }
         .tag-table th { background: rgba(249,157,38,0.15); color: #f99d26; padding: 10px 16px; text-align: left; font-size: 0.85rem; }
         .tag-table td { padding: 10px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 0.85rem; color: rgba(255,255,255,0.65); }
         .tag-table td:first-child { font-family: 'Courier New', monospace; color: #7ecfff; }
+
+        /* ── JS CONSOLE PLAYGROUND ── */
+        .js-console {
+            border: 1px solid rgba(249,157,38,0.3);
+            border-radius: 14px;
+            overflow: hidden;
+            margin: 14px 0 32px;
+        }
+        .jsc-top { background: #0d0d1a; border-bottom: 1px solid rgba(249,157,38,0.2); }
+        .jsc-bar { background: rgba(249,157,38,0.08); padding: 7px 14px; font-size: 0.72rem; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(249,157,38,0.7); display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(249,157,38,0.15); }
+        .jsc-textarea { width: 100%; background: #0d0d1a; border: none; color: #e0e0e0; font-family: 'Courier New', monospace; font-size: 0.88rem; padding: 16px 20px; resize: none; outline: none; line-height: 1.8; min-height: 140px; }
+        .jsc-footer { background: #0d0d1a; padding: 10px 16px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(249,157,38,0.1); }
+        .run-btn { background: #f99d26; color: white; border: none; padding: 7px 22px; border-radius: 8px; font-size: 0.85rem; font-weight: bold; cursor: pointer; transition: background 0.15s; }
+        .run-btn:hover { background: #e07b00; }
+        .clear-btn { background: transparent; color: rgba(255,255,255,0.3); border: 1px solid rgba(255,255,255,0.1); padding: 6px 16px; border-radius: 8px; font-size: 0.82rem; cursor: pointer; }
+        .clear-btn:hover { color: rgba(255,255,255,0.6); }
+        .jsc-output { background: #12121f; border-top: 1px solid rgba(255,255,255,0.05); min-height: 60px; padding: 12px 20px; font-family: 'Courier New', monospace; font-size: 0.85rem; }
+        .jsc-output .out-line { margin: 3px 0; display: flex; gap: 10px; }
+        .out-log   { color: #a8e6a3; }
+        .out-error { color: #e07070; }
+        .out-info  { color: #7ecfff; }
+        .out-prefix { color: rgba(255,255,255,0.2); user-select: none; }
+        .jsc-empty { color: rgba(255,255,255,0.2); font-size: 0.82rem; padding: 8px 0; }
+
+        /* ── Existing demo styles ── */
+        .demo { background: #1e1e32; border: 1px solid rgba(249,157,38,0.2); border-radius: 12px; padding: 24px 28px; margin: 8px 0 28px; }
+        .demo .label { font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; color: rgba(249,157,38,0.5); margin-bottom: 16px; }
+        .demo-btn { padding: 10px 24px; background: #f99d26; color: white; border: none; border-radius: 8px; font-size: 0.95rem; font-weight: bold; cursor: pointer; transition: background 0.2s; margin-right: 8px; margin-bottom: 8px; }
+        .demo-btn:hover { background: #e07b00; }
+        .output { margin-top: 14px; padding: 12px 16px; background: #12121f; border-radius: 8px; font-family: 'Courier New', monospace; font-size: 0.85rem; color: #a8e6a3; min-height: 40px; }
+
+        /* ── Type demos ── */
+        .type-demo { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; margin: 14px 0 24px; }
+        .type-card { background: #12121f; border-radius: 10px; padding: 14px 16px; border: 1px solid rgba(255,255,255,0.06); }
+        .type-card .tc-type { font-size: 0.72rem; color: rgba(249,157,38,0.6); letter-spacing: 1px; margin-bottom: 6px; text-transform: uppercase; }
+        .type-card .tc-val { font-family: 'Courier New', monospace; font-size: 0.9rem; color: #a8e6a3; }
+        .type-card .tc-desc { font-size: 0.75rem; color: rgba(255,255,255,0.35); margin-top: 4px; }
     </style>
 </head>
 <body>
@@ -42,234 +72,411 @@
 <div class="hero">
     <h1>05 — JavaScript 基礎</h1>
     <p>變數 · 函式 · 條件 · 迴圈 · 陣列 · 物件</p>
+    <div class="badge">✦ 互動版 — 內建 JS 執行環境</div>
 </div>
 <div class="content">
 
-    <!-- ── 什麼是 JS ── -->
-    <h2>JavaScript 在哪裡寫</h2>
-    <div class="code-block">
-<span class="cm">/* 方式 1：寫在 HTML 的 &lt;script&gt; 標籤裡（SDG11 就是這樣）*/</span>
-<span class="cs">&lt;script&gt;</span>
-  <span class="cf">console</span>.<span class="cf">log</span>(<span class="cst">'Hello!'</span>);
-<span class="cs">&lt;/script&gt;</span>
+<!-- ══════════════════════
+     JS Console (全頁共用)
+═══════════════════════════ -->
+<h2>JavaScript 沙盒 — 直接在這裡寫 JS 執行</h2>
+<p>在左邊輸入任何 JS 程式碼，按「▶ 執行」看結果。<code>print()</code> 會輸出到下方（等同 console.log）。</p>
 
-<span class="cm">/* 方式 2：外部 .js 檔案 */</span>
-<span class="cs">&lt;script</span> <span class="cx">src</span>=<span class="cst">"script.js"</span><span class="cs">&gt;&lt;/script&gt;</span>
-
-<span class="cm">/* 方式 3：HTML 行內（onclick 屬性）*/</span>
-<span class="cs">&lt;button</span> <span class="cx">onclick</span>=<span class="cst">"toggleLang()"</span><span class="cs">&gt;</span>中文<span class="cs">&lt;/button&gt;</span>
+<div class="js-console" id="main-console">
+    <div class="jsc-bar">
+        <span>▸ JavaScript 執行環境</span>
+        <span style="color:rgba(255,255,255,0.3);font-size:0.7rem">用 print() 輸出 · Ctrl+Enter 執行</span>
     </div>
+    <textarea class="jsc-textarea" id="main-code" placeholder="// 在這裡輸入 JavaScript..." spellcheck="false">// 試著改這段程式碼再按執行
+let name = '台北';
+let recyclingRate = 55;
 
-    <!-- ── 變數 ── -->
-    <h2>變數（Variable）— 儲存資料</h2>
-    <div class="code-block">
-<span class="cm">// 三種宣告方式</span>
-<span class="ck">let</span>   <span class="cs">name</span> = <span class="cst">'台北'</span>;        <span class="cm">// 可以重新賦值（推薦）</span>
-<span class="ck">const</span> <span class="cs">city</span> = <span class="cst">'高雄'</span>;        <span class="cm">// 不可以重新賦值（推薦用於常數）</span>
-<span class="ck">var</span>   <span class="cs">old</span>  = <span class="cst">'舊寫法'</span>;      <span class="cm">// 舊版，避免用</span>
+print(`城市：${name}`);
+print(`回收率：${recyclingRate}%`);
 
-<span class="cm">// 資料型別</span>
-<span class="ck">let</span> <span class="cs">num</span>  = <span class="cn">42</span>;              <span class="cm">// 數字（Number）</span>
-<span class="ck">let</span> <span class="cs">text</span> = <span class="cst">'Hello'</span>;         <span class="cm">// 字串（String）</span>
-<span class="ck">let</span> <span class="cs">flag</span> = <span class="ck">true</span>;            <span class="cm">// 布林（Boolean）：true / false</span>
-<span class="ck">let</span> <span class="cs">nothing</span> = <span class="ck">null</span>;         <span class="cm">// 空值</span>
-
-<span class="cm">// SDG11 的例子</span>
-<span class="ck">let</span> <span class="cs">currentLang</span> = <span class="cst">'en'</span>;     <span class="cm">// 現在是英文還是中文</span>
-<span class="ck">let</span> <span class="cs">currentIdx</span>  = <span class="cn">0</span>;        <span class="cm">// 場景 Modal 現在第幾張圖</span>
-    </div>
-
-    <!-- ── 函式 ── -->
-    <h2>函式（Function）— 可重複使用的程式碼</h2>
-    <div class="code-block">
-<span class="cm">// 宣告函式</span>
-<span class="ck">function</span> <span class="cf">greet</span>(<span class="cs">name</span>) {
-  <span class="cf">console</span>.<span class="cf">log</span>(<span class="cst">'Hello, '</span> + <span class="cs">name</span>);
-}
-<span class="cf">greet</span>(<span class="cst">'Jonas'</span>);  <span class="cm">// 呼叫：Hello, Jonas</span>
-
-<span class="cm">// 有回傳值的函式</span>
-<span class="ck">function</span> <span class="cf">add</span>(<span class="cs">a</span>, <span class="cs">b</span>) {
-  <span class="ck">return</span> <span class="cs">a</span> + <span class="cs">b</span>;
-}
-<span class="ck">let</span> <span class="cs">result</span> = <span class="cf">add</span>(<span class="cn">3</span>, <span class="cn">5</span>);  <span class="cm">// result = 8</span>
-
-<span class="cm">// SDG11 的函式</span>
-<span class="ck">function</span> <span class="cf">toggleLang</span>() {
-  <span class="cm">// 切換語言的邏輯...</span>
+// 條件判斷
+if (recyclingRate > 50) {
+    print(`✅ ${name} 回收率優良！`);
+} else {
+    print(`⚠️ ${name} 需要改進`);
 }
 
-<span class="ck">function</span> <span class="cf">openCity</span>(<span class="cs">cityName</span>) {
-  <span class="cm">// 根據 cityName 開啟對應城市的場景 Modal</span>
+// 陣列
+let cities = ['高雄', '台中', '台南', '新竹'];
+cities.forEach(city => print('城市：' + city));</textarea>
+    <div class="jsc-footer">
+        <button class="run-btn" onclick="runConsole('main')">▶ 執行</button>
+        <button class="clear-btn" onclick="clearConsole('main')">清除輸出</button>
+    </div>
+    <div class="jsc-output" id="main-output"><div class="jsc-empty">輸出會顯示在這裡...</div></div>
+</div>
+
+<!-- ══════════════════════
+     1. 變數
+═══════════════════════════ -->
+<h2>變數（Variable）</h2>
+
+<div class="type-demo">
+    <div class="type-card">
+        <div class="tc-type">Number</div>
+        <div class="tc-val">42 / 3.14 / -7</div>
+        <div class="tc-desc">整數、小數、負數</div>
+    </div>
+    <div class="type-card">
+        <div class="tc-type">String</div>
+        <div class="tc-val">'台北' / "SDG"</div>
+        <div class="tc-desc">文字，用單引號或雙引號</div>
+    </div>
+    <div class="type-card">
+        <div class="tc-type">Boolean</div>
+        <div class="tc-val">true / false</div>
+        <div class="tc-desc">只有兩個值</div>
+    </div>
+    <div class="type-card">
+        <div class="tc-type">null / undefined</div>
+        <div class="tc-val">null / undefined</div>
+        <div class="tc-desc">空值 / 未定義</div>
+    </div>
+</div>
+
+<div class="js-console" id="var-console">
+    <div class="jsc-bar"><span>▸ 試試各種變數</span></div>
+    <textarea class="jsc-textarea" id="var-code" spellcheck="false">// let：可重新賦值
+let score = 80;
+score = 95;          // 可以改
+print('score =', score);
+
+// const：不可重新賦值
+const PI = 3.14159;
+print('PI =', PI);
+
+// 資料型別
+print(typeof 42);        // number
+print(typeof '台北');    // string
+print(typeof true);      // boolean
+print(typeof null);      // object（JS 的歷史 bug）
+
+// 字串 + 數字
+print('回收率：' + 55 + '%');   // 字串拼接
+print(`回收率：${55}%`);        // 模板字串（推薦）</textarea>
+    <div class="jsc-footer">
+        <button class="run-btn" onclick="runConsole('var')">▶ 執行</button>
+        <button class="clear-btn" onclick="clearConsole('var')">清除</button>
+    </div>
+    <div class="jsc-output" id="var-output"><div class="jsc-empty">按執行...</div></div>
+</div>
+
+<!-- ══════════════════════
+     2. 函式
+═══════════════════════════ -->
+<h2>函式（Function）</h2>
+
+<div class="js-console" id="fn-console">
+    <div class="jsc-bar"><span>▸ 三種函式寫法</span></div>
+    <textarea class="jsc-textarea" id="fn-code" spellcheck="false">// 1. 宣告式（可以在定義前呼叫）
+function greet(name) {
+    return `Hello, ${name}！`;
 }
+print(greet('Jonas'));
+
+// 2. 函式表達式
+const add = function(a, b) {
+    return a + b;
+};
+print('3 + 5 =', add(3, 5));
+
+// 3. 箭頭函式（最短，SDG11 常用）
+const double = n => n * 2;
+print('double(7) =', double(7));
+
+// 多個參數的箭頭函式
+const formatCity = (name, rate) => `${name}：回收率 ${rate}%`;
+print(formatCity('台北', 55));
+print(formatCity('高雄', 48));</textarea>
+    <div class="jsc-footer">
+        <button class="run-btn" onclick="runConsole('fn')">▶ 執行</button>
+        <button class="clear-btn" onclick="clearConsole('fn')">清除</button>
     </div>
+    <div class="jsc-output" id="fn-output"><div class="jsc-empty">按執行...</div></div>
+</div>
 
-    <div class="demo">
-        <div class="label">LIVE DEMO — 函式</div>
-        <button class="demo-btn" onclick="demoGreet()">呼叫函式</button>
-        <div class="output" id="out1">點按鈕看輸出...</div>
-    </div>
+<!-- ══════════════════════
+     3. 條件 + 三元
+═══════════════════════════ -->
+<h2>條件判斷（if / else）</h2>
 
-    <!-- ── 條件 ── -->
-    <h2>條件判斷（if / else）</h2>
-    <div class="code-block">
-<span class="ck">let</span> <span class="cs">lang</span> = <span class="cst">'en'</span>;
+<div class="js-console" id="if-console">
+    <div class="jsc-bar"><span>▸ 試著改 lang 的值</span></div>
+    <textarea class="jsc-textarea" id="if-code" spellcheck="false">let lang = 'en';   // 試著改成 'zh'
 
-<span class="ck">if</span> (<span class="cs">lang</span> === <span class="cst">'en'</span>) {
-  <span class="cf">console</span>.<span class="cf">log</span>(<span class="cst">'English mode'</span>);
-} <span class="ck">else</span> {
-  <span class="cf">console</span>.<span class="cf">log</span>(<span class="cst">'中文模式'</span>);
+// if / else if / else
+if (lang === 'en') {
+    print('English mode');
+} else if (lang === 'zh') {
+    print('中文模式');
+} else {
+    print('不支援的語言：' + lang);
 }
 
-<span class="cm">// 三元運算子（簡短版的 if/else）</span>
-<span class="ck">let</span> <span class="cs">btnText</span> = <span class="cs">lang</span> === <span class="cst">'en'</span> ? <span class="cst">'中文'</span> : <span class="cst">'English'</span>;
-<span class="cm">//                   條件        true時   false時</span>
+// 三元運算子（SDG11 用的）
+let btnText = lang === 'en' ? '中文' : 'English';
+print('按鈕文字：' + btnText);
 
-<span class="cm">// SDG11 toggleLang 的核心邏輯</span>
-<span class="cs">currentLang</span> = <span class="cs">currentLang</span> === <span class="cst">'en'</span> ? <span class="cst">'zh'</span> : <span class="cst">'en'</span>;
+// 切換語言的邏輯
+let currentLang = 'en';
+function toggleLang() {
+    currentLang = currentLang === 'en' ? 'zh' : 'en';
+    return currentLang;
+}
+print('切換前：' + currentLang);
+print('切換後：' + toggleLang());
+print('再切：' + toggleLang());</textarea>
+    <div class="jsc-footer">
+        <button class="run-btn" onclick="runConsole('if')">▶ 執行</button>
+        <button class="clear-btn" onclick="clearConsole('if')">清除</button>
     </div>
+    <div class="jsc-output" id="if-output"><div class="jsc-empty">按執行...</div></div>
+</div>
 
-    <div class="demo">
-        <div class="label">LIVE DEMO — if/else 條件判斷</div>
-        <button class="demo-btn" onclick="demoLang()">切換語言</button>
-        <div class="output" id="out2">目前語言：en</div>
-    </div>
+<!-- ══════════════════════
+     4. 陣列
+═══════════════════════════ -->
+<h2>陣列（Array）</h2>
 
-    <!-- ── 陣列 ── -->
-    <h2>陣列（Array）— 多筆資料的清單</h2>
-    <div class="code-block">
-<span class="ck">const</span> <span class="cs">cities</span> = [<span class="cst">'台北'</span>, <span class="cst">'高雄'</span>, <span class="cst">'台中'</span>, <span class="cst">'台南'</span>];
+<div class="js-console" id="arr-console">
+    <div class="jsc-bar"><span>▸ 陣列操作練習</span></div>
+    <textarea class="jsc-textarea" id="arr-code" spellcheck="false">const cities = ['台北', '高雄', '台中', '台南', '新竹'];
 
-<span class="cm">// 取值（從 0 開始數）</span>
-<span class="cf">console</span>.<span class="cf">log</span>(<span class="cs">cities</span>[<span class="cn">0</span>]);   <span class="cm">// 台北</span>
-<span class="cf">console</span>.<span class="cf">log</span>(<span class="cs">cities</span>[<span class="cn">2</span>]);   <span class="cm">// 台中</span>
-<span class="cf">console</span>.<span class="cf">log</span>(<span class="cs">cities</span>.<span class="cf">length</span>); <span class="cm">// 4（總共幾筆）</span>
+// 取值（從 0 開始）
+print('第一個：', cities[0]);
+print('最後一個：', cities[cities.length - 1]);
+print('總共：', cities.length, '個');
 
-<span class="cm">// 用 forEach 跑每一筆</span>
-<span class="cs">cities</span>.<span class="cf">forEach</span>(<span class="ck">function</span>(<span class="cs">city</span>) {
-  <span class="cf">console</span>.<span class="cf">log</span>(<span class="cs">city</span>);
+// forEach 跑每一個
+print('\n--- forEach ---');
+cities.forEach((city, index) => {
+    print(`[${index}] ${city}`);
 });
 
-<span class="cm">// SDG11 的城市照片就是陣列</span>
-<span class="ck">const</span> <span class="cs">scenes</span> = [
-  { <span class="cs">title</span>: <span class="cst">'台北 101'</span>,  <span class="cs">photo</span>: <span class="cst">'https://...'</span> },
-  { <span class="cs">title</span>: <span class="cst">'台北捷運'</span>, <span class="cs">photo</span>: <span class="cst">'https://...'</span> },
+// map（轉換每個元素，回傳新陣列）
+const upper = cities.map(c => `★ ${c} ★`);
+print('\n--- map 結果 ---');
+upper.forEach(c => print(c));
+
+// filter（篩選）
+const north = cities.filter(c => c === '台北' || c === '新竹');
+print('\n北部城市：', north.join(', '));
+
+// find（找第一個符合）
+const taipei = cities.find(c => c === '台北');
+print('找到台北：', taipei);</textarea>
+    <div class="jsc-footer">
+        <button class="run-btn" onclick="runConsole('arr')">▶ 執行</button>
+        <button class="clear-btn" onclick="clearConsole('arr')">清除</button>
+    </div>
+    <div class="jsc-output" id="arr-output"><div class="jsc-empty">按執行...</div></div>
+</div>
+
+<!-- ══════════════════════
+     5. 物件
+═══════════════════════════ -->
+<h2>物件（Object）</h2>
+
+<div class="js-console" id="obj-console">
+    <div class="jsc-bar"><span>▸ 物件練習（SDG11 城市資料格式）</span></div>
+    <textarea class="jsc-textarea" id="obj-code" spellcheck="false">// 物件：有名稱的資料組合
+const taipei = {
+    name: '台北',
+    population: 2600000,
+    recyclingRate: 55,
+    isCapital: true,
+    tags: ['智慧城市', '大眾運輸', '綠能']
+};
+
+// 取值
+print('城市：', taipei.name);
+print('人口：', taipei.population.toLocaleString());
+print('回收率：', taipei.recyclingRate + '%');
+print('標籤：', taipei.tags.join(' / '));
+
+// 物件陣列（SDG11 城市查詢的資料格式）
+const cityData = [
+    { name: '台北', rate: 55, score: 88 },
+    { name: '高雄', rate: 48, score: 75 },
+    { name: '台中', rate: 50, score: 79 },
 ];
-<span class="cm">// scenes[0].title → '台北 101'</span>
-<span class="cm">// scenes[1].photo → 照片 URL</span>
-    </div>
 
-    <!-- ── 物件 ── -->
-    <h2>物件（Object）— 有名稱的資料組合</h2>
-    <div class="code-block">
-<span class="ck">const</span> <span class="cs">taipei</span> = {
-  <span class="cs">name</span>: <span class="cst">'台北'</span>,
-  <span class="cs">population</span>: <span class="cn">2600000</span>,
-  <span class="cs">recyclingRate</span>: <span class="cn">55</span>,
-  <span class="cs">isCapital</span>: <span class="ck">true</span>,
-};
-
-<span class="cm">// 取值</span>
-<span class="cf">console</span>.<span class="cf">log</span>(<span class="cs">taipei</span>.<span class="cs">name</span>);           <span class="cm">// 台北</span>
-<span class="cf">console</span>.<span class="cf">log</span>(<span class="cs">taipei</span>[<span class="cst">'recyclingRate'</span>]); <span class="cm">// 55（另一種寫法）</span>
-
-<span class="cm">// SDG11 城市查詢資料（物件裡包物件）</span>
-<span class="ck">const</span> <span class="cs">cityData</span> = {
-  taipei: {
-    en: { <span class="cs">name</span>: <span class="cst">'Taipei'</span>, <span class="cs">highlight</span>: <span class="cst">'Pay-as-you-throw...'</span> },
-    zh: { <span class="cs">name</span>: <span class="cst">'台北'</span>,   <span class="cs">highlight</span>: <span class="cst">'垃圾費隨袋徵收...'</span> }
-  },
-};
-<span class="cm">// cityData.taipei.en.name → 'Taipei'</span>
-    </div>
-
-    <div class="demo">
-        <div class="label">LIVE DEMO — 陣列 + 物件</div>
-        <button class="demo-btn" onclick="demoNext()">下一個城市</button>
-        <div class="output" id="out3">城市：台北 | 回收率：55%</div>
-    </div>
-
-    <!-- ── 迴圈 ── -->
-    <h2>迴圈（Loop）— 重複做同一件事</h2>
-    <div class="code-block">
-<span class="cm">// for 迴圈</span>
-<span class="ck">for</span> (<span class="ck">let</span> <span class="cs">i</span> = <span class="cn">0</span>; <span class="cs">i</span> < <span class="cn">5</span>; <span class="cs">i</span>++) {
-  <span class="cf">console</span>.<span class="cf">log</span>(<span class="cs">i</span>);  <span class="cm">// 0, 1, 2, 3, 4</span>
-}
-
-<span class="cm">// 跑陣列</span>
-<span class="ck">const</span> <span class="cs">cities</span> = [<span class="cst">'台北'</span>, <span class="cst">'高雄'</span>, <span class="cst">'台中'</span>];
-<span class="ck">for</span> (<span class="ck">let</span> <span class="cs">i</span> = <span class="cn">0</span>; <span class="cs">i</span> < <span class="cs">cities</span>.<span class="cf">length</span>; <span class="cs">i</span>++) {
-  <span class="cf">console</span>.<span class="cf">log</span>(<span class="cs">cities</span>[<span class="cs">i</span>]);
-}
-
-<span class="cm">// 更簡單的 forEach</span>
-<span class="cs">cities</span>.<span class="cf">forEach</span>((<span class="cs">city</span>, <span class="cs">index</span>) <span class="ck">=></span> {
-  <span class="cf">console</span>.<span class="cf">log</span>(<span class="cs">index</span>, <span class="cs">city</span>);
+print('\n--- 所有城市 ---');
+cityData.forEach(city => {
+    print(`${city.name}：${city.rate}% (score: ${city.score})`);
 });
+
+// 找分數最高的
+const best = cityData.reduce((a, b) => a.score > b.score ? a : b);
+print('\n評分最高：', best.name);</textarea>
+    <div class="jsc-footer">
+        <button class="run-btn" onclick="runConsole('obj')">▶ 執行</button>
+        <button class="clear-btn" onclick="clearConsole('obj')">清除</button>
     </div>
+    <div class="jsc-output" id="obj-output"><div class="jsc-empty">按執行...</div></div>
+</div>
 
-    <!-- ── Template Literals ── -->
-    <h2>Template Literals — 字串拼接</h2>
-    <div class="code-block">
-<span class="ck">const</span> <span class="cs">city</span> = <span class="cst">'台北'</span>;
-<span class="ck">const</span> <span class="cs">rate</span> = <span class="cn">55</span>;
+<!-- ══════════════════════
+     6. 迴圈
+═══════════════════════════ -->
+<h2>迴圈（Loop）</h2>
 
-<span class="cm">// 舊方式（不好看）</span>
-<span class="ck">let</span> <span class="cs">msg1</span> = <span class="cst">'城市：'</span> + <span class="cs">city</span> + <span class="cst">'，回收率：'</span> + <span class="cs">rate</span> + <span class="cst">'%'</span>;
+<div class="js-console" id="loop-console">
+    <div class="jsc-bar"><span>▸ for / forEach / for...of</span></div>
+    <textarea class="jsc-textarea" id="loop-code" spellcheck="false">// for 迴圈（最傳統）
+print('--- for ---');
+for (let i = 0; i < 5; i++) {
+    print('i =', i);
+}
 
-<span class="cm">// 新方式（用反引號 ` 和 ${} ）</span>
-<span class="ck">let</span> <span class="cs">msg2</span> = <span class="cst">`城市：${<span class="cs">city</span>}，回收率：${<span class="cs">rate</span>}%`</span>;
+// while
+print('\n--- while ---');
+let count = 3;
+while (count > 0) {
+    print(`倒數 ${count}...`);
+    count--;
+}
+print('完成！');
 
-<span class="cm">// 結果一樣：城市：台北，回收率：55%</span>
+// forEach（陣列專用，最常用）
+print('\n--- forEach ---');
+const rates = [55, 48, 50, 52];
+rates.forEach((r, i) => print(`城市${i+1}：${r}%`));
+
+// for...of（比 forEach 更簡潔）
+print('\n--- for...of ---');
+const tags = ['SDG11', '永續', '城市'];
+for (const tag of tags) {
+    print('#' + tag);
+}</textarea>
+    <div class="jsc-footer">
+        <button class="run-btn" onclick="runConsole('loop')">▶ 執行</button>
+        <button class="clear-btn" onclick="clearConsole('loop')">清除</button>
     </div>
+    <div class="jsc-output" id="loop-output"><div class="jsc-empty">按執行...</div></div>
+</div>
 
-    <!-- ── console ── -->
-    <h2>console.log — 除錯的好幫手</h2>
-    <div class="code-block">
-<span class="cf">console</span>.<span class="cf">log</span>(<span class="cst">'Hello'</span>);         <span class="cm">// 輸出到 F12 的 Console</span>
-<span class="cf">console</span>.<span class="cf">log</span>(<span class="cs">myVariable</span>);     <span class="cm">// 看變數的值</span>
-<span class="cf">console</span>.<span class="cf">log</span>(<span class="cst">'lang:'</span>, <span class="cs">lang</span>);  <span class="cm">// 帶說明</span>
-    </div>
+<div class="tip">
+    <strong>📌 按 F12</strong> 開 DevTools → Console，可以直接在瀏覽器裡執行 JS，這是 debug 最常用的工具。
+</div>
 
-    <div class="tip">
-        <strong>📌 按 F12</strong> 打開 DevTools，點 Console 分頁，就能看到 console.log 的輸出。這是 debug 最常用的工具。
-    </div>
+<!-- ══════════════════════
+     既有互動 demos
+═══════════════════════════ -->
+<h2>互動示範 — 點按鈕看效果</h2>
+
+<div class="demo">
+    <div class="label">函式呼叫</div>
+    <button class="demo-btn" onclick="demoGreet()">呼叫 greet()</button>
+    <div class="output" id="out1">點按鈕...</div>
+</div>
+
+<div class="demo">
+    <div class="label">if/else 條件（語言切換）</div>
+    <button class="demo-btn" onclick="demoLang()">toggleLang()</button>
+    <div class="output" id="out2">目前語言：en</div>
+</div>
+
+<div class="demo">
+    <div class="label">陣列 + 物件</div>
+    <button class="demo-btn" onclick="demoNext()">下一個城市</button>
+    <div class="output" id="out3">城市：台北 | 回收率：55%</div>
+</div>
 
 </div>
 
 <script>
-    // Demo 1 — 函式
-    let callCount = 0;
-    function demoGreet() {
-        callCount++;
-        const names = ['Jonas', '璟呈', 'SDG11', 'World'];
-        const name = names[callCount % names.length];
-        document.getElementById('out1').textContent = `Hello, ${name}！（已呼叫 ${callCount} 次）`;
-    }
+// ── JS Console Engine ──
+const consoles = {};
 
-    // Demo 2 — 條件
-    let demoCurrentLang = 'en';
-    function demoLang() {
-        demoCurrentLang = demoCurrentLang === 'en' ? 'zh' : 'en';
-        const out = document.getElementById('out2');
-        out.textContent = demoCurrentLang === 'en' ? '目前語言：en（English）' : '目前語言：zh（中文）';
-    }
+function runConsole(id) {
+    const code = document.getElementById(id + '-code').value;
+    const outputEl = document.getElementById(id + '-output');
+    outputEl.innerHTML = '';
+    const lines = [];
 
-    // Demo 3 — 陣列物件
-    const demoCities = [
-        { name: '台北', recyclingRate: 55 },
-        { name: '高雄', recyclingRate: 48 },
-        { name: '台中', recyclingRate: 50 },
-        { name: '台南', recyclingRate: 52 },
-        { name: '新竹', recyclingRate: 49 },
-    ];
-    let demoIdx = 0;
-    function demoNext() {
-        demoIdx = (demoIdx + 1) % demoCities.length;
-        const c = demoCities[demoIdx];
-        document.getElementById('out3').textContent = `城市：${c.name} | 回收率：${c.recyclingRate}%`;
+    // 建立沙盒環境
+    const sandbox = { print: function() {
+        const args = Array.from(arguments).map(a => {
+            if (typeof a === 'object' && a !== null) return JSON.stringify(a);
+            return String(a);
+        });
+        lines.push({ type: 'log', text: args.join(' ') });
+    }};
+
+    try {
+        const fn = new Function(...Object.keys(sandbox), code);
+        fn(...Object.values(sandbox));
+        lines.forEach(line => {
+            const div = document.createElement('div');
+            div.className = 'out-line';
+            div.innerHTML = `<span class="out-prefix">›</span><span class="out-${line.type}">${escHtml(line.text)}</span>`;
+            outputEl.appendChild(div);
+        });
+        if (lines.length === 0) {
+            outputEl.innerHTML = '<div class="jsc-empty">執行完成（沒有輸出）</div>';
+        }
+    } catch (err) {
+        const div = document.createElement('div');
+        div.className = 'out-line';
+        div.innerHTML = `<span class="out-prefix">✕</span><span class="out-error">${escHtml(err.message)}</span>`;
+        outputEl.appendChild(div);
     }
+}
+
+function clearConsole(id) {
+    document.getElementById(id + '-output').innerHTML = '<div class="jsc-empty">已清除...</div>';
+}
+
+function escHtml(s) {
+    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+// Ctrl+Enter to run (for all textareas)
+document.addEventListener('keydown', function(e) {
+    if (e.ctrlKey && e.key === 'Enter') {
+        const ta = document.activeElement;
+        if (ta && ta.classList.contains('jsc-textarea')) {
+            const id = ta.id.replace('-code','');
+            runConsole(id);
+        }
+    }
+});
+
+// ── Existing demos ──
+let callCount = 0;
+function demoGreet() {
+    callCount++;
+    const names = ['Jonas', '璟呈', 'SDG11', 'World'];
+    const name = names[callCount % names.length];
+    document.getElementById('out1').textContent = `Hello, ${name}！（已呼叫 ${callCount} 次）`;
+}
+
+let demoCurrentLang = 'en';
+function demoLang() {
+    demoCurrentLang = demoCurrentLang === 'en' ? 'zh' : 'en';
+    const out = document.getElementById('out2');
+    out.textContent = demoCurrentLang === 'en' ? '目前語言：en（English）' : '目前語言：zh（中文）';
+}
+
+const demoCities = [
+    { name: '台北', recyclingRate: 55 },
+    { name: '高雄', recyclingRate: 48 },
+    { name: '台中', recyclingRate: 50 },
+    { name: '台南', recyclingRate: 52 },
+    { name: '新竹', recyclingRate: 49 },
+];
+let demoIdx = 0;
+function demoNext() {
+    demoIdx = (demoIdx + 1) % demoCities.length;
+    const c = demoCities[demoIdx];
+    document.getElementById('out3').textContent = `城市：${c.name} | 回收率：${c.recyclingRate}%`;
+}
 </script>
 </body>
 </html>

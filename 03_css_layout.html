@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>03 — CSS 排版</title>
+    <title>03 — CSS 排版（互動版）</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Segoe UI', sans-serif; background: #0f0f1a; color: #e0e0e0; line-height: 1.7; }
@@ -12,34 +12,45 @@
         .hero { background: linear-gradient(135deg, #1a1a2e, #16213e); padding: 56px 40px; text-align: center; }
         .hero h1 { font-size: 2.4rem; color: #f99d26; margin-bottom: 10px; }
         .hero p { color: rgba(255,255,255,0.45); }
-        .content { max-width: 860px; margin: 0 auto; padding: 40px 32px 100px; }
-        h2 { font-size: 1.4rem; color: #f99d26; margin: 48px 0 18px; padding-left: 14px; border-left: 3px solid #f99d26; }
+        .hero .badge { display: inline-block; background: rgba(249,157,38,0.15); border: 1px solid rgba(249,157,38,0.3); color: #f99d26; font-size: 0.75rem; padding: 4px 14px; border-radius: 20px; margin-top: 14px; letter-spacing: 1px; }
+        .content { max-width: 920px; margin: 0 auto; padding: 40px 32px 100px; }
+        h2 { font-size: 1.4rem; color: #f99d26; margin: 52px 0 18px; padding-left: 14px; border-left: 3px solid #f99d26; }
         h3 { font-size: 1.05rem; color: rgba(249,157,38,0.8); margin: 28px 0 10px; }
         p { color: rgba(255,255,255,0.7); margin-bottom: 14px; }
         ul { color: rgba(255,255,255,0.65); padding-left: 22px; margin-bottom: 14px; }
         li { margin-bottom: 6px; }
-        strong { color: #f99d26; }
+        strong { color: #f99d26; font-weight: 600; }
         code { background: rgba(249,157,38,0.12); color: #f99d26; padding: 2px 7px; border-radius: 5px; font-family: 'Courier New', monospace; font-size: 0.92em; }
-        .code-block { background: #12121f; border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 24px 28px; margin: 16px 0 24px; font-family: 'Courier New', monospace; font-size: 0.88rem; line-height: 1.85; overflow-x: auto; }
-        .cm { color: #5a6a8a; } .cs { color: #c792ea; } .ca { color: #f99d26; } .cv { color: #a8e6a3; }
         .tip { background: rgba(249,157,38,0.07); border-left: 3px solid rgba(249,157,38,0.5); padding: 14px 18px; border-radius: 0 10px 10px 0; margin: 16px 0; font-size: 0.88rem; color: rgba(255,255,255,0.6); }
         .tip strong { color: #f99d26; }
-        .demo { background: #1e1e32; border: 1px solid rgba(249,157,38,0.2); border-radius: 12px; padding: 24px; margin: 8px 0 28px; }
-        .demo .label { font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; color: rgba(249,157,38,0.5); margin-bottom: 16px; }
-        .tag-table { width: 100%; border-collapse: collapse; margin: 16px 0 28px; }
+        .tag-table { width: 100%; border-collapse: collapse; margin: 16px 0 24px; }
         .tag-table th { background: rgba(249,157,38,0.15); color: #f99d26; padding: 10px 16px; text-align: left; font-size: 0.85rem; }
         .tag-table td { padding: 10px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 0.85rem; color: rgba(255,255,255,0.65); }
         .tag-table td:first-child { font-family: 'Courier New', monospace; color: #7ecfff; }
 
-        /* ─── Flex Demos ─── */
-        .flex-demo { display: flex; gap: 10px; padding: 16px; background: rgba(0,0,0,0.3); border-radius: 8px; }
-        .flex-item { background: rgba(249,157,38,0.25); border: 1px solid rgba(249,157,38,0.5); color: #f99d26; padding: 12px 20px; border-radius: 6px; font-size: 0.85rem; text-align: center; }
+        /* ── PLAYGROUND ── */
+        .playground { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid rgba(249,157,38,0.3); border-radius: 14px; overflow: hidden; margin: 14px 0 32px; min-height: 160px; }
+        .pg-left  { background: #0d0d1a; border-right: 1px solid rgba(249,157,38,0.2); display: flex; flex-direction: column; }
+        .pg-right { background: #fff; display: flex; flex-direction: column; }
+        .pg-bar   { padding: 7px 14px; font-size: 0.72rem; letter-spacing: 1.5px; text-transform: uppercase; display: flex; align-items: center; gap: 8px; }
+        .pg-left .pg-bar  { background: rgba(249,157,38,0.08); color: rgba(249,157,38,0.7); border-bottom: 1px solid rgba(249,157,38,0.15); }
+        .pg-right .pg-bar { background: #f0f0f0; color: #888; border-bottom: 1px solid #ddd; }
+        .pg-dot { width: 8px; height: 8px; border-radius: 50%; }
+        .pg-textarea { flex: 1; width: 100%; background: transparent; border: none; color: #e0e0e0; font-family: 'Courier New', monospace; font-size: 0.84rem; padding: 14px 18px; resize: none; outline: none; line-height: 1.75; min-height: 140px; }
+        .pg-frame { flex: 1; width: 100%; border: none; min-height: 140px; }
+        @media (max-width: 640px) { .playground { grid-template-columns: 1fr; } .pg-left { border-right: none; border-bottom: 1px solid rgba(249,157,38,0.2); } }
 
-        /* position demos */
-        .pos-container { position: relative; height: 120px; background: rgba(0,0,0,0.3); border-radius: 8px; margin: 16px 0; overflow: hidden; }
-        .pos-item { padding: 8px 16px; border-radius: 6px; font-size: 0.82rem; }
-        .pos-relative { position: relative; top: 20px; left: 30px; background: rgba(100,200,100,0.3); border: 1px solid rgba(100,200,100,0.6); color: #6bcf7f; display: inline-block; }
-        .pos-absolute { position: absolute; top: 12px; right: 12px; background: rgba(249,157,38,0.3); border: 1px solid rgba(249,157,38,0.6); color: #f99d26; }
+        /* ── Flexbox 互動控制台 ── */
+        .flex-lab { background: #12121f; border: 1px solid rgba(249,157,38,0.25); border-radius: 14px; padding: 22px; margin: 14px 0 32px; }
+        .flex-lab-title { font-size: 0.72rem; letter-spacing: 2px; text-transform: uppercase; color: rgba(249,157,38,0.6); margin-bottom: 16px; }
+        .flex-controls { display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 18px; }
+        .flex-ctrl { display: flex; flex-direction: column; gap: 4px; }
+        .flex-ctrl label { font-size: 0.76rem; color: rgba(255,255,255,0.5); }
+        .flex-ctrl select { background: #1a1a2e; border: 1px solid rgba(249,157,38,0.3); color: #f99d26; padding: 5px 10px; border-radius: 6px; font-size: 0.82rem; outline: none; cursor: pointer; }
+        .flex-ctrl input[type="range"] { accent-color: #f99d26; width: 120px; }
+        .flex-stage { background: rgba(0,0,0,0.35); border-radius: 10px; padding: 16px; min-height: 120px; display: flex; gap: 10px; transition: all 0.2s; }
+        .flex-item { background: rgba(249,157,38,0.25); border: 1px solid rgba(249,157,38,0.5); color: #f99d26; border-radius: 6px; padding: 12px 18px; font-size: 0.82rem; font-weight: bold; text-align: center; transition: all 0.2s; }
+        .flex-code { background: rgba(0,0,0,0.3); border-radius: 8px; padding: 12px 16px; font-family: 'Courier New', monospace; font-size: 0.8rem; color: #a8e6a3; margin-top: 14px; }
     </style>
 </head>
 <body>
@@ -48,207 +59,409 @@
 <div class="hero">
     <h1>03 — CSS 排版</h1>
     <p>Flexbox · position · z-index · SDG11 排版全用這些</p>
+    <div class="badge">✦ 互動版 — 即時 Flexbox 控制台</div>
 </div>
 <div class="content">
 
-    <!-- ── display ── -->
-    <h2>display — 元素怎麼排列</h2>
-    <table class="tag-table">
-        <thead><tr><th>值</th><th>行為</th><th>例子</th></tr></thead>
-        <tbody>
-            <tr><td>block</td><td>獨佔一整行，可設寬高</td><td>div, p, h1, section</td></tr>
-            <tr><td>inline</td><td>在行內排列，不能設寬高</td><td>span, a, strong</td></tr>
-            <tr><td>inline-block</td><td>在行內排列，但可設寬高</td><td>圖片、按鈕</td></tr>
-            <tr><td>flex</td><td>彈性盒子排版（現代首選）</td><td>導覽列、卡片區</td></tr>
-            <tr><td>grid</td><td>網格排版</td><td>複雜二維佈局</td></tr>
-            <tr><td>none</td><td>完全隱藏（不佔空間）</td><td>隱藏 Modal</td></tr>
-        </tbody>
-    </table>
+<!-- ══════════════════════
+     1. display
+═══════════════════════════ -->
+<h2>display — 元素怎麼排列</h2>
 
-    <!-- ── Flexbox ── -->
-    <h2>Flexbox — 最重要的排版方式</h2>
-    <p>在<strong>父元素</strong>加上 <code>display: flex</code>，子元素就會自動排在同一行。</p>
+<table class="tag-table">
+    <thead><tr><th>值</th><th>行為</th><th>例子</th></tr></thead>
+    <tbody>
+        <tr><td>block</td><td>獨佔一整行，可設寬高</td><td>div, p, h1, section</td></tr>
+        <tr><td>inline</td><td>在行內排列，不能設寬高</td><td>span, a, strong</td></tr>
+        <tr><td>inline-block</td><td>在行內排列，但可設寬高</td><td>圖片、按鈕</td></tr>
+        <tr><td>flex</td><td>彈性盒子排版（現代首選）</td><td>導覽列、卡片區</td></tr>
+        <tr><td>grid</td><td>網格排版</td><td>複雜二維佈局</td></tr>
+        <tr><td>none</td><td>完全隱藏（不佔空間）</td><td>隱藏 Modal</td></tr>
+    </tbody>
+</table>
 
-    <div class="code-block">
-<span class="cm">/* 父元素：容器 */</span>
-<span class="cs">.container</span> {
-  <span class="ca">display</span>: <span class="cv">flex</span>;
+<div class="playground" id="pg-display">
+    <div class="pg-left">
+        <div class="pg-bar"><span class="pg-dot" style="background:#c792ea"></span> 試著改 display 的值</div>
+        <textarea class="pg-textarea" oninput="updatePG('pg-display',this.value)" spellcheck="false">&lt;style&gt;
+  .demo { margin: 8px; padding: 8px 16px; border-radius: 6px; font-size: 0.85rem; }
+  .block    { display: block;        background: #fff3cd; color: #333; }
+  .inline   { display: inline;       background: #d4edda; color: #333; }
+  .inblk    { display: inline-block; background: #cce5ff; color: #333; width: 120px; height: 50px; }
+  .gone     { display: none;         background: red; }
+&lt;/style&gt;
 
-  <span class="cm">/* 主軸方向（預設橫向）*/</span>
-  <span class="ca">flex-direction</span>: <span class="cv">row</span>;         <span class="cm">/* 橫排（預設）*/</span>
-  <span class="cm">/* flex-direction: column; */</span>  <span class="cm">/* 直排 */</span>
+&lt;p&gt;block（獨佔一行）:&lt;/p&gt;
+&lt;div class="demo block"&gt;block A&lt;/div&gt;
+&lt;div class="demo block"&gt;block B（換行了）&lt;/div&gt;
 
-  <span class="cm">/* 主軸對齊（橫向時：左中右）*/</span>
-  <span class="ca">justify-content</span>: <span class="cv">center</span>;      <span class="cm">/* 置中 */</span>
-  <span class="cm">/* justify-content: space-between; */</span>  <span class="cm">/* 兩端對齊 */</span>
-  <span class="cm">/* justify-content: flex-start; */</span>   <span class="cm">/* 靠左（預設）*/</span>
+&lt;p&gt;inline（不換行）:&lt;/p&gt;
+&lt;span class="demo inline"&gt;inline A&lt;/span&gt;
+&lt;span class="demo inline"&gt;inline B（同行）&lt;/span&gt;
 
-  <span class="cm">/* 交叉軸對齊（橫向時：上中下）*/</span>
-  <span class="ca">align-items</span>: <span class="cv">center</span>;          <span class="cm">/* 垂直置中（超常用！）*/</span>
+&lt;p&gt;inline-block（可設寬高）:&lt;/p&gt;
+&lt;div class="demo inblk"&gt;120px 寬&lt;/div&gt;
+&lt;div class="demo inblk"&gt;50px 高&lt;/div&gt;
 
-  <span class="cm">/* 間距 */</span>
-  <span class="ca">gap</span>: <span class="cv">24px</span>;                    <span class="cm">/* 子元素間的距離 */</span>
-
-  <span class="cm">/* 換行（子元素太多時）*/</span>
-  <span class="ca">flex-wrap</span>: <span class="cv">wrap</span>;              <span class="cm">/* 允許換行 */</span>
-}
+&lt;div class="demo gone"&gt;display:none 看不見我&lt;/div&gt;
+&lt;p&gt;⬆ display:none 什麼都看不到&lt;/p&gt;</textarea>
     </div>
+    <div class="pg-right">
+        <div class="pg-bar"><span class="pg-dot" style="background:#6bcf7f"></span> 預覽</div>
+        <iframe class="pg-frame" id="pg-display-frame"></iframe>
+    </div>
+</div>
 
-    <div class="demo">
-        <div class="label">LIVE DEMO — justify-content: center + align-items: center</div>
-        <div style="display:flex; justify-content:center; align-items:center; gap:12px; height:80px; background:rgba(0,0,0,0.3); border-radius:8px;">
-            <div class="flex-item">A</div>
-            <div class="flex-item">B</div>
-            <div class="flex-item" style="padding:12px 30px;">C（寬一點）</div>
+<!-- ══════════════════════
+     2. Flexbox 互動控制台
+═══════════════════════════ -->
+<h2>Flexbox — 即時控制台（拖動選單看效果）</h2>
+<p>在<strong>父元素</strong>加上 <code>display: flex</code>，子元素就會自動排在同一行。用下方控制台即時調整各屬性：</p>
+
+<div class="flex-lab">
+    <div class="flex-lab-title">✦ Flexbox 即時控制台（父元素屬性）</div>
+    <div class="flex-controls">
+        <div class="flex-ctrl">
+            <label>flex-direction</label>
+            <select id="fdir" onchange="updateFlex()">
+                <option value="row">row（橫排）</option>
+                <option value="column">column（直排）</option>
+                <option value="row-reverse">row-reverse</option>
+            </select>
+        </div>
+        <div class="flex-ctrl">
+            <label>justify-content</label>
+            <select id="fjc" onchange="updateFlex()">
+                <option value="flex-start">flex-start（靠左）</option>
+                <option value="center">center（置中）</option>
+                <option value="flex-end">flex-end（靠右）</option>
+                <option value="space-between">space-between</option>
+                <option value="space-around">space-around</option>
+                <option value="space-evenly">space-evenly</option>
+            </select>
+        </div>
+        <div class="flex-ctrl">
+            <label>align-items</label>
+            <select id="fai" onchange="updateFlex()">
+                <option value="stretch">stretch（延伸）</option>
+                <option value="center">center（垂直置中）</option>
+                <option value="flex-start">flex-start（頂部）</option>
+                <option value="flex-end">flex-end（底部）</option>
+            </select>
+        </div>
+        <div class="flex-ctrl">
+            <label>flex-wrap</label>
+            <select id="fwrap" onchange="updateFlex()">
+                <option value="nowrap">nowrap（不換行）</option>
+                <option value="wrap">wrap（允許換行）</option>
+            </select>
+        </div>
+        <div class="flex-ctrl">
+            <label>gap: <span id="fgap-val">12</span>px</label>
+            <input type="range" min="0" max="40" value="12" oninput="document.getElementById('fgap-val').textContent=this.value; updateFlex()">
         </div>
     </div>
-
-    <div class="demo">
-        <div class="label">LIVE DEMO — justify-content: space-between</div>
-        <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; height:80px; background:rgba(0,0,0,0.3); border-radius:8px; padding:0 16px;">
-            <div class="flex-item">SDG 11（logo）</div>
-            <div style="display:flex; gap:8px;">
-                <div class="flex-item">Statistics</div>
-                <div class="flex-item">Taiwan</div>
-                <div class="flex-item" style="background:white;color:#f99d26;">中文</div>
-            </div>
-        </div>
-        <p style="margin-top:12px;font-size:0.8rem;color:rgba(255,255,255,0.4);">↑ 這就是 SDG11 導覽列的做法</p>
+    <div class="flex-stage" id="flex-stage" style="height:130px;">
+        <div class="flex-item">A</div>
+        <div class="flex-item" style="padding:12px 28px;">B（寬）</div>
+        <div class="flex-item">C</div>
+        <div class="flex-item">D</div>
+        <div class="flex-item">E</div>
     </div>
+    <div class="flex-code" id="flex-code"></div>
+</div>
 
-    <div class="demo">
-        <div class="label">LIVE DEMO — flex-wrap: wrap（子元素自動換行）</div>
-        <div style="display:flex; flex-wrap:wrap; gap:10px; background:rgba(0,0,0,0.3); border-radius:8px; padding:16px;">
-            <div class="flex-item" style="width:120px;">卡片 1</div>
-            <div class="flex-item" style="width:120px;">卡片 2</div>
-            <div class="flex-item" style="width:120px;">卡片 3</div>
-            <div class="flex-item" style="width:120px;">卡片 4</div>
-            <div class="flex-item" style="width:120px;">卡片 5</div>
-        </div>
-        <p style="margin-top:12px;font-size:0.8rem;color:rgba(255,255,255,0.4);">↑ SDG11 城市卡片就是這樣排的</p>
+<div class="playground" id="pg-flex">
+    <div class="pg-left">
+        <div class="pg-bar"><span class="pg-dot" style="background:#c792ea"></span> SDG11 導覽列排版原理</div>
+        <textarea class="pg-textarea" oninput="updatePG('pg-flex',this.value)" spellcheck="false">&lt;style&gt;
+  nav {
+    display: flex;
+    justify-content: space-between;  /* 兩端對齊 */
+    align-items: center;             /* 垂直置中 */
+    background: #e67e00;
+    padding: 12px 24px;
+    color: white;
+  }
+  .logo { font-weight: bold; font-size: 1.1rem; }
+  .nav-links {
+    display: flex;       /* 連結也用 flex 橫排 */
+    gap: 20px;
+    list-style: none;
+  }
+  .nav-links a { color: white; text-decoration: none; }
+
+  /* 卡片區：flex-wrap 自動換行 */
+  .cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 16px;
+    justify-content: center;
+  }
+  .card {
+    background: #fff3cd;
+    border-radius: 10px;
+    padding: 14px 20px;
+    width: 120px;
+    text-align: center;
+    font-size: 0.85rem;
+    color: #333;
+  }
+&lt;/style&gt;
+
+&lt;nav&gt;
+  &lt;div class="logo"&gt;SDG 11&lt;/div&gt;
+  &lt;ul class="nav-links"&gt;
+    &lt;li&gt;&lt;a href="#"&gt;Stats&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href="#"&gt;Taiwan&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href="#"&gt;Goals&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+
+&lt;div class="cards"&gt;
+  &lt;div class="card"&gt;台北&lt;/div&gt;
+  &lt;div class="card"&gt;高雄&lt;/div&gt;
+  &lt;div class="card"&gt;台中&lt;/div&gt;
+  &lt;div class="card"&gt;台南&lt;/div&gt;
+  &lt;div class="card"&gt;新竹&lt;/div&gt;
+&lt;/div&gt;</textarea>
     </div>
-
-    <h3>子元素（flex item）屬性</h3>
-    <div class="code-block">
-<span class="cm">/* 子元素屬性 */</span>
-<span class="cs">.item</span> {
-  <span class="cm">/* flex: 1 讓這個子元素填滿剩餘空間 */</span>
-  <span class="ca">flex</span>: <span class="cv">1</span>;
-
-  <span class="cm">/* 不讓子元素縮小 */</span>
-  <span class="ca">flex-shrink</span>: <span class="cv">0</span>;
-
-  <span class="cm">/* 覆蓋父元素的 align-items，對自己單獨設定 */</span>
-  <span class="ca">align-self</span>: <span class="cv">flex-end</span>;
-}
+    <div class="pg-right">
+        <div class="pg-bar"><span class="pg-dot" style="background:#6bcf7f"></span> 預覽</div>
+        <iframe class="pg-frame" id="pg-flex-frame"></iframe>
     </div>
+</div>
 
-    <!-- ── position ── -->
-    <h2>position — 脫離正常排版</h2>
-    <table class="tag-table">
-        <thead><tr><th>值</th><th>行為</th><th>SDG11 用在</th></tr></thead>
-        <tbody>
-            <tr><td>static</td><td>預設，正常排版</td><td>大部分元素</td></tr>
-            <tr><td>relative</td><td>相對自己原本的位置偏移，不脫離文件流</td><td>做 absolute 的錨點</td></tr>
-            <tr><td>absolute</td><td>相對最近的 position 非 static 的父元素，脫離文件流</td><td>Modal 內的關閉按鈕</td></tr>
-            <tr><td>fixed</td><td>相對視窗固定，捲動不影響</td><td>城市場景 Modal（inset:0）</td></tr>
-            <tr><td>sticky</td><td>捲到指定位置時固定</td><td>導覽列（top:0）</td></tr>
-        </tbody>
-    </table>
+<!-- ══════════════════════
+     3. position Playground
+═══════════════════════════ -->
+<h2>position — 脫離正常排版</h2>
 
-    <div class="code-block">
-<span class="cm">/* SDG11 導覽列：sticky */</span>
-<span class="cs">nav</span> {
-  <span class="ca">position</span>: <span class="cv">sticky</span>;
-  <span class="ca">top</span>: <span class="cv">0</span>;          <span class="cm">/* 捲到頂部就黏住 */</span>
-  <span class="ca">z-index</span>: <span class="cv">100</span>;    <span class="cm">/* 確保在其他元素上面 */</span>
-}
+<table class="tag-table">
+    <thead><tr><th>值</th><th>行為</th><th>SDG11 用在</th></tr></thead>
+    <tbody>
+        <tr><td>static</td><td>預設，正常排版</td><td>大部分元素</td></tr>
+        <tr><td>relative</td><td>相對自己原本位置偏移，不脫離文件流</td><td>做 absolute 的錨點</td></tr>
+        <tr><td>absolute</td><td>相對最近的 positioned 父元素，脫離文件流</td><td>Modal 關閉按鈕</td></tr>
+        <tr><td>fixed</td><td>相對視窗固定，捲動不影響</td><td>城市場景 Modal</td></tr>
+        <tr><td>sticky</td><td>捲到指定位置時黏住</td><td>導覽列（top:0）</td></tr>
+    </tbody>
+</table>
 
-<span class="cm">/* SDG11 城市場景 Modal：fixed + inset */</span>
-<span class="cs">#scene-modal</span> {
-  <span class="ca">position</span>: <span class="cv">fixed</span>;
-  <span class="ca">inset</span>: <span class="cv">0</span>;          <span class="cm">/* 等於 top:0 right:0 bottom:0 left:0 */</span>
-  <span class="cm">/* → 蓋住整個視窗 */</span>
-}
+<div class="playground" id="pg-pos">
+    <div class="pg-left">
+        <div class="pg-bar"><span class="pg-dot" style="background:#c792ea"></span> 試著改 position 的值</div>
+        <textarea class="pg-textarea" oninput="updatePG('pg-pos',this.value)" spellcheck="false">&lt;style&gt;
+  .container {
+    position: relative;  /* ← absolute 的錨點 */
+    background: #eee;
+    height: 180px;
+    border-radius: 8px;
+    padding: 16px;
+    margin: 16px;
+  }
+  .normal {
+    background: #d4edda;
+    padding: 8px 14px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    color: #333;
+    display: inline-block;
+  }
+  .abs-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: #e67e00;
+    color: white;
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+  }
+  .abs-bottom {
+    position: absolute;
+    bottom: 12px;
+    left: 16px;
+    background: #1a1a2e;
+    color: white;
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+  }
+&lt;/style&gt;
 
-<span class="cm">/* Modal 裡的關閉按鈕：absolute */</span>
-<span class="cs">.scene-close-btn</span> {
-  <span class="ca">position</span>: <span class="cv">absolute</span>;
-  <span class="ca">top</span>: <span class="cv">24px</span>;
-  <span class="ca">right</span>: <span class="cv">32px</span>;     <span class="cm">/* 右上角 */</span>
-}
+&lt;div class="container"&gt;
+  &lt;p&gt;父元素：position: relative&lt;/p&gt;
+  &lt;div class="normal"&gt;正常流元素&lt;/div&gt;
+
+  &lt;!-- absolute 相對父元素右上角 --&gt;
+  &lt;div class="abs-btn"&gt;右上角（absolute）&lt;/div&gt;
+
+  &lt;!-- absolute 相對父元素左下角 --&gt;
+  &lt;div class="abs-bottom"&gt;左下角&lt;/div&gt;
+&lt;/div&gt;</textarea>
     </div>
-
-    <div class="demo">
-        <div class="label">LIVE DEMO — position: absolute 在 relative 父元素裡</div>
-        <div class="pos-container">
-            <span style="color:rgba(255,255,255,0.4);font-size:0.8rem;padding:16px;display:block;">父元素（position: relative）</span>
-            <div class="pos-item pos-absolute">absolute（右上角）</div>
-        </div>
+    <div class="pg-right">
+        <div class="pg-bar"><span class="pg-dot" style="background:#6bcf7f"></span> 預覽</div>
+        <iframe class="pg-frame" id="pg-pos-frame"></iframe>
     </div>
+</div>
 
-    <!-- ── z-index ── -->
-    <h2>z-index — 圖層順序</h2>
-    <p>決定哪個元素在上面（只在 <code>position</code> 非 static 時有效）。</p>
-    <div class="code-block">
-<span class="cm">/* 數字越大，越在上面 */</span>
-<span class="cs">nav</span>         { <span class="ca">z-index</span>: <span class="cv">100</span>; }    <span class="cm">/* 導覽列 */</span>
-<span class="cs">#scene-modal</span> { <span class="ca">z-index</span>: <span class="cv">999</span>; }    <span class="cm">/* 場景 Modal（蓋住導覽列）*/</span>
-<span class="cs">#sources-modal</span> { <span class="ca">z-index</span>: <span class="cv">1000</span>; } <span class="cm">/* 資料來源（最上層）*/</span>
+<!-- ══════════════════════
+     4. Modal 排版 Playground
+═══════════════════════════ -->
+<h2>Modal 排版 — position: fixed + flex 置中</h2>
+<p>SDG11 的城市場景、資料來源都是這個 pattern：</p>
+
+<div class="playground" id="pg-modal">
+    <div class="pg-left">
+        <div class="pg-bar"><span class="pg-dot" style="background:#c792ea"></span> Modal = fixed + flex 置中</div>
+        <textarea class="pg-textarea" oninput="updatePG('pg-modal',this.value)" spellcheck="false">&lt;style&gt;
+  /* Modal 蓋住整個視窗 */
+  .modal {
+    position: fixed;
+    inset: 0;            /* = top:0 right:0 bottom:0 left:0 */
+    background: rgba(0,0,0,0.7);
+
+    /* 讓內容置中 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .modal-box {
+    background: white;
+    border-radius: 16px;
+    padding: 32px;
+    max-width: 300px;
+    width: 90%;
+    position: relative;  /* 讓關閉按鈕相對它定位 */
+    text-align: center;
+  }
+  .close-btn {
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    color: #888;
+    border: none;
+    background: none;
+  }
+&lt;/style&gt;
+
+&lt;div class="modal"&gt;
+  &lt;div class="modal-box"&gt;
+    &lt;button class="close-btn"&gt;✕&lt;/button&gt;
+    &lt;h2 style="color:#e67e00;margin-bottom:10px"&gt;台北&lt;/h2&gt;
+    &lt;p style="color:#555"&gt;SDG11 城市場景的 Modal 就是這樣排版的。&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</textarea>
     </div>
-
-    <!-- ── margin auto ── -->
-    <h2>水平置中技巧</h2>
-    <div class="code-block">
-<span class="cm">/* 方法1：margin: 0 auto（block 元素置中）*/</span>
-<span class="cs">.container</span> {
-  <span class="ca">max-width</span>: <span class="cv">900px</span>;
-  <span class="ca">margin</span>: <span class="cv">0 auto</span>;  <span class="cm">/* 左右自動，等於水平置中 */</span>
-}
-
-<span class="cm">/* 方法2：flexbox（最常用）*/</span>
-<span class="cs">.parent</span> {
-  <span class="ca">display</span>: <span class="cv">flex</span>;
-  <span class="ca">justify-content</span>: <span class="cv">center</span>;
-  <span class="ca">align-items</span>: <span class="cv">center</span>;
-}
-
-<span class="cm">/* 方法3：垂直水平置中（Modal）*/</span>
-<span class="cs">.modal</span> {
-  <span class="ca">position</span>: <span class="cv">fixed</span>;
-  <span class="ca">inset</span>: <span class="cv">0</span>;
-  <span class="ca">display</span>: <span class="cv">flex</span>;
-  <span class="ca">align-items</span>: <span class="cv">center</span>;
-  <span class="ca">justify-content</span>: <span class="cv">center</span>;
-}
+    <div class="pg-right">
+        <div class="pg-bar"><span class="pg-dot" style="background:#6bcf7f"></span> 預覽</div>
+        <iframe class="pg-frame" id="pg-modal-frame" style="min-height:200px;"></iframe>
     </div>
+</div>
 
-    <!-- ── overflow ── -->
-    <h2>overflow — 超出範圍怎麼辦</h2>
-    <div class="code-block">
-<span class="cs">body</span> { <span class="ca">overflow-x</span>: <span class="cv">hidden</span>; }       <span class="cm">/* 禁止橫向捲動（SDG11 有用）*/</span>
+<!-- ══════════════════════
+     5. z-index + overflow
+═══════════════════════════ -->
+<h2>z-index + overflow — 圖層與溢出</h2>
 
-<span class="cm">/* 手機版表格橫向捲動 */</span>
-<span class="cs">.cities-table-wrap</span> {
-  <span class="ca">overflow-x</span>: <span class="cv">auto</span>;              <span class="cm">/* 內容超出時出現橫向捲軸 */</span>
-  <span class="ca">-webkit-overflow-scrolling</span>: <span class="cv">touch</span>; <span class="cm">/* iOS 順滑捲動 */</span>
-}
+<div class="playground" id="pg-zindex">
+    <div class="pg-left">
+        <div class="pg-bar"><span class="pg-dot" style="background:#c792ea"></span> 改 z-index 試試</div>
+        <textarea class="pg-textarea" oninput="updatePG('pg-zindex',this.value)" spellcheck="false">&lt;style&gt;
+  .layer {
+    position: absolute;
+    width: 100px; height: 60px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.78rem;
+    font-weight: bold;
+    color: white;
+  }
+  .stage {
+    position: relative;
+    height: 140px;
+    margin: 8px;
+  }
+  /* 試著改 z-index 的數字！ */
+  .l1 { background:#c792ea; left:20px;  top:20px;  z-index: 1; }
+  .l2 { background:#e67e00; left:60px;  top:40px;  z-index: 2; }
+  .l3 { background:#1e90ff; left:100px; top:60px;  z-index: 3; }
+&lt;/style&gt;
 
-<span class="cm">/* 讓圓角正常裁切 */</span>
-<span class="cs">.card</span> {
-  <span class="ca">border-radius</span>: <span class="cv">14px</span>;
-  <span class="ca">overflow</span>: <span class="cv">hidden</span>;  <span class="cm">/* 防止子元素超出圓角 */</span>
-}
+&lt;div class="stage"&gt;
+  &lt;div class="layer l1"&gt;z-index:1&lt;/div&gt;
+  &lt;div class="layer l2"&gt;z-index:2&lt;/div&gt;
+  &lt;div class="layer l3"&gt;z-index:3（最上）&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;hr&gt;
+&lt;p style="font-size:0.85rem;color:#555;margin-top:8px"&gt;
+  overflow: auto 讓內容可捲動：
+&lt;/p&gt;
+&lt;div style="overflow-x:auto;border:1px solid #ccc;border-radius:6px;"&gt;
+  &lt;table style="border-collapse:collapse;white-space:nowrap;"&gt;
+    &lt;tr&gt;
+      &lt;td style="padding:8px 20px;border:1px solid #ccc;"&gt;城市&lt;/td&gt;
+      &lt;td style="padding:8px 20px;border:1px solid #ccc;"&gt;國家&lt;/td&gt;
+      &lt;td style="padding:8px 20px;border:1px solid #ccc;"&gt;人口&lt;/td&gt;
+      &lt;td style="padding:8px 20px;border:1px solid #ccc;"&gt;回收率&lt;/td&gt;
+      &lt;td style="padding:8px 20px;border:1px solid #ccc;"&gt;更多資訊&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/table&gt;
+&lt;/div&gt;</textarea>
     </div>
-
-    <div class="tip">
-        <strong>📌 SDG11 排版總結：</strong><br>
-        · 導覽列：<code>display: flex + justify-content: space-between</code><br>
-        · 城市卡片、統計卡片：<code>display: flex + flex-wrap: wrap + justify-content: center</code><br>
-        · Modal 蓋住畫面：<code>position: fixed + inset: 0 + display: flex</code><br>
-        · 導覽列跟著捲動：<code>position: sticky + top: 0</code>
+    <div class="pg-right">
+        <div class="pg-bar"><span class="pg-dot" style="background:#6bcf7f"></span> 預覽</div>
+        <iframe class="pg-frame" id="pg-zindex-frame"></iframe>
     </div>
+</div>
+
+<div class="tip">
+    <strong>📌 SDG11 排版總結：</strong><br>
+    · 導覽列：<code>display: flex + justify-content: space-between</code><br>
+    · 城市卡片、統計卡片：<code>display: flex + flex-wrap: wrap + justify-content: center</code><br>
+    · Modal 蓋住畫面：<code>position: fixed + inset: 0 + display: flex</code><br>
+    · 導覽列跟著捲動：<code>position: sticky + top: 0</code>
+</div>
 
 </div>
+
+<script>
+function updatePG(pgId, code) {
+    const frame = document.getElementById(pgId + '-frame');
+    const styled = `<style>body{font-family:sans-serif;padding:12px;margin:0;font-size:14px;line-height:1.5;color:#222}</style>` + code;
+    frame.srcdoc = styled;
+}
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.playground').forEach(function(pg) {
+        const ta = pg.querySelector('.pg-textarea');
+        if (ta && pg.id) updatePG(pg.id, ta.value);
+    });
+    updateFlex();
+});
+
+function updateFlex() {
+    const stage = document.getElementById('flex-stage');
+    const dir   = document.getElementById('fdir').value;
+    const jc    = document.getElementById('fjc').value;
+    const ai    = document.getElementById('fai').value;
+    const wrap  = document.getElementById('fwrap').value;
+    const gap   = document.getElementById('fgap-val').textContent;
+    stage.style.flexDirection    = dir;
+    stage.style.justifyContent   = jc;
+    stage.style.alignItems       = ai;
+    stage.style.flexWrap         = wrap;
+    stage.style.gap              = gap + 'px';
+    document.getElementById('flex-code').textContent =
+`.container {\n  display: flex;\n  flex-direction: ${dir};\n  justify-content: ${jc};\n  align-items: ${ai};\n  flex-wrap: ${wrap};\n  gap: ${gap}px;\n}`;
+}
+</script>
 </body>
 </html>

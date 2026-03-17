@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>01 — HTML 基礎</title>
+    <title>01 — HTML 基礎（互動版）</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Segoe UI', sans-serif; background: #0f0f1a; color: #e0e0e0; line-height: 1.7; }
@@ -12,9 +12,10 @@
         .hero { background: linear-gradient(135deg, #1a1a2e, #16213e); padding: 56px 40px; text-align: center; }
         .hero h1 { font-size: 2.4rem; color: #f99d26; margin-bottom: 10px; }
         .hero p { color: rgba(255,255,255,0.45); }
-        .content { max-width: 860px; margin: 0 auto; padding: 40px 32px 100px; }
+        .hero .badge { display: inline-block; background: rgba(249,157,38,0.15); border: 1px solid rgba(249,157,38,0.3); color: #f99d26; font-size: 0.75rem; padding: 4px 14px; border-radius: 20px; margin-top: 14px; letter-spacing: 1px; }
+        .content { max-width: 920px; margin: 0 auto; padding: 40px 32px 100px; }
 
-        h2 { font-size: 1.4rem; color: #f99d26; margin: 48px 0 18px; padding-left: 14px; border-left: 3px solid #f99d26; }
+        h2 { font-size: 1.4rem; color: #f99d26; margin: 52px 0 18px; padding-left: 14px; border-left: 3px solid #f99d26; }
         h3 { font-size: 1.05rem; color: rgba(249,157,38,0.8); margin: 28px 0 10px; }
         p { color: rgba(255,255,255,0.7); margin-bottom: 14px; }
         ul, ol { color: rgba(255,255,255,0.65); padding-left: 22px; margin-bottom: 14px; }
@@ -22,6 +23,7 @@
         strong { color: #f99d26; font-weight: 600; }
         code { background: rgba(249,157,38,0.12); color: #f99d26; padding: 2px 7px; border-radius: 5px; font-family: 'Courier New', monospace; font-size: 0.92em; }
 
+        /* ── code block (read-only) ── */
         .code-block {
             background: #12121f;
             border: 1px solid rgba(255,255,255,0.08);
@@ -32,29 +34,14 @@
             font-size: 0.88rem;
             line-height: 1.85;
             overflow-x: auto;
-            position: relative;
         }
-        .code-block .comment { color: #5a6a8a; }
-        .code-block .tag { color: #7ecfff; }
-        .code-block .attr { color: #f99d26; }
-        .code-block .val { color: #a8e6a3; }
-        .code-block .text { color: #e0e0e0; }
+        .tag   { color: #7ecfff; }
+        .attr  { color: #f99d26; }
+        .val   { color: #a8e6a3; }
+        .cmt   { color: #5a6a8a; font-style: italic; }
+        .txt   { color: #e0e0e0; }
 
-        .demo-box {
-            background: #1e1e32;
-            border: 1px solid rgba(249,157,38,0.2);
-            border-radius: 12px;
-            padding: 24px 28px;
-            margin: 8px 0 28px;
-        }
-        .demo-box .label {
-            font-size: 0.7rem;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: rgba(249,157,38,0.5);
-            margin-bottom: 14px;
-        }
-
+        /* ── tip ── */
         .tip {
             background: rgba(249,157,38,0.07);
             border-left: 3px solid rgba(249,157,38,0.5);
@@ -66,18 +53,148 @@
         }
         .tip strong { color: #f99d26; }
 
-        .tag-table { width: 100%; border-collapse: collapse; margin: 16px 0 28px; }
+        /* ── tag table ── */
+        .tag-table { width: 100%; border-collapse: collapse; margin: 16px 0 24px; }
         .tag-table th { background: rgba(249,157,38,0.15); color: #f99d26; padding: 10px 16px; text-align: left; font-size: 0.85rem; }
-        .tag-table td { padding: 10px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 0.85rem; color: rgba(255,255,255,0.65); }
+        .tag-table td { padding: 10px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 0.85rem; color: rgba(255,255,255,0.65); vertical-align: middle; }
         .tag-table td:first-child { font-family: 'Courier New', monospace; color: #7ecfff; }
         .tag-table tbody tr:hover td { background: rgba(249,157,38,0.04); }
 
+        /* ── try-btn inside table ── */
+        .try-btn {
+            background: rgba(249,157,38,0.12);
+            border: 1px solid rgba(249,157,38,0.35);
+            color: #f99d26;
+            font-size: 0.72rem;
+            padding: 3px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.15s;
+            white-space: nowrap;
+        }
+        .try-btn:hover { background: rgba(249,157,38,0.25); }
+        .tag-demo-row td { padding: 0; }
+        .tag-demo-box {
+            display: none;
+            background: #fff;
+            border-top: 1px solid rgba(249,157,38,0.2);
+            padding: 18px 24px;
+            font-family: sans-serif;
+            font-size: 1rem;
+            color: #222;
+        }
+        .tag-demo-box.open { display: block; }
+
+        /* ── PLAYGROUND ── */
+        .playground {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            border: 1px solid rgba(249,157,38,0.3);
+            border-radius: 14px;
+            overflow: hidden;
+            margin: 14px 0 32px;
+            min-height: 160px;
+        }
+        .pg-left  { background: #0d0d1a; border-right: 1px solid rgba(249,157,38,0.2); display: flex; flex-direction: column; }
+        .pg-right { background: #fff; display: flex; flex-direction: column; }
+        .pg-bar {
+            padding: 7px 14px;
+            font-size: 0.72rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .pg-left .pg-bar  { background: rgba(249,157,38,0.08); color: rgba(249,157,38,0.7); border-bottom: 1px solid rgba(249,157,38,0.15); }
+        .pg-right .pg-bar { background: #f0f0f0; color: #888; border-bottom: 1px solid #ddd; }
+        .pg-dot { width: 8px; height: 8px; border-radius: 50%; }
+        .pg-textarea {
+            flex: 1;
+            width: 100%;
+            background: transparent;
+            border: none;
+            color: #e0e0e0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.84rem;
+            padding: 14px 18px;
+            resize: none;
+            outline: none;
+            line-height: 1.75;
+            min-height: 140px;
+        }
+        .pg-frame {
+            flex: 1;
+            width: 100%;
+            border: none;
+            min-height: 140px;
+        }
+        @media (max-width: 640px) {
+            .playground { grid-template-columns: 1fr; }
+            .pg-left { border-right: none; border-bottom: 1px solid rgba(249,157,38,0.2); }
+        }
+
+        /* ── compare ── */
         .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0 28px; }
         .compare-box { background: #12121f; border-radius: 10px; padding: 18px 20px; border: 1px solid rgba(255,255,255,0.06); }
         .compare-box .clabel { font-size: 0.72rem; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 12px; }
         .compare-box.good .clabel { color: #6bcf7f; }
-        .compare-box.bad .clabel { color: #e07070; }
         .compare-box pre { font-family: 'Courier New', monospace; font-size: 0.82rem; line-height: 1.7; color: #ccc; white-space: pre-wrap; }
+
+        /* ── section anatomy ── */
+        .anatomy {
+            border: 2px dashed rgba(249,157,38,0.3);
+            border-radius: 14px;
+            padding: 18px;
+            margin: 16px 0 28px;
+            font-size: 0.82rem;
+        }
+        .anatomy-block {
+            border: 2px solid;
+            border-radius: 8px;
+            padding: 10px 14px;
+            margin: 8px 0;
+            position: relative;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        .anatomy-block:hover { opacity: 0.85; }
+        .anatomy-label { font-family: 'Courier New', monospace; font-size: 0.78rem; position: absolute; top: -10px; left: 10px; padding: 0 6px; }
+        .anatomy-desc { margin-top: 6px; color: rgba(255,255,255,0.5); font-size: 0.78rem; display: none; }
+        .anatomy-block.expanded .anatomy-desc { display: block; }
+        .ab-header  { border-color: #7ecfff;  background: rgba(126,207,255,0.06);  }
+        .ab-header  .anatomy-label  { background: #12121f; color: #7ecfff; }
+        .ab-nav     { border-color: #f99d26;  background: rgba(249,157,38,0.06); margin-left: 20px; }
+        .ab-nav     .anatomy-label  { background: #12121f; color: #f99d26; }
+        .ab-main    { border-color: #a8e6a3;  background: rgba(168,230,163,0.05); margin-left: 20px; }
+        .ab-main    .anatomy-label  { background: #12121f; color: #a8e6a3; }
+        .ab-section { border-color: #c9aaff;  background: rgba(201,170,255,0.05); margin-left: 40px; }
+        .ab-section .anatomy-label  { background: #12121f; color: #c9aaff; }
+        .ab-footer  { border-color: #f99d26;  background: rgba(249,157,38,0.06); }
+        .ab-footer  .anatomy-label  { background: #12121f; color: #f99d26; }
+        .click-hint { font-size: 0.72rem; color: rgba(255,255,255,0.3); text-align: right; margin-bottom: 6px; }
+
+        /* ── path quiz ── */
+        .path-quiz { background: #12121f; border-radius: 12px; padding: 20px 24px; margin: 16px 0 28px; }
+        .path-quiz .pq-title { font-size: 0.8rem; color: rgba(249,157,38,0.7); margin-bottom: 14px; letter-spacing: 1px; text-transform: uppercase; }
+        .pq-row { display: flex; align-items: center; gap: 12px; margin: 10px 0; flex-wrap: wrap; }
+        .pq-file { font-family: 'Courier New', monospace; font-size: 0.82rem; background: rgba(255,255,255,0.06); padding: 4px 10px; border-radius: 6px; color: #e0e0e0; }
+        .pq-arrow { color: rgba(249,157,38,0.5); }
+        .pq-input {
+            font-family: 'Courier New', monospace;
+            font-size: 0.82rem;
+            background: rgba(249,157,38,0.06);
+            border: 1px solid rgba(249,157,38,0.25);
+            color: #e0e0e0;
+            padding: 4px 10px;
+            border-radius: 6px;
+            width: 200px;
+            outline: none;
+        }
+        .pq-input:focus { border-color: rgba(249,157,38,0.6); }
+        .pq-result { font-size: 0.8rem; padding: 3px 10px; border-radius: 6px; }
+        .pq-result.correct { background: rgba(107,207,127,0.15); color: #6bcf7f; }
+        .pq-result.wrong   { background: rgba(224,112,112,0.15); color: #e07070; }
+        .pq-check { background: rgba(249,157,38,0.15); border: 1px solid rgba(249,157,38,0.3); color: #f99d26; padding: 6px 18px; border-radius: 8px; cursor: pointer; font-size: 0.82rem; margin-top: 12px; }
+        .pq-check:hover { background: rgba(249,157,38,0.25); }
     </style>
 </head>
 <body>
@@ -87,263 +204,591 @@
 <div class="hero">
     <h1>01 — HTML 基礎</h1>
     <p>網頁的骨架 · 瀏覽器讀的語言</p>
+    <div class="badge">✦ 互動版 — 每個範例都可以直接編輯</div>
 </div>
 
 <div class="content">
 
-    <!-- ── 什麼是 HTML ── -->
-    <h2>HTML 是什麼？</h2>
-    <p>HTML（HyperText Markup Language）是用來描述網頁<strong>內容結構</strong>的語言。它告訴瀏覽器「這是標題」「這是段落」「這是圖片」，但不管顏色或動畫——那是 CSS 和 JavaScript 的事。</p>
+<!-- ══════════════════════════════════════════════
+     1. HTML 是什麼
+════════════════════════════════════════════════ -->
+<h2>HTML 是什麼？</h2>
+<p>HTML（HyperText Markup Language）是用來描述網頁<strong>內容結構</strong>的語言。它告訴瀏覽器「這是標題」「這是段落」「這是圖片」，但不管顏色或動畫——那是 CSS 和 JavaScript 的事。</p>
 
-    <div class="tip">
-        <strong>🏠 比喻：</strong>HTML = 房子的牆壁和樓板（結構）／CSS = 油漆和裝潢（外觀）／JS = 電燈開關和電梯（互動）
-    </div>
-
-    <!-- ── 基本結構 ── -->
-    <h2>每個 HTML 檔案的基本結構</h2>
-    <div class="code-block">
-<span class="comment">&lt;!-- 告訴瀏覽器：這是 HTML5 文件 --&gt;</span>
-<span class="tag">&lt;!DOCTYPE html&gt;</span>
-<span class="tag">&lt;html</span> <span class="attr">lang</span>=<span class="val">"zh-TW"</span><span class="tag">&gt;</span>
-
-  <span class="tag">&lt;head&gt;</span>  <span class="comment">&lt;!-- 給瀏覽器看的資訊，不顯示在畫面上 --&gt;</span>
-    <span class="tag">&lt;meta</span> <span class="attr">charset</span>=<span class="val">"UTF-8"</span><span class="tag">&gt;</span>          <span class="comment">&lt;!-- 支援中文 --&gt;</span>
-    <span class="tag">&lt;meta</span> <span class="attr">name</span>=<span class="val">"viewport"</span> <span class="attr">content</span>=<span class="val">"width=device-width, initial-scale=1.0"</span><span class="tag">&gt;</span>  <span class="comment">&lt;!-- 手機支援 --&gt;</span>
-    <span class="tag">&lt;title&gt;</span><span class="text">頁面標題（出現在分頁）</span><span class="tag">&lt;/title&gt;</span>
-  <span class="tag">&lt;/head&gt;</span>
-
-  <span class="tag">&lt;body&gt;</span>  <span class="comment">&lt;!-- 畫面上看得到的東西都在這裡 --&gt;</span>
-    <span class="tag">&lt;h1&gt;</span><span class="text">我是標題</span><span class="tag">&lt;/h1&gt;</span>
-    <span class="tag">&lt;p&gt;</span><span class="text">我是段落</span><span class="tag">&lt;/p&gt;</span>
-  <span class="tag">&lt;/body&gt;</span>
-
-<span class="tag">&lt;/html&gt;</span>
-    </div>
-
-    <div class="tip">
-        <strong>規則：</strong>大部分標籤都有<strong>開標籤</strong> <code>&lt;p&gt;</code> 和<strong>關標籤</strong> <code>&lt;/p&gt;</code>。少數例外不需要關標籤（叫 void element）：<code>&lt;img&gt;</code>、<code>&lt;input&gt;</code>、<code>&lt;br&gt;</code>、<code>&lt;meta&gt;</code>
-    </div>
-
-    <!-- ── 常用標籤 ── -->
-    <h2>最常用的標籤</h2>
-
-    <h3>文字類</h3>
-    <table class="tag-table">
-        <thead><tr><th>標籤</th><th>用途</th><th>例子</th></tr></thead>
-        <tbody>
-            <tr><td>&lt;h1&gt; ~ &lt;h6&gt;</td><td>標題，h1 最大，h6 最小</td><td>文章標題、章節標題</td></tr>
-            <tr><td>&lt;p&gt;</td><td>段落</td><td>一般文章內容</td></tr>
-            <tr><td>&lt;strong&gt;</td><td>粗體（語意：重要）</td><td>關鍵字</td></tr>
-            <tr><td>&lt;em&gt;</td><td>斜體（語意：強調）</td><td>書名、術語</td></tr>
-            <tr><td>&lt;br&gt;</td><td>換行</td><td>地址分行</td></tr>
-            <tr><td>&lt;span&gt;</td><td>行內容器（沒有語意）</td><td>部分文字加樣式</td></tr>
-        </tbody>
-    </table>
-
-    <h3>結構類（語意元素）</h3>
-    <table class="tag-table">
-        <thead><tr><th>標籤</th><th>代表意義</th></tr></thead>
-        <tbody>
-            <tr><td>&lt;header&gt;</td><td>頁首區域</td></tr>
-            <tr><td>&lt;nav&gt;</td><td>導覽列</td></tr>
-            <tr><td>&lt;main&gt;</td><td>主要內容</td></tr>
-            <tr><td>&lt;section&gt;</td><td>一個獨立區塊（有主題）</td></tr>
-            <tr><td>&lt;article&gt;</td><td>獨立文章</td></tr>
-            <tr><td>&lt;footer&gt;</td><td>頁尾</td></tr>
-            <tr><td>&lt;div&gt;</td><td>通用容器（沒有語意，用來排版）</td></tr>
-        </tbody>
-    </table>
-
-    <div class="tip">
-        <strong>語意元素 vs div：</strong>用 <code>&lt;nav&gt;</code> 而不是 <code>&lt;div id="nav"&gt;</code>，讓程式碼更清楚，也讓搜尋引擎和螢幕閱讀器更容易理解頁面。SDG 11 專案就是這樣寫的。
-    </div>
-
-    <!-- ── 屬性 ── -->
-    <h2>屬性（Attributes）</h2>
-    <p>標籤可以加屬性來補充資訊，格式是 <code>屬性名="值"</code>，寫在開標籤裡面。</p>
-
-    <div class="code-block">
-<span class="comment">&lt;!-- 連結：href 決定要去哪，target="_blank" 表示新分頁開 --&gt;</span>
-<span class="tag">&lt;a</span> <span class="attr">href</span>=<span class="val">"https://example.com"</span> <span class="attr">target</span>=<span class="val">"_blank"</span><span class="tag">&gt;</span><span class="text">點我</span><span class="tag">&lt;/a&gt;</span>
-
-<span class="comment">&lt;!-- 圖片：src 是圖片路徑，alt 是圖片讀不出來時顯示的文字 --&gt;</span>
-<span class="tag">&lt;img</span> <span class="attr">src</span>=<span class="val">"images/photo.jpg"</span> <span class="attr">alt</span>=<span class="val">"城市夜景"</span> <span class="attr">width</span>=<span class="val">"400"</span><span class="tag">&gt;</span>
-
-<span class="comment">&lt;!-- id 是唯一識別（一頁只能有一個同樣的 id）--&gt;</span>
-<span class="tag">&lt;div</span> <span class="attr">id</span>=<span class="val">"hero"</span><span class="tag">&gt;</span><span class="text">...</span><span class="tag">&lt;/div&gt;</span>
-
-<span class="comment">&lt;!-- class 可以重複用，多個元素共用同一個樣式 --&gt;</span>
-<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"card"</span><span class="tag">&gt;</span><span class="text">卡片 A</span><span class="tag">&lt;/div&gt;</span>
-<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"card"</span><span class="tag">&gt;</span><span class="text">卡片 B</span><span class="tag">&lt;/div&gt;</span>
-
-<span class="comment">&lt;!-- data- 屬性：自訂資料，SDG11 用來存中英文 --&gt;</span>
-<span class="tag">&lt;span</span> <span class="attr">data-en</span>=<span class="val">"Statistics"</span> <span class="attr">data-zh</span>=<span class="val">"統計數據"</span><span class="tag">&gt;</span><span class="text">Statistics</span><span class="tag">&lt;/span&gt;</span>
-    </div>
-
-    <!-- ── id vs class ── -->
-    <h2>id vs class — 最常搞混的概念</h2>
-    <div class="compare">
-        <div class="compare-box good">
-            <div class="clabel">✅ id — 唯一，一個就好</div>
-            <pre>&lt;nav id="main-nav"&gt;...&lt;/nav&gt;
-&lt;section id="hero"&gt;...&lt;/section&gt;
-&lt;footer id="footer"&gt;...&lt;/footer&gt;
-
-用途：
-- CSS: #hero { ... }
-- JS: document.getElementById('hero')</pre>
-        </div>
-        <div class="compare-box good">
-            <div class="clabel">✅ class — 可重複，多個元素共用</div>
-            <pre>&lt;div class="card"&gt;台北&lt;/div&gt;
-&lt;div class="card"&gt;高雄&lt;/div&gt;
-&lt;div class="card"&gt;台中&lt;/div&gt;
-
-用途：
-- CSS: .card { ... }
-- JS: querySelectorAll('.card')</pre>
-        </div>
-    </div>
-
-    <!-- ── 表格 ── -->
-    <h2>表格（Table）</h2>
-    <p>SDG 11 的「城市案例」區塊就是用 table 做的。</p>
-    <div class="code-block">
-<span class="tag">&lt;table&gt;</span>
-  <span class="tag">&lt;thead&gt;</span>  <span class="comment">&lt;!-- 表頭 --&gt;</span>
-    <span class="tag">&lt;tr&gt;</span>  <span class="comment">&lt;!-- tr = table row 一列 --&gt;</span>
-      <span class="tag">&lt;th&gt;</span><span class="text">城市</span><span class="tag">&lt;/th&gt;</span>  <span class="comment">&lt;!-- th = table header 粗體標題欄 --&gt;</span>
-      <span class="tag">&lt;th&gt;</span><span class="text">國家</span><span class="tag">&lt;/th&gt;</span>
-    <span class="tag">&lt;/tr&gt;</span>
-  <span class="tag">&lt;/thead&gt;</span>
-  <span class="tag">&lt;tbody&gt;</span>  <span class="comment">&lt;!-- 表格內容 --&gt;</span>
-    <span class="tag">&lt;tr&gt;</span>
-      <span class="tag">&lt;td&gt;</span><span class="text">台北</span><span class="tag">&lt;/td&gt;</span>  <span class="comment">&lt;!-- td = table data 一格 --&gt;</span>
-      <span class="tag">&lt;td&gt;</span><span class="text">台灣</span><span class="tag">&lt;/td&gt;</span>
-    <span class="tag">&lt;/tr&gt;</span>
-    <span class="tag">&lt;tr&gt;</span>
-      <span class="tag">&lt;td&gt;</span><span class="text">哥本哈根</span><span class="tag">&lt;/td&gt;</span>
-      <span class="tag">&lt;td&gt;</span><span class="text">丹麥</span><span class="tag">&lt;/td&gt;</span>
-    <span class="tag">&lt;/tr&gt;</span>
-  <span class="tag">&lt;/tbody&gt;</span>
-<span class="tag">&lt;/table&gt;</span>
-    </div>
-
-    <!-- ── 列表 ── -->
-    <h2>列表</h2>
-    <div class="code-block">
-<span class="comment">&lt;!-- 無序列表（圓點）--&gt;</span>
-<span class="tag">&lt;ul&gt;</span>
-  <span class="tag">&lt;li&gt;</span><span class="text">台北</span><span class="tag">&lt;/li&gt;</span>
-  <span class="tag">&lt;li&gt;</span><span class="text">高雄</span><span class="tag">&lt;/li&gt;</span>
-<span class="tag">&lt;/ul&gt;</span>
-
-<span class="comment">&lt;!-- 有序列表（數字）--&gt;</span>
-<span class="tag">&lt;ol&gt;</span>
-  <span class="tag">&lt;li&gt;</span><span class="text">第一步</span><span class="tag">&lt;/li&gt;</span>
-  <span class="tag">&lt;li&gt;</span><span class="text">第二步</span><span class="tag">&lt;/li&gt;</span>
-<span class="tag">&lt;/ol&gt;</span>
-
-<span class="comment">&lt;!-- nav 的導覽列就是用 ul + li 做的 --&gt;</span>
-<span class="tag">&lt;nav&gt;</span>
-  <span class="tag">&lt;ul&gt;</span>
-    <span class="tag">&lt;li&gt;&lt;a</span> <span class="attr">href</span>=<span class="val">"#stats"</span><span class="tag">&gt;</span><span class="text">Statistics</span><span class="tag">&lt;/a&gt;&lt;/li&gt;</span>
-    <span class="tag">&lt;li&gt;&lt;a</span> <span class="attr">href</span>=<span class="val">"#taiwan"</span><span class="tag">&gt;</span><span class="text">Taiwan Focus</span><span class="tag">&lt;/a&gt;&lt;/li&gt;</span>
-  <span class="tag">&lt;/ul&gt;</span>
-<span class="tag">&lt;/nav&gt;</span>
-    </div>
-
-    <!-- ── 表單 ── -->
-    <h2>表單（Form）</h2>
-    <div class="code-block">
-<span class="tag">&lt;form</span> <span class="attr">action</span>=<span class="val">"/submit"</span> <span class="attr">method</span>=<span class="val">"post"</span><span class="tag">&gt;</span>
-
-  <span class="comment">&lt;!-- label 的 for 要對應 input 的 id --&gt;</span>
-  <span class="tag">&lt;label</span> <span class="attr">for</span>=<span class="val">"name"</span><span class="tag">&gt;</span><span class="text">姓名</span><span class="tag">&lt;/label&gt;</span>
-  <span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="val">"text"</span> <span class="attr">id</span>=<span class="val">"name"</span> <span class="attr">name</span>=<span class="val">"name"</span> <span class="attr">placeholder</span>=<span class="val">"請輸入姓名"</span><span class="tag">&gt;</span>
-
-  <span class="comment">&lt;!-- 各種 type --&gt;</span>
-  <span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="val">"email"</span>    <span class="attr">placeholder</span>=<span class="val">"電子郵件"</span><span class="tag">&gt;</span>
-  <span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="val">"password"</span> <span class="attr">placeholder</span>=<span class="val">"密碼"</span><span class="tag">&gt;</span>
-  <span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="val">"number"</span>   <span class="attr">min</span>=<span class="val">"0"</span> <span class="attr">max</span>=<span class="val">"100"</span><span class="tag">&gt;</span>
-  <span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="val">"checkbox"</span><span class="tag">&gt;</span> <span class="text">我同意條款</span>
-  <span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="val">"radio"</span> <span class="attr">name</span>=<span class="val">"city"</span> <span class="attr">value</span>=<span class="val">"taipei"</span><span class="tag">&gt;</span> <span class="text">台北</span>
-
-  <span class="comment">&lt;!-- 下拉選單 --&gt;</span>
-  <span class="tag">&lt;select&gt;</span>
-    <span class="tag">&lt;option</span> <span class="attr">value</span>=<span class="val">"taipei"</span><span class="tag">&gt;</span><span class="text">台北</span><span class="tag">&lt;/option&gt;</span>
-    <span class="tag">&lt;option</span> <span class="attr">value</span>=<span class="val">"kaohsiung"</span><span class="tag">&gt;</span><span class="text">高雄</span><span class="tag">&lt;/option&gt;</span>
-  <span class="tag">&lt;/select&gt;</span>
-
-  <span class="comment">&lt;!-- 送出 / 重設按鈕 --&gt;</span>
-  <span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="val">"submit"</span> <span class="attr">value</span>=<span class="val">"送出"</span><span class="tag">&gt;</span>
-  <span class="tag">&lt;button</span> <span class="attr">type</span>=<span class="val">"button"</span> <span class="attr">onclick</span>=<span class="val">"doSomething()"</span><span class="tag">&gt;</span><span class="text">自訂按鈕</span><span class="tag">&lt;/button&gt;</span>
-<span class="tag">&lt;/form&gt;</span>
-    </div>
-
-    <!-- ── 巢狀結構 ── -->
-    <h2>巢狀結構（Nesting）</h2>
-    <p>HTML 標籤可以互相包含，形成層層巢狀的結構。SDG 11 的城市卡片就是這樣：</p>
-    <div class="code-block">
-<span class="comment">&lt;!-- 城市卡片的實際結構 --&gt;</span>
-<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"tw-city-card"</span><span class="tag">&gt;</span>          <span class="comment">&lt;!-- 最外層：整個卡片 --&gt;</span>
-
-  <span class="tag">&lt;h3&gt;</span>
-    <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"city-icon"</span><span class="tag">&gt;</span><span class="text">北</span><span class="tag">&lt;/div&gt;</span>   <span class="comment">&lt;!-- 圓形圖示 --&gt;</span>
-    <span class="tag">&lt;span&gt;</span><span class="text">Taipei</span><span class="tag">&lt;/span&gt;</span>              <span class="comment">&lt;!-- 城市名稱 --&gt;</span>
-  <span class="tag">&lt;/h3&gt;</span>
-
-  <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"progress-item"</span><span class="tag">&gt;</span>       <span class="comment">&lt;!-- 一條進度條 --&gt;</span>
-    <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"progress-label"</span><span class="tag">&gt;</span>
-      <span class="tag">&lt;span&gt;</span><span class="text">Recycling Rate</span><span class="tag">&lt;/span&gt;</span>
-      <span class="tag">&lt;span&gt;</span><span class="text">55%</span><span class="tag">&lt;/span&gt;</span>
-    <span class="tag">&lt;/div&gt;</span>
-    <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"progress-track"</span><span class="tag">&gt;</span>
-      <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"progress-fill"</span> <span class="attr">data-value</span>=<span class="val">"55"</span><span class="tag">&gt;&lt;/div&gt;</span>
-    <span class="tag">&lt;/div&gt;</span>
-  <span class="tag">&lt;/div&gt;</span>
-
-<span class="tag">&lt;/div&gt;</span>
-    </div>
-
-    <!-- ── 路徑 ── -->
-    <h2>路徑寫法（重要！）</h2>
-    <table class="tag-table">
-        <thead><tr><th>情境</th><th>路徑寫法</th></tr></thead>
-        <tbody>
-            <tr><td>同資料夾的圖片</td><td><code>src="photo.jpg"</code></td></tr>
-            <tr><td>子資料夾</td><td><code>src="images/photo.jpg"</code></td></tr>
-            <tr><td>上一層資料夾</td><td><code>src="../photo.jpg"</code></td></tr>
-            <tr><td>外部網址</td><td><code>src="https://example.com/photo.jpg"</code></td></tr>
-            <tr><td>頁面內跳轉</td><td><code>href="#section-id"</code></td></tr>
-        </tbody>
-    </table>
-
-    <div class="tip">
-        <strong>SDG11 的 images/新竹2.png</strong> 就是「子資料夾」的寫法。HTML 檔案在 <code>sdg11/</code>，圖片在 <code>sdg11/images/</code>，所以路徑寫 <code>images/新竹2.png</code>。
-    </div>
-
-    <!-- ── 注解 ── -->
-    <h2>注解（Comment）</h2>
-    <div class="code-block">
-<span class="comment">&lt;!-- 這是注解，瀏覽器不會顯示，給自己或隊友看的 --&gt;</span>
-
-<span class="comment">&lt;!-- Hero Section --&gt;</span>
-<span class="tag">&lt;section</span> <span class="attr">id</span>=<span class="val">"hero"</span><span class="tag">&gt;</span>
-  ...
-<span class="tag">&lt;/section&gt;</span>
-
-<span class="comment">&lt;!-- Stats Section --&gt;</span>
-<span class="tag">&lt;section</span> <span class="attr">id</span>=<span class="val">"stats"</span><span class="tag">&gt;</span>
-  ...
-<span class="tag">&lt;/section&gt;</span>
-    </div>
-
-    <div class="tip">
-        <strong>快捷鍵：</strong>在 VS Code 選取程式碼後按 <code>Ctrl + /</code> 可以快速加上/移除注解。
-    </div>
-
+<div class="tip">
+    <strong>🏠 比喻：</strong>HTML = 房子的牆壁和樓板（結構）／CSS = 油漆和裝潢（外觀）／JS = 電燈開關和電梯（互動）
 </div>
+
+<!-- ══════════════════════════════════════════════
+     2. 基本結構（Playground）
+════════════════════════════════════════════════ -->
+<h2>每個 HTML 檔案的基本結構</h2>
+<p>下方左邊是可以<strong>直接編輯</strong>的程式碼，右邊是瀏覽器即時渲染的結果。試著修改 <code>&lt;h1&gt;</code> 裡的文字！</p>
+
+<div class="playground" id="pg-structure">
+    <div class="pg-left">
+        <div class="pg-bar"><span class="pg-dot" style="background:#7ecfff"></span> HTML 編輯器（可直接修改）</div>
+        <textarea class="pg-textarea" oninput="updatePG('pg-structure',this.value)" spellcheck="false">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;title&gt;我的第一個網頁&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h1&gt;你好，世界！&lt;/h1&gt;
+  &lt;p&gt;這是我的第一個段落。&lt;/p&gt;
+  &lt;p&gt;試著在這裡修改文字！&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</textarea>
+    </div>
+    <div class="pg-right">
+        <div class="pg-bar"><span class="pg-dot" style="background:#6bcf7f"></span> 瀏覽器預覽</div>
+        <iframe class="pg-frame" id="pg-structure-frame"></iframe>
+    </div>
+</div>
+
+<div class="tip">
+    <strong>規則：</strong>大部分標籤都有<strong>開標籤</strong> <code>&lt;p&gt;</code> 和<strong>關標籤</strong> <code>&lt;/p&gt;</code>。<br>
+    少數例外不需要關標籤（叫 void element）：<code>&lt;img&gt;</code>、<code>&lt;input&gt;</code>、<code>&lt;br&gt;</code>、<code>&lt;meta&gt;</code>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     3. 文字類標籤（可點擊預覽）
+════════════════════════════════════════════════ -->
+<h2>文字類標籤 — 點「試試看」查看效果</h2>
+
+<table class="tag-table">
+    <thead><tr><th>標籤</th><th>用途</th><th>試試看</th></tr></thead>
+    <tbody>
+        <tr>
+            <td>&lt;h1&gt; ~ &lt;h6&gt;</td>
+            <td>標題，h1 最大，h6 最小</td>
+            <td><button class="try-btn" onclick="toggleDemo('demo-h')">▶ 試試看</button></td>
+        </tr>
+        <tr class="tag-demo-row"><td colspan="3"><div class="tag-demo-box" id="demo-h">
+            <h1 style="margin:0 0 4px">h1 最大標題</h1>
+            <h2 style="margin:0 0 4px">h2 大標題</h2>
+            <h3 style="margin:0 0 4px">h3 中標題</h3>
+            <h4 style="margin:0 0 4px">h4 小標題</h4>
+            <h5 style="margin:0 0 4px">h5 更小</h5>
+            <h6 style="margin:0 0 4px">h6 最小</h6>
+        </div></td></tr>
+
+        <tr>
+            <td>&lt;p&gt;</td>
+            <td>段落（段與段之間自動留空白）</td>
+            <td><button class="try-btn" onclick="toggleDemo('demo-p')">▶ 試試看</button></td>
+        </tr>
+        <tr class="tag-demo-row"><td colspan="3"><div class="tag-demo-box" id="demo-p">
+            <p style="margin:0 0 12px">這是第一段。段落標籤會讓文字自動換行，並在段落間留空白。</p>
+            <p style="margin:0">這是第二段。注意兩段之間有一段距離，這是瀏覽器的預設樣式。</p>
+        </div></td></tr>
+
+        <tr>
+            <td>&lt;strong&gt; / &lt;em&gt;</td>
+            <td>粗體（重要）/ 斜體（強調）</td>
+            <td><button class="try-btn" onclick="toggleDemo('demo-se')">▶ 試試看</button></td>
+        </tr>
+        <tr class="tag-demo-row"><td colspan="3"><div class="tag-demo-box" id="demo-se">
+            <p style="margin:0">普通文字，<strong>這裡用 &lt;strong&gt; 變粗體</strong>，<em>這裡用 &lt;em&gt; 變斜體</em>，可以<strong><em>兩個同時用</em></strong>。</p>
+        </div></td></tr>
+
+        <tr>
+            <td>&lt;br&gt;</td>
+            <td>強制換行（void element，不需要關標籤）</td>
+            <td><button class="try-btn" onclick="toggleDemo('demo-br')">▶ 試試看</button></td>
+        </tr>
+        <tr class="tag-demo-row"><td colspan="3"><div class="tag-demo-box" id="demo-br">
+            <p style="margin:0">第一行<br>第二行（用 &lt;br&gt; 換的）<br>第三行<br>地址常常這樣用：台北市<br>信義區<br>某某路123號</p>
+        </div></td></tr>
+
+        <tr>
+            <td>&lt;span&gt;</td>
+            <td>行內容器，用來對部分文字加樣式</td>
+            <td><button class="try-btn" onclick="toggleDemo('demo-span')">▶ 試試看</button></td>
+        </tr>
+        <tr class="tag-demo-row"><td colspan="3"><div class="tag-demo-box" id="demo-span">
+            <p style="margin:0">這句話裡的<span style="color:red;font-weight:bold">紅色粗體</span>和<span style="background:yellow;padding:0 4px">黃底高亮</span>都是用 &lt;span&gt; 加上 style 做的。</p>
+        </div></td></tr>
+    </tbody>
+</table>
+
+<!-- ── 文字標籤 Playground ── -->
+<h3>文字標籤沙盒 — 自由練習</h3>
+<div class="playground" id="pg-text">
+    <div class="pg-left">
+        <div class="pg-bar"><span class="pg-dot" style="background:#7ecfff"></span> 編輯區（試試各種文字標籤）</div>
+        <textarea class="pg-textarea" oninput="updatePG('pg-text',this.value)" spellcheck="false">&lt;h1&gt;大標題&lt;/h1&gt;
+&lt;h3&gt;中標題&lt;/h3&gt;
+&lt;p&gt;普通段落，裡面有 &lt;strong&gt;粗體&lt;/strong&gt; 和 &lt;em&gt;斜體&lt;/em&gt;。&lt;/p&gt;
+&lt;p&gt;用 span 加顏色：&lt;span style="color:tomato"&gt;紅色文字&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;換行示範：第一行&lt;br&gt;第二行&lt;/p&gt;</textarea>
+    </div>
+    <div class="pg-right">
+        <div class="pg-bar"><span class="pg-dot" style="background:#6bcf7f"></span> 預覽</div>
+        <iframe class="pg-frame" id="pg-text-frame"></iframe>
+    </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     4. 語意元素（可點擊解說）
+════════════════════════════════════════════════ -->
+<h2>語意元素（Semantic HTML）— 點各區塊看說明</h2>
+<p>下面是一個典型網頁的結構，點擊每個區塊查看它的用途。</p>
+
+<div class="click-hint">← 點擊各區塊展開說明</div>
+<div class="anatomy">
+    <div class="anatomy-block ab-header" onclick="toggleBlock(this)">
+        <span class="anatomy-label">&lt;header&gt;</span>
+        頁首：網站 Logo、標語
+        <div class="anatomy-desc">通常放網站 Logo、標語，有時候包含 &lt;nav&gt;。SDG 11 的橘色導覽列就在 header 裡。</div>
+    </div>
+    <div class="anatomy-block ab-nav" onclick="toggleBlock(this)">
+        <span class="anatomy-label">&lt;nav&gt;</span>
+        導覽列：連結選單
+        <div class="anatomy-desc">放導覽連結（Statistics / Taiwan Focus / Goals...）。用 &lt;ul&gt; + &lt;li&gt; + &lt;a&gt; 組成。螢幕閱讀器會特別識別這個標籤。</div>
+    </div>
+    <div class="anatomy-block ab-main" onclick="toggleBlock(this)">
+        <span class="anatomy-label">&lt;main&gt;</span>
+        主要內容（一頁只能有一個）
+        <div class="anatomy-desc">整個頁面最核心的內容放這裡。一個 HTML 文件只能有一個 &lt;main&gt;，搜尋引擎會特別重視這裡的內容。</div>
+    </div>
+    <div class="anatomy-block ab-section" onclick="toggleBlock(this)">
+        <span class="anatomy-label">&lt;section&gt;</span>
+        &nbsp;&nbsp;章節：有主題的獨立區塊
+        <div class="anatomy-desc">SDG 11 有 #stats、#taiwan、#goals... 等多個 section。每個 section 通常有自己的 &lt;h2&gt; 標題。</div>
+    </div>
+    <div class="anatomy-block ab-section" onclick="toggleBlock(this)" style="margin-left:40px">
+        <span class="anatomy-label">&lt;section&gt;</span>
+        &nbsp;&nbsp;另一個章節
+        <div class="anatomy-desc">section 可以有很多個，它們會依序排列。加上 id 屬性就可以做錨點跳轉（href="#stats"）。</div>
+    </div>
+    <div class="anatomy-block ab-footer" onclick="toggleBlock(this)">
+        <span class="anatomy-label">&lt;footer&gt;</span>
+        頁尾：版權、聯絡資訊
+        <div class="anatomy-desc">網頁最下方。通常放版權聲明、作者、聯絡資訊、資料來源等。</div>
+    </div>
+</div>
+
+<div class="tip">
+    <strong>語意 vs div：</strong>技術上 <code>&lt;div class="nav"&gt;</code> 也能做到一樣的效果，但用 <code>&lt;nav&gt;</code> 讓程式碼更清楚、搜尋引擎更好理解、無障礙更好。
+</div>
+
+<!-- ══════════════════════════════════════════════
+     5. 屬性（Playground）
+════════════════════════════════════════════════ -->
+<h2>屬性（Attributes）— 互動練習</h2>
+<p>屬性寫在<strong>開標籤</strong>裡，格式是 <code>屬性名="值"</code>。試著修改下面的 href 和 style！</p>
+
+<div class="playground" id="pg-attr">
+    <div class="pg-left">
+        <div class="pg-bar"><span class="pg-dot" style="background:#7ecfff"></span> 試著修改屬性的值</div>
+        <textarea class="pg-textarea" oninput="updatePG('pg-attr',this.value)" spellcheck="false">&lt;!-- 連結：改 href 值試試 --&gt;
+&lt;a href="https://sdgs.un.org" target="_blank"&gt;
+  點我去 SDG 官網（新分頁開）
+&lt;/a&gt;
+
+&lt;br&gt;&lt;br&gt;
+
+&lt;!-- 圖片（用 picsum 產生隨機圖）--&gt;
+&lt;img src="https://picsum.photos/200/100"
+     alt="隨機圖片" width="200"&gt;
+
+&lt;br&gt;&lt;br&gt;
+
+&lt;!-- style 屬性：改顏色試試 --&gt;
+&lt;p style="color: tomato; font-size: 1.2rem;"&gt;
+  用 style 屬性直接加樣式
+&lt;/p&gt;
+
+&lt;!-- data- 自訂屬性（SDG11 語言切換用） --&gt;
+&lt;span data-en="Statistics" data-zh="統計數據"&gt;
+  Statistics
+&lt;/span&gt;</textarea>
+    </div>
+    <div class="pg-right">
+        <div class="pg-bar"><span class="pg-dot" style="background:#6bcf7f"></span> 預覽</div>
+        <iframe class="pg-frame" id="pg-attr-frame"></iframe>
+    </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     6. id vs class
+════════════════════════════════════════════════ -->
+<h2>id vs class — 最常搞混的概念</h2>
+
+<div class="playground" id="pg-idclass">
+    <div class="pg-left">
+        <div class="pg-bar"><span class="pg-dot" style="background:#7ecfff"></span> 試著把 id="box1" 改成 class="box"</div>
+        <textarea class="pg-textarea" oninput="updatePG('pg-idclass',this.value)" spellcheck="false">&lt;style&gt;
+  /* class 可重複套用 */
+  .card {
+    background: #fff3cd;
+    border: 1px solid #ffc107;
+    padding: 10px;
+    margin: 6px;
+    border-radius: 6px;
+  }
+  /* id 只針對唯一元素 */
+  #highlight {
+    background: #d4edda;
+    border-color: #28a745;
+    font-weight: bold;
+  }
+&lt;/style&gt;
+
+&lt;div class="card"&gt;城市卡片 A&lt;/div&gt;
+&lt;div class="card"&gt;城市卡片 B&lt;/div&gt;
+&lt;div class="card" id="highlight"&gt;
+  城市卡片 C（id 單獨指定）
+&lt;/div&gt;
+&lt;div class="card"&gt;城市卡片 D&lt;/div&gt;</textarea>
+    </div>
+    <div class="pg-right">
+        <div class="pg-bar"><span class="pg-dot" style="background:#6bcf7f"></span> 預覽</div>
+        <iframe class="pg-frame" id="pg-idclass-frame"></iframe>
+    </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     7. 表格（Playground）
+════════════════════════════════════════════════ -->
+<h2>表格（Table）— 試著新增一列</h2>
+
+<div class="playground" id="pg-table">
+    <div class="pg-left">
+        <div class="pg-bar"><span class="pg-dot" style="background:#7ecfff"></span> 試著在 tbody 裡新增一個 &lt;tr&gt;</div>
+        <textarea class="pg-textarea" oninput="updatePG('pg-table',this.value)" spellcheck="false">&lt;style&gt;
+  table { border-collapse: collapse; width: 100%; }
+  th { background: #e67e00; color: white; padding: 8px 12px; text-align: left; }
+  td { padding: 8px 12px; border-bottom: 1px solid #ddd; }
+  tr:hover td { background: #fff3e0; }
+&lt;/style&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;城市&lt;/th&gt;
+      &lt;th&gt;國家&lt;/th&gt;
+      &lt;th&gt;SDG 特色&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;台北&lt;/td&gt;
+      &lt;td&gt;台灣&lt;/td&gt;
+      &lt;td&gt;智慧城市&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;哥本哈根&lt;/td&gt;
+      &lt;td&gt;丹麥&lt;/td&gt;
+      &lt;td&gt;零碳排放&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;!-- 在這裡加第三列 --&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;</textarea>
+    </div>
+    <div class="pg-right">
+        <div class="pg-bar"><span class="pg-dot" style="background:#6bcf7f"></span> 預覽</div>
+        <iframe class="pg-frame" id="pg-table-frame"></iframe>
+    </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     8. 列表（Playground）
+════════════════════════════════════════════════ -->
+<h2>列表（List）</h2>
+
+<div class="playground" id="pg-list">
+    <div class="pg-left">
+        <div class="pg-bar"><span class="pg-dot" style="background:#7ecfff"></span> ul（無序）vs ol（有序）</div>
+        <textarea class="pg-textarea" oninput="updatePG('pg-list',this.value)" spellcheck="false">&lt;h3&gt;無序列表 &lt;ul&gt;（圓點）&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;台北&lt;/li&gt;
+  &lt;li&gt;高雄&lt;/li&gt;
+  &lt;li&gt;台中&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3&gt;有序列表 &lt;ol&gt;（數字）&lt;/h3&gt;
+&lt;ol&gt;
+  &lt;li&gt;第一步：建立 HTML&lt;/li&gt;
+  &lt;li&gt;第二步：加上 CSS&lt;/li&gt;
+  &lt;li&gt;第三步：寫 JavaScript&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3&gt;導覽列就是 nav + ul + li&lt;/h3&gt;
+&lt;nav style="background:#e67e00;padding:10px"&gt;
+  &lt;ul style="list-style:none;display:flex;gap:20px;margin:0;padding:0"&gt;
+    &lt;li&gt;&lt;a href="#" style="color:white"&gt;首頁&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href="#" style="color:white"&gt;關於&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href="#" style="color:white"&gt;聯絡&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;</textarea>
+    </div>
+    <div class="pg-right">
+        <div class="pg-bar"><span class="pg-dot" style="background:#6bcf7f"></span> 預覽</div>
+        <iframe class="pg-frame" id="pg-list-frame"></iframe>
+    </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     9. 表單（Playground — 全部 input 類型）
+════════════════════════════════════════════════ -->
+<h2>表單（Form）— 所有 input 類型都可以互動</h2>
+
+<div class="playground" id="pg-form">
+    <div class="pg-left">
+        <div class="pg-bar"><span class="pg-dot" style="background:#7ecfff"></span> 試著修改 type 屬性的值</div>
+        <textarea class="pg-textarea" oninput="updatePG('pg-form',this.value)" style="min-height:300px" spellcheck="false">&lt;style&gt;
+  body { font-family: sans-serif; padding: 16px; }
+  label { display: block; margin-top: 12px; font-size: 0.9rem; color: #555; }
+  input, select, textarea {
+    display: block; margin-top: 4px;
+    padding: 6px 10px; border: 1px solid #ccc;
+    border-radius: 6px; width: 100%;
+  }
+  button { margin-top: 14px; padding: 8px 20px;
+    background: #e67e00; color: white;
+    border: none; border-radius: 6px; cursor: pointer; }
+&lt;/style&gt;
+
+&lt;form&gt;
+  &lt;label&gt;文字 (text)
+    &lt;input type="text" placeholder="輸入文字"&gt;
+  &lt;/label&gt;
+
+  &lt;label&gt;密碼 (password)
+    &lt;input type="password" placeholder="輸入密碼"&gt;
+  &lt;/label&gt;
+
+  &lt;label&gt;數字 (number)
+    &lt;input type="number" min="0" max="100" value="50"&gt;
+  &lt;/label&gt;
+
+  &lt;label&gt;日期 (date)
+    &lt;input type="date"&gt;
+  &lt;/label&gt;
+
+  &lt;label&gt;顏色 (color)
+    &lt;input type="color" value="#e67e00"&gt;
+  &lt;/label&gt;
+
+  &lt;label&gt;範圍滑桿 (range)
+    &lt;input type="range" min="0" max="100"&gt;
+  &lt;/label&gt;
+
+  &lt;label&gt;
+    &lt;input type="checkbox"&gt; 我同意條款
+  &lt;/label&gt;
+
+  &lt;label&gt;下拉選單 (select)
+    &lt;select&gt;
+      &lt;option&gt;台北&lt;/option&gt;
+      &lt;option&gt;高雄&lt;/option&gt;
+      &lt;option&gt;台中&lt;/option&gt;
+    &lt;/select&gt;
+  &lt;/label&gt;
+
+  &lt;button type="button"&gt;送出&lt;/button&gt;
+&lt;/form&gt;</textarea>
+    </div>
+    <div class="pg-right">
+        <div class="pg-bar"><span class="pg-dot" style="background:#6bcf7f"></span> 預覽（所有元素都可以操作！）</div>
+        <iframe class="pg-frame" id="pg-form-frame" style="min-height:300px"></iframe>
+    </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     10. 巢狀結構（Playground）
+════════════════════════════════════════════════ -->
+<h2>巢狀結構（Nesting）</h2>
+<p>HTML 標籤可以互相包含。SDG 11 的城市卡片就是這樣層層套疊的：</p>
+
+<div class="playground" id="pg-nest">
+    <div class="pg-left">
+        <div class="pg-bar"><span class="pg-dot" style="background:#7ecfff"></span> 層層套疊的結構</div>
+        <textarea class="pg-textarea" oninput="updatePG('pg-nest',this.value)" spellcheck="false">&lt;style&gt;
+  .card {
+    border: 2px solid #e67e00;
+    border-radius: 12px;
+    padding: 16px;
+    margin: 8px;
+    max-width: 280px;
+  }
+  .city-icon {
+    width: 40px; height: 40px;
+    background: #e67e00;
+    color: white;
+    border-radius: 50%;
+    display: flex; align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    display: inline-flex;
+    margin-right: 8px;
+  }
+  .progress-track {
+    background: #eee;
+    border-radius: 10px;
+    height: 8px; margin: 4px 0 12px;
+  }
+  .progress-fill {
+    background: #e67e00;
+    height: 100%;
+    border-radius: 10px;
+  }
+&lt;/style&gt;
+
+&lt;div class="card"&gt;
+  &lt;h3&gt;
+    &lt;span class="city-icon"&gt;北&lt;/span&gt;
+    Taipei
+  &lt;/h3&gt;
+  &lt;div&gt;
+    &lt;small&gt;資源回收率 55%&lt;/small&gt;
+    &lt;div class="progress-track"&gt;
+      &lt;div class="progress-fill" style="width:55%"&gt;&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div&gt;
+    &lt;small&gt;大眾運輸覆蓋 78%&lt;/small&gt;
+    &lt;div class="progress-track"&gt;
+      &lt;div class="progress-fill" style="width:78%"&gt;&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</textarea>
+    </div>
+    <div class="pg-right">
+        <div class="pg-bar"><span class="pg-dot" style="background:#6bcf7f"></span> 預覽（這就是 SDG11 城市卡片的原型）</div>
+        <iframe class="pg-frame" id="pg-nest-frame"></iframe>
+    </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     11. 路徑測驗
+════════════════════════════════════════════════ -->
+<h2>路徑寫法（Path）— 小測驗</h2>
+<p>根據檔案位置，填入正確的路徑寫法：</p>
+
+<div class="path-quiz">
+    <div class="pq-title">✦ 路徑小測驗</div>
+
+    <div class="pq-row">
+        <div>
+            <div style="font-size:0.78rem;color:rgba(255,255,255,0.4);margin-bottom:6px">情境</div>
+            <div class="pq-file">📁 sdg11/</div>
+            <div style="margin-left:20px"><div class="pq-file">📄 index.html  ← 你在這裡</div></div>
+            <div style="margin-left:20px"><div class="pq-file">📁 images/</div></div>
+            <div style="margin-left:40px"><div class="pq-file">🖼️ photo.jpg</div></div>
+        </div>
+    </div>
+    <div class="pq-row" style="margin-top:14px;align-items:center">
+        <code style="color:#7ecfff">&lt;img src="</code>
+        <input class="pq-input" id="q1" placeholder="在這裡填路徑">
+        <code style="color:#7ecfff">" alt="照片"&gt;</code>
+        <span class="pq-result" id="q1-result"></span>
+    </div>
+
+    <div style="height:1px;background:rgba(255,255,255,0.06);margin:20px 0"></div>
+
+    <div class="pq-row">
+        <div>
+            <div style="font-size:0.78rem;color:rgba(255,255,255,0.4);margin-bottom:6px">情境 2</div>
+            <div class="pq-file">📁 learn/</div>
+            <div style="margin-left:20px"><div class="pq-file">📄 01_html.html  ← 你在這裡</div></div>
+            <div class="pq-file">📄 index.html  ← 要連到這個</div>
+        </div>
+    </div>
+    <div class="pq-row" style="margin-top:14px;align-items:center">
+        <code style="color:#7ecfff">&lt;a href="</code>
+        <input class="pq-input" id="q2" placeholder="在這裡填路徑">
+        <code style="color:#7ecfff">"&gt;回首頁&lt;/a&gt;</code>
+        <span class="pq-result" id="q2-result"></span>
+    </div>
+
+    <div style="height:1px;background:rgba(255,255,255,0.06);margin:20px 0"></div>
+
+    <div class="pq-row">
+        <div>
+            <div style="font-size:0.78rem;color:rgba(255,255,255,0.4);margin-bottom:6px">情境 3</div>
+            <div>外部網站圖片，網址是 <code>https://example.com/logo.png</code></div>
+        </div>
+    </div>
+    <div class="pq-row" style="margin-top:14px;align-items:center">
+        <code style="color:#7ecfff">&lt;img src="</code>
+        <input class="pq-input" id="q3" placeholder="在這裡填路徑" style="width:280px">
+        <code style="color:#7ecfff">"&gt;</code>
+        <span class="pq-result" id="q3-result"></span>
+    </div>
+
+    <button class="pq-check" onclick="checkPaths()">✓ 檢查答案</button>
+</div>
+
+<div class="tip">
+    <strong>快捷鍵：</strong>在 VS Code 選取程式碼後按 <code>Ctrl + /</code> 可以快速加上/移除注解。
+</div>
+
+</div><!-- end .content -->
+
+<script>
+// ── Playground: update iframe ──
+function updatePG(pgId, code) {
+    const frame = document.getElementById(pgId + '-frame');
+    const styled = `<style>body{font-family:sans-serif;padding:12px;margin:0;font-size:14px;line-height:1.5}</style>` + code;
+    frame.srcdoc = styled;
+}
+
+// ── init all playgrounds on load ──
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.playground').forEach(function(pg) {
+        const ta = pg.querySelector('.pg-textarea');
+        const pgId = pg.id;
+        if (ta && pgId) updatePG(pgId, ta.value);
+    });
+});
+
+// ── Tag demo toggle ──
+function toggleDemo(id) {
+    const box = document.getElementById(id);
+    box.classList.toggle('open');
+    // find the button that triggered this
+    const btn = box.closest('tr').previousElementSibling.querySelector('.try-btn');
+    if (box.classList.contains('open')) {
+        btn.textContent = '▼ 收起';
+        btn.style.background = 'rgba(249,157,38,0.3)';
+    } else {
+        btn.textContent = '▶ 試試看';
+        btn.style.background = '';
+    }
+}
+
+// ── Anatomy block toggle ──
+function toggleBlock(el) {
+    el.classList.toggle('expanded');
+}
+
+// ── Path quiz ──
+function checkPaths() {
+    const answers = [
+        { id: 'q1', correct: 'images/photo.jpg' },
+        { id: 'q2', correct: '../index.html' },
+        { id: 'q3', correct: 'https://example.com/logo.png' }
+    ];
+    answers.forEach(function(a) {
+        const input = document.getElementById(a.id);
+        const result = document.getElementById(a.id + '-result');
+        const val = input.value.trim();
+        if (val === a.correct) {
+            result.textContent = '✓ 正確！';
+            result.className = 'pq-result correct';
+        } else if (val === '') {
+            result.textContent = '請填入答案';
+            result.className = 'pq-result wrong';
+        } else {
+            result.textContent = '✗ 再想想… 答案是 ' + a.correct;
+            result.className = 'pq-result wrong';
+        }
+    });
+}
+</script>
 
 </body>
 </html>

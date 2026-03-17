@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>04 — CSS 進階效果</title>
+    <title>04 — CSS 進階效果（互動版）</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Segoe UI', sans-serif; background: #0f0f1a; color: #e0e0e0; line-height: 1.7; }
@@ -12,125 +12,87 @@
         .hero { background: linear-gradient(135deg, #1a1a2e, #16213e); padding: 56px 40px; text-align: center; }
         .hero h1 { font-size: 2.4rem; color: #f99d26; margin-bottom: 10px; }
         .hero p { color: rgba(255,255,255,0.45); }
-        .content { max-width: 860px; margin: 0 auto; padding: 40px 32px 100px; }
-        h2 { font-size: 1.4rem; color: #f99d26; margin: 48px 0 18px; padding-left: 14px; border-left: 3px solid #f99d26; }
+        .hero .badge { display: inline-block; background: rgba(249,157,38,0.15); border: 1px solid rgba(249,157,38,0.3); color: #f99d26; font-size: 0.75rem; padding: 4px 14px; border-radius: 20px; margin-top: 14px; letter-spacing: 1px; }
+        .content { max-width: 920px; margin: 0 auto; padding: 40px 32px 100px; }
+        h2 { font-size: 1.4rem; color: #f99d26; margin: 52px 0 18px; padding-left: 14px; border-left: 3px solid #f99d26; }
         h3 { font-size: 1.05rem; color: rgba(249,157,38,0.8); margin: 28px 0 10px; }
         p { color: rgba(255,255,255,0.7); margin-bottom: 14px; }
         ul { color: rgba(255,255,255,0.65); padding-left: 22px; margin-bottom: 14px; }
         li { margin-bottom: 6px; }
-        strong { color: #f99d26; }
+        strong { color: #f99d26; font-weight: 600; }
         code { background: rgba(249,157,38,0.12); color: #f99d26; padding: 2px 7px; border-radius: 5px; font-family: 'Courier New', monospace; font-size: 0.92em; }
-        .code-block { background: #12121f; border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 24px 28px; margin: 16px 0 24px; font-family: 'Courier New', monospace; font-size: 0.88rem; line-height: 1.85; overflow-x: auto; }
-        .cm { color: #5a6a8a; } .cs { color: #c792ea; } .ca { color: #f99d26; } .cv { color: #a8e6a3; }
         .tip { background: rgba(249,157,38,0.07); border-left: 3px solid rgba(249,157,38,0.5); padding: 14px 18px; border-radius: 0 10px 10px 0; margin: 16px 0; font-size: 0.88rem; color: rgba(255,255,255,0.6); }
         .tip strong { color: #f99d26; }
-        .demo { background: #1e1e32; border: 1px solid rgba(249,157,38,0.2); border-radius: 12px; padding: 28px; margin: 8px 0 28px; }
-        .demo .label { font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; color: rgba(249,157,38,0.5); margin-bottom: 20px; }
 
-        /* ── TRANSITION DEMO ── */
-        .trans-btn {
-            display: inline-block;
-            padding: 12px 28px;
-            background: var(--orange, #f99d26);
-            color: white;
-            border-radius: 24px;
-            border: none;
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: bold;
-            transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
-            margin-right: 12px;
-            margin-bottom: 10px;
+        /* ── PLAYGROUND ── */
+        .playground { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid rgba(249,157,38,0.3); border-radius: 14px; overflow: hidden; margin: 14px 0 32px; min-height: 160px; }
+        .pg-left  { background: #0d0d1a; border-right: 1px solid rgba(249,157,38,0.2); display: flex; flex-direction: column; }
+        .pg-right { background: #fff; display: flex; flex-direction: column; }
+        .pg-bar   { padding: 7px 14px; font-size: 0.72rem; letter-spacing: 1.5px; text-transform: uppercase; display: flex; align-items: center; gap: 8px; }
+        .pg-left .pg-bar  { background: rgba(249,157,38,0.08); color: rgba(249,157,38,0.7); border-bottom: 1px solid rgba(249,157,38,0.15); }
+        .pg-right .pg-bar { background: #f0f0f0; color: #888; border-bottom: 1px solid #ddd; }
+        .pg-dot { width: 8px; height: 8px; border-radius: 50%; }
+        .pg-textarea { flex: 1; width: 100%; background: transparent; border: none; color: #e0e0e0; font-family: 'Courier New', monospace; font-size: 0.84rem; padding: 14px 18px; resize: none; outline: none; line-height: 1.75; min-height: 140px; }
+        .pg-frame { flex: 1; width: 100%; border: none; min-height: 140px; }
+        @media (max-width: 640px) { .playground { grid-template-columns: 1fr; } .pg-left { border-right: none; border-bottom: 1px solid rgba(249,157,38,0.2); } }
+
+        /* ── Transition 互動 ── */
+        .trans-lab { background: #12121f; border: 1px solid rgba(249,157,38,0.2); border-radius: 14px; padding: 22px; margin: 14px 0 28px; }
+        .trans-lab-title { font-size: 0.72rem; letter-spacing: 2px; text-transform: uppercase; color: rgba(249,157,38,0.6); margin-bottom: 16px; }
+        .trans-controls { display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 18px; align-items: flex-end; }
+        .trans-ctrl { display: flex; flex-direction: column; gap: 4px; }
+        .trans-ctrl label { font-size: 0.76rem; color: rgba(255,255,255,0.5); }
+        .trans-ctrl select, .trans-ctrl input[type="text"] { background: #1a1a2e; border: 1px solid rgba(249,157,38,0.3); color: #f99d26; padding: 5px 10px; border-radius: 6px; font-size: 0.82rem; outline: none; }
+        .trans-ctrl input[type="range"] { accent-color: #f99d26; width: 120px; }
+        .trans-btn-demo {
+            display: inline-block; padding: 14px 32px;
+            background: #f99d26; color: white;
+            border-radius: 10px; cursor: pointer;
+            font-size: 1rem; font-weight: bold;
+            border: none; margin: 8px;
         }
-        .trans-btn:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 24px rgba(249,157,38,0.4);
-            background: #e07b00;
-        }
-        .trans-card {
-            display: inline-block;
-            background: #12121f;
-            border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 12px;
-            padding: 20px 24px;
-            transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
-            cursor: pointer;
-        }
-        .trans-card:hover {
-            transform: translateY(-7px);
-            box-shadow: 0 14px 40px rgba(249,157,38,0.2);
-            border-color: rgba(249,157,38,0.4);
+        .trans-card-demo {
+            display: inline-block; padding: 20px 28px;
+            background: #1a1a2e; color: white;
+            border-radius: 12px; cursor: pointer;
+            border: 1px solid rgba(255,255,255,0.1);
+            font-size: 0.9rem; margin: 8px;
         }
 
-        /* ── KEYFRAME DEMOS ── */
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50%       { transform: translateY(-12px); }
-        }
-        @keyframes spin {
-            from { transform: rotate(0deg); }
-            to   { transform: rotate(360deg); }
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to   { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50%       { transform: scale(1.1); }
-        }
-        .anim-box { display: inline-flex; flex-direction: column; align-items: center; gap: 8px; margin: 12px; }
-        .anim-box span { font-size: 0.72rem; color: rgba(255,255,255,0.4); }
-        .anim-dot { width: 40px; height: 40px; border-radius: 50%; background: #f99d26; }
-        .anim-dot.bounce { animation: bounce 1.5s infinite; }
-        .anim-dot.spin   { animation: spin   2s linear infinite; border-radius: 6px; }
-        .anim-dot.fade   { animation: fadeIn 1.5s ease infinite alternate; }
-        .anim-dot.pulse  { animation: pulse  1.5s ease infinite; }
+        /* ── Keyframe demos ── */
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-16px); } }
+        @keyframes spin   { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        @keyframes fadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+        @keyframes pulse  { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
+        @keyframes colorShift { 0% { background:#f99d26; } 33% { background:#7ecfff; } 66% { background:#6bcf7f; } 100% { background:#f99d26; } }
+        .anim-grid { display: flex; flex-wrap: wrap; gap: 16px; margin: 16px 0 24px; }
+        .anim-box { display: flex; flex-direction: column; align-items: center; gap: 8px; background: #12121f; border-radius: 10px; padding: 18px 22px; }
+        .anim-box span { font-size: 0.72rem; color: rgba(255,255,255,0.4); font-family: 'Courier New', monospace; }
+        .anim-dot { width: 44px; height: 44px; border-radius: 8px; background: #f99d26; }
+        .anim-dot.bounce { animation: bounce 1.4s ease-in-out infinite; }
+        .anim-dot.spin   { animation: spin 2s linear infinite; }
+        .anim-dot.fadein { animation: fadeUp 1.5s ease infinite alternate; }
+        .anim-dot.pulse  { animation: pulse 1.2s ease infinite; border-radius: 50%; }
+        .anim-dot.colors { animation: colorShift 3s linear infinite; border-radius: 50%; }
 
-        /* ── MEDIA QUERY DEMO ── */
-        .responsive-demo {
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-            font-weight: bold;
-            font-size: 1rem;
-            background: rgba(100,200,100,0.2);
-            border: 1px solid rgba(100,200,100,0.4);
-            color: #6bcf7f;
-        }
-        @media (max-width: 600px) {
-            .responsive-demo {
-                background: rgba(249,157,38,0.2);
-                border-color: rgba(249,157,38,0.4);
-                color: #f99d26;
-            }
-        }
+        /* ── Gradient builder ── */
+        .grad-builder { background: #12121f; border: 1px solid rgba(249,157,38,0.2); border-radius: 14px; padding: 22px; margin: 14px 0 28px; }
+        .grad-preview { height: 80px; border-radius: 10px; margin-bottom: 16px; transition: background 0.3s; }
+        .grad-controls { display: flex; flex-wrap: wrap; gap: 14px; align-items: flex-end; }
+        .grad-ctrl { display: flex; flex-direction: column; gap: 4px; }
+        .grad-ctrl label { font-size: 0.76rem; color: rgba(255,255,255,0.5); }
+        .grad-ctrl input[type="color"] { width: 50px; height: 32px; border: none; border-radius: 6px; cursor: pointer; }
+        .grad-ctrl input[type="range"] { accent-color: #f99d26; width: 120px; }
+        .grad-ctrl select { background: #1a1a2e; border: 1px solid rgba(249,157,38,0.3); color: #f99d26; padding: 5px 10px; border-radius: 6px; font-size: 0.82rem; outline: none; }
+        .grad-code { background: rgba(0,0,0,0.3); border-radius: 8px; padding: 10px 14px; font-family: 'Courier New', monospace; font-size: 0.8rem; color: #a8e6a3; margin-top: 14px; word-break: break-all; }
 
-        /* ── PROGRESS DEMO ── */
-        .progress-track { background: rgba(255,255,255,0.08); border-radius: 10px; height: 12px; overflow: hidden; margin: 8px 0; }
-        .progress-fill-demo { height: 100%; background: linear-gradient(90deg, #f99d26, #e07b00); border-radius: 10px; transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1); }
+        /* media query demo */
+        .responsive-demo { padding: 16px 20px; border-radius: 10px; font-weight: bold; font-size: 1rem; background: rgba(100,200,100,0.2); border: 1px solid rgba(100,200,100,0.4); color: #6bcf7f; margin: 16px 0; }
+        @media (max-width: 600px) { .responsive-demo { background: rgba(249,157,38,0.2); border-color: rgba(249,157,38,0.4); color: #f99d26; } }
 
-        /* ── BACKDROP FILTER DEMO ── */
-        .blur-demo {
-            position: relative;
-            height: 120px;
-            border-radius: 12px;
-            overflow: hidden;
-            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .blur-card {
-            background: rgba(255,255,255,0.1);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255,255,255,0.2);
-            border-radius: 10px;
-            padding: 14px 28px;
-            color: white;
-            font-size: 0.9rem;
-        }
+        /* box-shadow showcase */
+        .shadow-row { display: flex; flex-wrap: wrap; gap: 16px; margin: 14px 0 28px; }
+        .shadow-card { background: #1a1a2e; padding: 20px 24px; border-radius: 12px; font-size: 0.82rem; color: rgba(255,255,255,0.6); }
     </style>
 </head>
 <body>
@@ -138,229 +100,482 @@
 <a class="back" href="index.html">← 返回目錄</a>
 <div class="hero">
     <h1>04 — CSS 進階效果</h1>
-    <p>transition · animation · CSS 變數 · media query · backdrop-filter</p>
+    <p>transition · animation · media query · gradient · backdrop-filter</p>
+    <div class="badge">✦ 互動版 — 拖動滑桿即時看效果</div>
 </div>
 <div class="content">
 
-    <!-- ── Transition ── -->
-    <h2>transition — 平滑過渡效果</h2>
-    <p>當屬性改變（如 hover）時，不要瞬間跳變，而是平滑地過渡。</p>
-    <div class="code-block">
-<span class="cs">.btn</span> {
-  <span class="ca">background</span>: <span class="cv">#f99d26</span>;
-  <span class="ca">transform</span>: <span class="cv">translateY(0)</span>;
+<!-- ══════════════════════
+     1. Transition 互動控制台
+═══════════════════════════ -->
+<h2>transition — 平滑過渡（滑鼠移過去看效果）</h2>
+<p>當屬性改變（如 hover）時，不要瞬間跳變，而是平滑過渡。用下方控制台調整 transition 參數：</p>
 
-  <span class="cm">/* transition: 屬性 時間 時間函數 */</span>
-  <span class="ca">transition</span>: <span class="cv">transform 0.2s ease, box-shadow 0.2s ease</span>;
-
-  <span class="cm">/* 也可以寫 all，讓所有屬性都有過渡 */</span>
-  <span class="cm">/* transition: all 0.3s ease; */</span>
-}
-
-<span class="cs">.btn:hover</span> {
-  <span class="ca">transform</span>: <span class="cv">translateY(-4px)</span>;  <span class="cm">/* hover 時往上移 4px */</span>
-  <span class="ca">box-shadow</span>: <span class="cv">0 8px 24px rgba(249,157,38,0.4)</span>;
-}
-    </div>
-
-    <div class="demo">
-        <div class="label">LIVE DEMO — 滑鼠移過去看效果</div>
-        <button class="trans-btn">Explore Data</button>
-        <button class="trans-btn" style="background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.3);">Taiwan Focus</button>
-        <div style="margin-top: 16px; display:inline-block;">
-            <div class="trans-card">
-                <div style="font-size:1.2rem;color:#f99d26;font-weight:bold;">城市卡片</div>
-                <div style="font-size:0.85rem;color:rgba(255,255,255,0.5);margin-top:6px;">hover 看浮起效果</div>
-            </div>
+<div class="trans-lab">
+    <div class="trans-lab-title">✦ Transition 即時控制台（滑鼠移到按鈕和卡片上）</div>
+    <div class="trans-controls">
+        <div class="trans-ctrl">
+            <label>duration（時間）<span id="dur-val">0.25</span>s</label>
+            <input type="range" min="0.05" max="2" step="0.05" value="0.25" oninput="document.getElementById('dur-val').textContent=parseFloat(this.value).toFixed(2); updateTrans()">
+        </div>
+        <div class="trans-ctrl">
+            <label>timing function</label>
+            <select id="timing" onchange="updateTrans()">
+                <option value="ease">ease（自然）</option>
+                <option value="linear">linear（均速）</option>
+                <option value="ease-in">ease-in（開始慢）</option>
+                <option value="ease-out">ease-out（結束慢）</option>
+                <option value="ease-in-out">ease-in-out</option>
+                <option value="cubic-bezier(0.4,0,0.2,1)">cubic-bezier（SDG11用）</option>
+            </select>
+        </div>
+        <div class="trans-ctrl">
+            <label>translateY（hover 時移動）<span id="ty-val">-6</span>px</label>
+            <input type="range" min="-20" max="10" value="-6" oninput="document.getElementById('ty-val').textContent=this.value; updateTrans()">
+        </div>
+        <div class="trans-ctrl">
+            <label>scale（hover 時縮放）<span id="sc-val">1.03</span></label>
+            <input type="range" min="0.9" max="1.2" step="0.01" value="1.03" oninput="document.getElementById('sc-val').textContent=parseFloat(this.value).toFixed(2); updateTrans()">
         </div>
     </div>
-
-    <h3>常用的 transition timing function（時間函數）</h3>
-    <div class="code-block">
-<span class="ca">transition</span>: <span class="cv">all 0.3s ease</span>;           <span class="cm">/* 開始結束都慢（最自然）*/</span>
-<span class="ca">transition</span>: <span class="cv">all 0.3s linear</span>;         <span class="cm">/* 均速 */</span>
-<span class="ca">transition</span>: <span class="cv">all 0.3s ease-in</span>;       <span class="cm">/* 開始慢，結束快 */</span>
-<span class="ca">transition</span>: <span class="cv">all 0.3s ease-out</span>;      <span class="cm">/* 開始快，結束慢（滑入感）*/</span>
-<span class="ca">transition</span>: <span class="cv">all 1.3s cubic-bezier(0.4, 0, 0.2, 1)</span>;  <span class="cm">/* 自訂曲線（SDG11 進度條）*/</span>
+    <div>
+        <button class="trans-btn-demo" id="trans-btn">Explore Data ↗</button>
+        <div class="trans-card-demo" id="trans-card">城市卡片（hover 看浮起效果）</div>
     </div>
+    <div class="grad-code" id="trans-code" style="margin-top:14px;"></div>
+</div>
 
-    <!-- ── transform ── -->
-    <h2>transform — 變形</h2>
-    <div class="code-block">
-<span class="ca">transform</span>: <span class="cv">translateY(-7px)</span>;    <span class="cm">/* 往上移 7px（不影響其他元素！）*/</span>
-<span class="ca">transform</span>: <span class="cv">translateX(20px)</span>;    <span class="cm">/* 往右移 */</span>
-<span class="ca">transform</span>: <span class="cv">scale(1.05)</span>;          <span class="cm">/* 放大 5% */</span>
-<span class="ca">transform</span>: <span class="cv">rotate(45deg)</span>;        <span class="cm">/* 旋轉 45 度 */</span>
+<div class="playground" id="pg-transition">
+    <div class="pg-left">
+        <div class="pg-bar"><span class="pg-dot" style="background:#c792ea"></span> 試著改 transition 屬性</div>
+        <textarea class="pg-textarea" oninput="updatePG('pg-transition',this.value)" spellcheck="false">&lt;style&gt;
+  .btn {
+    display: inline-block;
+    padding: 12px 28px;
+    background: #e67e00;
+    color: white;
+    border-radius: 24px;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    /* transition: 屬性 時間 時間函數 */
+    transition: transform 0.25s ease,
+                box-shadow 0.25s ease,
+                background 0.2s;
+    margin: 8px;
+  }
+  .btn:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(230,126,0,0.5);
+    background: #c26000;
+  }
+  .card {
+    display: inline-block;
+    background: #f5f5f5;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin: 8px;
+    cursor: pointer;
+    transition: transform 0.3s ease,
+                box-shadow 0.3s ease,
+                border-color 0.3s;
+  }
+  .card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 14px 40px rgba(0,0,0,0.15);
+    border-color: #e67e00;
+  }
+&lt;/style&gt;
 
-<span class="cm">/* 組合使用 */</span>
-<span class="ca">transform</span>: <span class="cv">translateY(-50%) scale(1.1)</span>;
+&lt;button class="btn"&gt;按鈕 hover&lt;/button&gt;
+&lt;br&gt;
+&lt;div class="card"&gt;
+  &lt;strong&gt;城市卡片&lt;/strong&gt;&lt;br&gt;
+  &lt;small style="color:#888"&gt;滑鼠移過來&lt;/small&gt;
+&lt;/div&gt;</textarea>
     </div>
-
-    <div class="tip">
-        <strong>為什麼用 transform 而不是 margin？</strong><br>
-        transform 移動不會影響其他元素的位置，且由 GPU 加速，動畫更順。SDG11 的卡片 hover 效果都用 <code>translateY</code> 而不是改 margin-top。
+    <div class="pg-right">
+        <div class="pg-bar"><span class="pg-dot" style="background:#6bcf7f"></span> 預覽（滑鼠移到元素上）</div>
+        <iframe class="pg-frame" id="pg-transition-frame"></iframe>
     </div>
+</div>
 
-    <!-- ── Keyframes ── -->
-    <h2>@keyframes — 關鍵影格動畫</h2>
-    <p>transition 是「A → B 平滑」，keyframes 是「循環播放的動畫」。</p>
-    <div class="code-block">
-<span class="cm">/* 定義動畫 */</span>
-@<span class="cs">keyframes bounce</span> {
-  <span class="cv">0%</span>, <span class="cv">100%</span> { <span class="ca">transform</span>: <span class="cv">translateY(0)</span>; }
-  <span class="cv">50%</span>      { <span class="ca">transform</span>: <span class="cv">translateY(-12px)</span>; }
-}
+<!-- ══════════════════════
+     2. @keyframes 動畫
+═══════════════════════════ -->
+<h2>@keyframes — 關鍵影格動畫</h2>
+<p><strong>transition</strong> 是「A → B 平滑」，<strong>keyframes</strong> 是「循環播放的動畫」。</p>
 
-<span class="cm">/* 套用在元素上 */</span>
-<span class="cs">.scroll-arrow</span> {
-  <span class="ca">animation</span>: <span class="cv">bounce 2s infinite</span>;
-  <span class="cm">/*           名稱  時長  循環次數 */</span>
-}
-
-<span class="cm">/* 進場動畫（SDG11 fade-up 效果的概念）*/</span>
-@<span class="cs">keyframes fadeUp</span> {
-  <span class="cv">from</span> { <span class="ca">opacity</span>: <span class="cv">0</span>; <span class="ca">transform</span>: <span class="cv">translateY(36px)</span>; }
-  <span class="cv">to</span>   { <span class="ca">opacity</span>: <span class="cv">1</span>; <span class="ca">transform</span>: <span class="cv">translateY(0)</span>; }
-}
-<span class="cs">.card</span> {
-  <span class="ca">animation</span>: <span class="cv">fadeUp 0.65s ease forwards</span>;
-  <span class="cm">/* forwards = 停在最後一幀 */</span>
-}
-
-<span class="cm">/* 延遲動畫（讓卡片一張一張進場）*/</span>
-<span class="cs">.card:nth-child(2)</span> { <span class="ca">animation-delay</span>: <span class="cv">0.1s</span>; }
-<span class="cs">.card:nth-child(3)</span> { <span class="ca">animation-delay</span>: <span class="cv">0.2s</span>; }
+<div class="anim-grid">
+    <div class="anim-box">
+        <div class="anim-dot bounce"></div>
+        <span>bounce<br>translateY 上下</span>
     </div>
+    <div class="anim-box">
+        <div class="anim-dot spin"></div>
+        <span>spin<br>rotate 旋轉</span>
+    </div>
+    <div class="anim-box">
+        <div class="anim-dot fadein"></div>
+        <span>fadeUp<br>opacity + translateY</span>
+    </div>
+    <div class="anim-box">
+        <div class="anim-dot pulse"></div>
+        <span>pulse<br>scale 縮放</span>
+    </div>
+    <div class="anim-box">
+        <div class="anim-dot colors"></div>
+        <span>colorShift<br>background 換色</span>
+    </div>
+</div>
 
-    <div class="demo">
-        <div class="label">LIVE DEMO — @keyframes 動畫</div>
-        <div style="display:flex; flex-wrap:wrap;">
-            <div class="anim-box">
-                <div class="anim-dot bounce"></div>
-                <span>bounce</span>
-            </div>
-            <div class="anim-box">
-                <div class="anim-dot spin"></div>
-                <span>spin</span>
-            </div>
-            <div class="anim-box">
-                <div class="anim-dot fade"></div>
-                <span>fadeIn</span>
-            </div>
-            <div class="anim-box">
-                <div class="anim-dot pulse"></div>
-                <span>pulse</span>
-            </div>
+<div class="playground" id="pg-keyframes">
+    <div class="pg-left">
+        <div class="pg-bar"><span class="pg-dot" style="background:#c792ea"></span> 試著改 keyframes 的值</div>
+        <textarea class="pg-textarea" oninput="updatePG('pg-keyframes',this.value)" style="min-height:260px" spellcheck="false">&lt;style&gt;
+  /* 定義動畫 */
+  @keyframes myBounce {
+    0%, 100% { transform: translateY(0); }
+    50%       { transform: translateY(-20px); }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* 卡片進場（SDG11 用的概念）*/
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateX(-30px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+
+  .dot {
+    width: 50px; height: 50px;
+    background: #e67e00;
+    border-radius: 8px;
+    margin: 8px;
+    display: inline-block;
+
+    /* 套用動畫 */
+    animation: myBounce 1.5s ease-in-out infinite;
+    /* animation: 名稱 時長 時間函數 循環 */
+  }
+
+  .card {
+    background: #fff3cd;
+    border: 1px solid #e67e00;
+    border-radius: 10px;
+    padding: 14px 20px;
+    margin: 8px 0;
+    /* forwards = 停在最後一幀 */
+    animation: fadeIn 0.7s ease forwards;
+  }
+  .card:nth-child(2) { animation-delay: 0.15s; opacity: 0; }
+  .card:nth-child(3) { animation-delay: 0.30s; opacity: 0; }
+&lt;/style&gt;
+
+&lt;div class="dot"&gt;&lt;/div&gt;
+
+&lt;div class="card"&gt;卡片 1（0s 進場）&lt;/div&gt;
+&lt;div class="card"&gt;卡片 2（0.15s 後進場）&lt;/div&gt;
+&lt;div class="card"&gt;卡片 3（0.3s 後進場）&lt;/div&gt;</textarea>
+    </div>
+    <div class="pg-right">
+        <div class="pg-bar"><span class="pg-dot" style="background:#6bcf7f"></span> 預覽</div>
+        <iframe class="pg-frame" id="pg-keyframes-frame" style="min-height:260px;"></iframe>
+    </div>
+</div>
+
+<!-- ══════════════════════
+     3. Media Query Playground
+═══════════════════════════ -->
+<h2>@media — 媒體查詢（手機版）</h2>
+<p>根據螢幕寬度套用不同的 CSS。<strong>縮小瀏覽器視窗</strong>看下方方塊顏色變化：</p>
+
+<div class="responsive-demo" id="rDemo">
+    現在是桌機版（綠色）— 把瀏覽器縮到 600px 以下會變橘色
+</div>
+
+<div class="playground" id="pg-media">
+    <div class="pg-left">
+        <div class="pg-bar"><span class="pg-dot" style="background:#c792ea"></span> 在右邊預覽視窗裡縮小看效果</div>
+        <textarea class="pg-textarea" oninput="updatePG('pg-media',this.value)" style="min-height:220px" spellcheck="false">&lt;style&gt;
+  .page {
+    padding: 16px;
+    font-family: sans-serif;
+  }
+  .nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #1a1a2e;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 8px;
+    margin-bottom: 14px;
+  }
+  .cards {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .card {
+    background: #e0e7ff;
+    border-radius: 8px;
+    padding: 14px;
+    flex: 1;
+    min-width: 120px;
+    text-align: center;
+    font-size: 0.85rem;
+    color: #333;
+  }
+
+  /* 當寬度 ≤ 400px */
+  @media (max-width: 400px) {
+    .nav { flex-direction: column; gap: 8px; text-align: center; }
+    .card { min-width: 100%; }
+  }
+&lt;/style&gt;
+
+&lt;div class="page"&gt;
+  &lt;nav&gt;
+    &lt;span&gt;SDG 11&lt;/span&gt;
+    &lt;span&gt;Stats | Taiwan | Goals&lt;/span&gt;
+  &lt;/nav&gt;
+  &lt;div class="cards"&gt;
+    &lt;div class="card"&gt;卡片 1&lt;/div&gt;
+    &lt;div class="card"&gt;卡片 2&lt;/div&gt;
+    &lt;div class="card"&gt;卡片 3&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</textarea>
+    </div>
+    <div class="pg-right">
+        <div class="pg-bar"><span class="pg-dot" style="background:#6bcf7f"></span> 預覽（試著縮小右邊 iframe）</div>
+        <iframe class="pg-frame" id="pg-media-frame" style="min-height:220px;"></iframe>
+    </div>
+</div>
+
+<!-- ══════════════════════
+     4. 漸層建構器
+═══════════════════════════ -->
+<h2>漸層（Gradient）— 即時建構器</h2>
+
+<div class="grad-builder">
+    <div class="trans-lab-title">✦ 線性漸層建構器</div>
+    <div class="grad-preview" id="grad-preview"></div>
+    <div class="grad-controls">
+        <div class="grad-ctrl">
+            <label>顏色 1</label>
+            <input type="color" id="gc1" value="#f99d26" oninput="updateGrad()">
+        </div>
+        <div class="grad-ctrl">
+            <label>顏色 2</label>
+            <input type="color" id="gc2" value="#1a1a2e" oninput="updateGrad()">
+        </div>
+        <div class="grad-ctrl">
+            <label>類型</label>
+            <select id="gtype" onchange="updateGrad()">
+                <option value="linear">linear-gradient</option>
+                <option value="radial">radial-gradient</option>
+            </select>
+        </div>
+        <div class="grad-ctrl">
+            <label>角度 <span id="gang-val">135</span>°</label>
+            <input type="range" min="0" max="360" value="135" oninput="document.getElementById('gang-val').textContent=this.value; updateGrad()">
         </div>
     </div>
+    <div class="grad-code" id="grad-code"></div>
+</div>
 
-    <!-- ── Media Query ── -->
-    <h2>@media — 媒體查詢（手機版）</h2>
-    <p>根據螢幕寬度套用不同的 CSS，這就是讓網頁自動適應手機的方式。</p>
-    <div class="code-block">
-<span class="cm">/* 螢幕寬度 ≤ 768px 時（手機版）*/</span>
-@<span class="cs">media (max-width: 768px)</span> {
-  <span class="cs">nav ul</span>       { <span class="ca">display</span>: <span class="cv">none</span>; }           <span class="cm">/* 隱藏導覽列 */</span>
-  <span class="cs">.nav-hamburger</span> { <span class="ca">display</span>: <span class="cv">flex</span>; }          <span class="cm">/* 顯示漢堡按鈕 */</span>
-  <span class="cs">#hero h1</span>     { <span class="ca">font-size</span>: <span class="cv">2rem</span>; }         <span class="cm">/* 標題字縮小 */</span>
-  <span class="cs">section</span>      { <span class="ca">padding</span>: <span class="cv">60px 20px</span>; }     <span class="cm">/* 左右 padding 縮小 */</span>
-  <span class="cs">.tw-city-card</span> { <span class="ca">width</span>: <span class="cv">100%</span>; }           <span class="cm">/* 卡片全寬 */</span>
-}
+<div class="playground" id="pg-gradient">
+    <div class="pg-left">
+        <div class="pg-bar"><span class="pg-dot" style="background:#c792ea"></span> 試著改漸層顏色和角度</div>
+        <textarea class="pg-textarea" oninput="updatePG('pg-gradient',this.value)" spellcheck="false">&lt;style&gt;
+  /* SDG11 各種漸層 */
+  .hero {
+    background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+    color: white;
+    padding: 28px;
+    border-radius: 12px;
+    margin: 8px 0;
+    text-align: center;
+  }
+  .btn {
+    background: linear-gradient(90deg, #f99d26, #e07b00);
+    color: white;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 24px;
+    cursor: pointer;
+    font-weight: bold;
+    margin: 6px;
+  }
+  .overlay {
+    background: linear-gradient(
+      to top,
+      rgba(0,0,0,0.85) 0%,
+      rgba(0,0,0,0.3) 60%,
+      transparent 100%
+    );
+    padding: 20px;
+    border-radius: 10px;
+    color: white;
+    margin: 8px 0;
+    min-height: 80px;
+    display: flex;
+    align-items: flex-end;
+    background-color: steelblue; /* 底色 */
+  }
+&lt;/style&gt;
 
-<span class="cm">/* 也可以用 min-width（從手機設計，往大螢幕加）*/</span>
-@<span class="cs">media (min-width: 769px)</span> {
-  <span class="cm">/* 平板和桌機的樣式 */</span>
-}
-
-<span class="cm">/* 常見斷點 */</span>
-<span class="cm">/* 手機：max-width: 480px */</span>
-<span class="cm">/* 平板：max-width: 768px */</span>
-<span class="cm">/* 桌機：min-width: 1024px */</span>
+&lt;div class="hero"&gt;
+  &lt;h2&gt;Hero 漸層背景&lt;/h2&gt;
+&lt;/div&gt;
+&lt;button class="btn"&gt;橘色漸層按鈕&lt;/button&gt;
+&lt;div class="overlay"&gt;遮罩漸層（Modal場景底部文字）&lt;/div&gt;</textarea>
     </div>
-
-    <div class="demo">
-        <div class="label">LIVE DEMO — 縮小瀏覽器寬度，看顏色變化</div>
-        <div class="responsive-demo" id="rDemo">
-            現在是桌機版（綠色）— 把瀏覽器縮窄到 600px 以下會變橘色
-        </div>
+    <div class="pg-right">
+        <div class="pg-bar"><span class="pg-dot" style="background:#6bcf7f"></span> 預覽</div>
+        <iframe class="pg-frame" id="pg-gradient-frame"></iframe>
     </div>
+</div>
 
-    <!-- ── backdrop-filter ── -->
-    <h2>backdrop-filter — 毛玻璃效果</h2>
-    <p>讓元素背後的內容模糊，做出玻璃質感。SDG11 導覽列和 Modal 都有用。</p>
-    <div class="code-block">
-<span class="cs">nav</span> {
-  <span class="ca">background</span>: <span class="cv">rgba(249, 157, 38, 0.88)</span>;  <span class="cm">/* 半透明背景 */</span>
-  <span class="ca">backdrop-filter</span>: <span class="cv">blur(14px)</span>;          <span class="cm">/* 背後模糊 */</span>
-  <span class="ca">-webkit-backdrop-filter</span>: <span class="cv">blur(14px)</span>;   <span class="cm">/* Safari 需要加前綴 */</span>
-}
+<!-- ══════════════════════
+     5. backdrop-filter + box-shadow
+═══════════════════════════ -->
+<h2>backdrop-filter + box-shadow</h2>
+
+<div class="playground" id="pg-effects">
+    <div class="pg-left">
+        <div class="pg-bar"><span class="pg-dot" style="background:#c792ea"></span> 毛玻璃 + 陰影</div>
+        <textarea class="pg-textarea" oninput="updatePG('pg-effects',this.value)" spellcheck="false">&lt;style&gt;
+  .scene {
+    position: relative;
+    height: 160px;
+    background: linear-gradient(135deg, #0f0c29, #302b63);
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    margin: 8px 0;
+  }
+  /* 背景裝飾圓圈 */
+  .scene::before {
+    content: '';
+    position: absolute;
+    width: 80px; height: 80px;
+    background: #f99d26;
+    border-radius: 50%;
+    left: 40px; top: 30px;
+    opacity: 0.4;
+  }
+  .scene::after {
+    content: '';
+    position: absolute;
+    width: 60px; height: 60px;
+    background: #7ecfff;
+    border-radius: 8px;
+    right: 60px; bottom: 20px;
+    opacity: 0.4;
+  }
+  /* 毛玻璃卡片 */
+  .glass {
+    background: rgba(255,255,255,0.12);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 12px;
+    padding: 16px 28px;
+    color: white;
+    font-weight: bold;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* 陰影 */
+  .shadow-demo {
+    background: white;
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin: 8px 0;
+    font-size: 0.85rem;
+    color: #333;
+  }
+  .s1 { box-shadow: 0 4px 24px rgba(0,0,0,0.08); }
+  .s2 { box-shadow: 0 8px 32px rgba(249,157,38,0.4); }
+  .s3 { box-shadow: 0 0 0 3px rgba(249,157,38,0.5); }
+&lt;/style&gt;
+
+&lt;div class="scene"&gt;
+  &lt;div class="glass"&gt;毛玻璃效果 (backdrop-filter)&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class="shadow-demo s1"&gt;輕柔陰影 box-shadow&lt;/div&gt;
+&lt;div class="shadow-demo s2"&gt;橘色光暈 shadow&lt;/div&gt;
+&lt;div class="shadow-demo s3"&gt;邊框光圈 shadow&lt;/div&gt;</textarea>
     </div>
-
-    <div class="demo">
-        <div class="label">LIVE DEMO — backdrop-filter: blur()</div>
-        <div class="blur-demo">
-            <div style="position:absolute;inset:0;display:flex;gap:20px;align-items:center;justify-content:center;opacity:0.4;">
-                <div style="width:60px;height:60px;background:#f99d26;border-radius:50%;"></div>
-                <div style="width:80px;height:80px;background:#7ecfff;border-radius:12px;"></div>
-                <div style="width:50px;height:50px;background:#6bcf7f;border-radius:50%;"></div>
-                <div style="width:70px;height:70px;background:#c792ea;border-radius:8px;"></div>
-            </div>
-            <div class="blur-card">導覽列毛玻璃效果</div>
-        </div>
+    <div class="pg-right">
+        <div class="pg-bar"><span class="pg-dot" style="background:#6bcf7f"></span> 預覽</div>
+        <iframe class="pg-frame" id="pg-effects-frame"></iframe>
     </div>
+</div>
 
-    <!-- ── Gradient ── -->
-    <h2>漸層（Gradient）</h2>
-    <div class="code-block">
-<span class="cm">/* 線性漸層 */</span>
-<span class="ca">background</span>: <span class="cv">linear-gradient(135deg, #0f0c29, #302b63, #24243e)</span>;
-<span class="cm">/*                         角度       顏色1       顏色2       顏色3 */</span>
-
-<span class="cm">/* 由上到下 */</span>
-<span class="ca">background</span>: <span class="cv">linear-gradient(to bottom, rgba(0,0,0,0.8), rgba(0,0,0,0))</span>;
-
-<span class="cm">/* SDG11 場景 Modal 底部遮罩 */</span>
-<span class="ca">background</span>: <span class="cv">linear-gradient(
-  to top,
-  rgba(0,0,0,0.88) 0%,    /* 底部很暗 */
-  rgba(0,0,0,0.35) 55%,   /* 中間半透明 */
-  rgba(0,0,0,0.18) 100%   /* 頂部幾乎透明 */
-)</span>;
-    </div>
-
-    <div style="display:flex;gap:12px;flex-wrap:wrap;margin:16px 0 28px;">
-        <div style="width:120px;height:60px;border-radius:8px;background:linear-gradient(135deg,#0f0c29,#302b63,#24243e);"></div>
-        <div style="width:120px;height:60px;border-radius:8px;background:linear-gradient(90deg,#f99d26,#e07b00);"></div>
-        <div style="width:120px;height:60px;border-radius:8px;background:linear-gradient(to bottom,rgba(0,0,0,0),rgba(0,0,0,0.8));border:1px solid rgba(255,255,255,0.1);"></div>
-        <div style="width:120px;height:60px;border-radius:8px;background:linear-gradient(135deg,#1a1a2e,#16213e);"></div>
-    </div>
-
-    <!-- ── box-shadow ── -->
-    <h2>box-shadow — 陰影</h2>
-    <div class="code-block">
-<span class="cm">/* box-shadow: X偏移 Y偏移 模糊 擴散 顏色 */</span>
-<span class="ca">box-shadow</span>: <span class="cv">0 4px 24px rgba(0,0,0,0.08)</span>;         <span class="cm">/* 輕柔陰影 */</span>
-<span class="ca">box-shadow</span>: <span class="cv">0 8px 32px rgba(249,157,38,0.4)</span>;      <span class="cm">/* 橘色光暈 */</span>
-<span class="ca">box-shadow</span>: <span class="cv">0 2px 12px rgba(0,0,0,0.5)</span>;           <span class="cm">/* 文字陰影 */</span>
-
-<span class="cm">/* text-shadow 給文字加陰影 */</span>
-<span class="ca">text-shadow</span>: <span class="cv">0 2px 12px rgba(0,0,0,0.5)</span>;
-    </div>
-
-    <div style="display:flex;gap:20px;flex-wrap:wrap;margin:16px 0 28px;">
-        <div style="background:#1a1a2e;padding:20px 28px;border-radius:12px;box-shadow:0 4px 24px rgba(0,0,0,0.3);font-size:0.85rem;">輕柔陰影</div>
-        <div style="background:#1a1a2e;padding:20px 28px;border-radius:12px;box-shadow:0 8px 32px rgba(249,157,38,0.4);font-size:0.85rem;">橘色光暈</div>
-        <div style="background:#1a1a2e;padding:20px 28px;border-radius:12px;box-shadow:0 0 0 2px rgba(249,157,38,0.5);font-size:0.85rem;">邊框光暈</div>
-    </div>
-
-    <div class="tip">
-        <strong>📌 SDG11 進度條動畫原理：</strong><br>
-        1. HTML 裡用 <code>data-value="55"</code> 存儲數值<br>
-        2. CSS 設 <code>transition: width 1.3s cubic-bezier(...)</code><br>
-        3. JS 用 <code>IntersectionObserver</code> 偵測到元素進入視窗時，設定 <code>style.width = '55%'</code><br>
-        4. width 從 0% 平滑動到 55%，看起來就像動畫
-    </div>
+<div class="tip">
+    <strong>📌 SDG11 進度條動畫原理：</strong><br>
+    1. HTML 用 <code>data-value="55"</code> 存數值<br>
+    2. CSS 設 <code>transition: width 1.3s cubic-bezier(0.4, 0, 0.2, 1)</code><br>
+    3. JS 偵測到元素進入視窗時，設 <code>style.width = '55%'</code><br>
+    4. width 從 0% 平滑動到 55%，動畫效果就出來了
+</div>
 
 </div>
+
+<script>
+function updatePG(pgId, code) {
+    const frame = document.getElementById(pgId + '-frame');
+    const styled = `<style>body{font-family:sans-serif;padding:12px;margin:0;font-size:14px;line-height:1.5;color:#222}</style>` + code;
+    frame.srcdoc = styled;
+}
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.playground').forEach(function(pg) {
+        const ta = pg.querySelector('.pg-textarea');
+        if (ta && pg.id) updatePG(pg.id, ta.value);
+    });
+    updateTrans();
+    updateGrad();
+});
+
+// Transition lab
+function updateTrans() {
+    const dur  = document.getElementById('dur-val').textContent;
+    const tim  = document.getElementById('timing').value;
+    const ty   = document.getElementById('ty-val').textContent;
+    const sc   = document.getElementById('sc-val').textContent;
+    const css  = `transition: transform ${dur}s ${tim}, box-shadow ${dur}s ${tim}`;
+    const btn  = document.getElementById('trans-btn');
+    const card = document.getElementById('trans-card');
+    btn.style.transition  = `transform ${dur}s ${tim}, box-shadow ${dur}s ${tim}, background ${dur}s`;
+    card.style.transition = `transform ${dur}s ${tim}, box-shadow ${dur}s ${tim}, border-color ${dur}s`;
+    btn.onmouseover  = () => { btn.style.transform  = `translateY(${ty}px) scale(${sc})`; btn.style.boxShadow = `0 10px 30px rgba(249,157,38,0.5)`; btn.style.background = '#e07b00'; };
+    btn.onmouseout   = () => { btn.style.transform  = ''; btn.style.boxShadow = ''; btn.style.background = ''; };
+    card.onmouseover = () => { card.style.transform = `translateY(${ty}px) scale(${sc})`; card.style.boxShadow = `0 14px 40px rgba(0,0,0,0.3)`; card.style.borderColor = 'rgba(249,157,38,0.5)'; };
+    card.onmouseout  = () => { card.style.transform = ''; card.style.boxShadow = ''; card.style.borderColor = ''; };
+    document.getElementById('trans-code').textContent = `.element {\n  ${css};\n}\n.element:hover {\n  transform: translateY(${ty}px) scale(${sc});\n}`;
+}
+
+// Gradient builder
+function updateGrad() {
+    const c1   = document.getElementById('gc1').value;
+    const c2   = document.getElementById('gc2').value;
+    const type = document.getElementById('gtype').value;
+    const ang  = document.getElementById('gang-val').textContent;
+    const bg   = type === 'linear' ? `linear-gradient(${ang}deg, ${c1}, ${c2})` : `radial-gradient(circle, ${c1}, ${c2})`;
+    document.getElementById('grad-preview').style.background = bg;
+    document.getElementById('grad-code').textContent = `background: ${bg};`;
+}
+</script>
 </body>
 </html>

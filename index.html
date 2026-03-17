@@ -15,6 +15,25 @@
         }
         header h1 { font-size: 2.8rem; color: #f99d26; margin-bottom: 12px; }
         header p { color: rgba(255,255,255,0.5); font-size: 1.05rem; }
+        .interactive-badge {
+            display: inline-block;
+            background: rgba(107,207,127,0.15);
+            border: 1px solid rgba(107,207,127,0.4);
+            color: #6bcf7f;
+            font-size: 0.72rem;
+            padding: 3px 10px;
+            border-radius: 10px;
+            margin-top: 14px;
+            letter-spacing: 1px;
+        }
+        .card .inter-tag {
+            font-size: 0.68rem;
+            background: rgba(107,207,127,0.1);
+            border: 1px solid rgba(107,207,127,0.3);
+            color: #6bcf7f;
+            padding: 2px 8px;
+            border-radius: 8px;
+        }
         .container { max-width: 900px; margin: 60px auto; padding: 0 32px 80px; }
         .section-title {
             font-size: 0.75rem;
@@ -77,6 +96,7 @@
     <header>
         <h1>📚 網頁學習筆記</h1>
         <p>從 HTML 到 JavaScript，從零開始理解 SDG 11 專案怎麼做到的</p>
+        <div class="interactive-badge">✦ 全部互動版 — 每個範例都可以直接編輯</div>
     </header>
     <div class="container">
 
@@ -92,6 +112,8 @@
                     <span class="tag">語意元素</span>
                     <span class="tag">表單</span>
                     <span class="tag">表格</span>
+                    <span class="inter-tag">▶ 即時 Playground</span>
+                    <span class="inter-tag">路徑小測驗</span>
                 </div>
                 <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
             </a>
@@ -108,7 +130,9 @@
                     <span class="tag">Box Model</span>
                     <span class="tag">顏色</span>
                     <span class="tag">字體</span>
-                    <span class="tag">單位</span>
+                    <span class="tag">CSS 變數</span>
+                    <span class="inter-tag">▶ Box Model 滑桿</span>
+                    <span class="inter-tag">即時 Playground</span>
                 </div>
                 <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
             </a>
@@ -121,19 +145,22 @@
                     <span class="tag">position</span>
                     <span class="tag">z-index</span>
                     <span class="tag">overflow</span>
+                    <span class="inter-tag">▶ Flexbox 控制台</span>
+                    <span class="inter-tag">下拉即時調整</span>
                 </div>
                 <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
             </a>
             <a class="card" href="04_css_effects.html">
                 <div class="card-num">04</div>
                 <h3>CSS 進階效果</h3>
-                <p>動畫、過渡、CSS 變數、媒體查詢（手機版）。SDG11 大量使用這些。</p>
+                <p>動畫、過渡、媒體查詢（手機版）。SDG11 大量使用這些技術。</p>
                 <div class="topics">
                     <span class="tag">transition</span>
                     <span class="tag">@keyframes</span>
-                    <span class="tag">CSS 變數</span>
                     <span class="tag">@media</span>
                     <span class="tag">backdrop-filter</span>
+                    <span class="inter-tag">▶ Transition 滑桿</span>
+                    <span class="inter-tag">漸層建構器</span>
                 </div>
                 <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
             </a>
@@ -151,6 +178,8 @@
                     <span class="tag">if/else</span>
                     <span class="tag">陣列</span>
                     <span class="tag">物件</span>
+                    <span class="inter-tag">▶ 內建 JS 執行環境</span>
+                    <span class="inter-tag">Ctrl+Enter 執行</span>
                 </div>
                 <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
             </a>
@@ -164,6 +193,8 @@
                     <span class="tag">addEventListener</span>
                     <span class="tag">innerHTML</span>
                     <span class="tag">dataset</span>
+                    <span class="inter-tag">▶ HTML + JS 雙窗格</span>
+                    <span class="inter-tag">Modal 完整實作</span>
                 </div>
                 <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
             </a>
@@ -171,8 +202,10 @@
 
         <div class="note">
             <strong>📌 怎麼用這些筆記：</strong><br>
-            每個頁面都有理論解說 + 程式碼範例 + 你可以直接在瀏覽器看到效果的 Live Demo。<br>
-            建議打開 <strong>DevTools（F12）</strong>，邊看說明邊改程式碼，改壞了沒關係，重新整理就好。
+            每個頁面都有即時 Playground — 左邊可以直接編輯程式碼，右邊立刻看到效果。<br>
+            <strong>05 JS 基礎</strong> 有內建執行環境，按 <strong>Ctrl+Enter</strong> 可以直接跑程式碼。<br>
+            <strong>06 JS DOM</strong> 有 HTML + JS 雙窗格沙盒，可以測試完整的互動邏輯。<br>
+            改壞了沒關係，重新整理頁面就回到原始狀態。
         </div>
 
     </div>
