@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>04 — CSS 進階效果</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', sans-serif; background: #0f0f1a; color: #e0e0e0; line-height: 1.7; }
+        a.back { display: inline-block; margin: 24px 32px; color: #f99d26; text-decoration: none; font-size: 0.9rem; }
+        a.back:hover { text-decoration: underline; }
+        .hero { background: linear-gradient(135deg, #1a1a2e, #16213e); padding: 56px 40px; text-align: center; }
+        .hero h1 { font-size: 2.4rem; color: #f99d26; margin-bottom: 10px; }
+        .hero p { color: rgba(255,255,255,0.45); }
+        .content { max-width: 860px; margin: 0 auto; padding: 40px 32px 100px; }
+        h2 { font-size: 1.4rem; color: #f99d26; margin: 48px 0 18px; padding-left: 14px; border-left: 3px solid #f99d26; }
+        h3 { font-size: 1.05rem; color: rgba(249,157,38,0.8); margin: 28px 0 10px; }
+        p { color: rgba(255,255,255,0.7); margin-bottom: 14px; }
+        ul { color: rgba(255,255,255,0.65); padding-left: 22px; margin-bottom: 14px; }
+        li { margin-bottom: 6px; }
+        strong { color: #f99d26; }
+        code { background: rgba(249,157,38,0.12); color: #f99d26; padding: 2px 7px; border-radius: 5px; font-family: 'Courier New', monospace; font-size: 0.92em; }
+        .code-block { background: #12121f; border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 24px 28px; margin: 16px 0 24px; font-family: 'Courier New', monospace; font-size: 0.88rem; line-height: 1.85; overflow-x: auto; }
+        .cm { color: #5a6a8a; } .cs { color: #c792ea; } .ca { color: #f99d26; } .cv { color: #a8e6a3; }
+        .tip { background: rgba(249,157,38,0.07); border-left: 3px solid rgba(249,157,38,0.5); padding: 14px 18px; border-radius: 0 10px 10px 0; margin: 16px 0; font-size: 0.88rem; color: rgba(255,255,255,0.6); }
+        .tip strong { color: #f99d26; }
+        .demo { background: #1e1e32; border: 1px solid rgba(249,157,38,0.2); border-radius: 12px; padding: 28px; margin: 8px 0 28px; }
+        .demo .label { font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; color: rgba(249,157,38,0.5); margin-bottom: 20px; }
+
+        /* ── TRANSITION DEMO ── */
+        .trans-btn {
+            display: inline-block;
+            padding: 12px 28px;
+            background: var(--orange, #f99d26);
+            color: white;
+            border-radius: 24px;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+            margin-right: 12px;
+            margin-bottom: 10px;
+        }
+        .trans-btn:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(249,157,38,0.4);
+            background: #e07b00;
+        }
+        .trans-card {
+            display: inline-block;
+            background: #12121f;
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            padding: 20px 24px;
+            transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+            cursor: pointer;
+        }
+        .trans-card:hover {
+            transform: translateY(-7px);
+            box-shadow: 0 14px 40px rgba(249,157,38,0.2);
+            border-color: rgba(249,157,38,0.4);
+        }
+
+        /* ── KEYFRAME DEMOS ── */
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50%       { transform: translateY(-12px); }
+        }
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to   { transform: rotate(360deg); }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50%       { transform: scale(1.1); }
+        }
+        .anim-box { display: inline-flex; flex-direction: column; align-items: center; gap: 8px; margin: 12px; }
+        .anim-box span { font-size: 0.72rem; color: rgba(255,255,255,0.4); }
+        .anim-dot { width: 40px; height: 40px; border-radius: 50%; background: #f99d26; }
+        .anim-dot.bounce { animation: bounce 1.5s infinite; }
+        .anim-dot.spin   { animation: spin   2s linear infinite; border-radius: 6px; }
+        .anim-dot.fade   { animation: fadeIn 1.5s ease infinite alternate; }
+        .anim-dot.pulse  { animation: pulse  1.5s ease infinite; }
+
+        /* ── MEDIA QUERY DEMO ── */
+        .responsive-demo {
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1rem;
+            background: rgba(100,200,100,0.2);
+            border: 1px solid rgba(100,200,100,0.4);
+            color: #6bcf7f;
+        }
+        @media (max-width: 600px) {
+            .responsive-demo {
+                background: rgba(249,157,38,0.2);
+                border-color: rgba(249,157,38,0.4);
+                color: #f99d26;
+            }
+        }
+
+        /* ── PROGRESS DEMO ── */
+        .progress-track { background: rgba(255,255,255,0.08); border-radius: 10px; height: 12px; overflow: hidden; margin: 8px 0; }
+        .progress-fill-demo { height: 100%; background: linear-gradient(90deg, #f99d26, #e07b00); border-radius: 10px; transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1); }
+
+        /* ── BACKDROP FILTER DEMO ── */
+        .blur-demo {
+            position: relative;
+            height: 120px;
+            border-radius: 12px;
+            overflow: hidden;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .blur-card {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 10px;
+            padding: 14px 28px;
+            color: white;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+<a class="back" href="index.html">← 返回目錄</a>
+<div class="hero">
+    <h1>04 — CSS 進階效果</h1>
+    <p>transition · animation · CSS 變數 · media query · backdrop-filter</p>
+</div>
+<div class="content">
+
+    <!-- ── Transition ── -->
+    <h2>transition — 平滑過渡效果</h2>
+    <p>當屬性改變（如 hover）時，不要瞬間跳變，而是平滑地過渡。</p>
+    <div class="code-block">
+<span class="cs">.btn</span> {
+  <span class="ca">background</span>: <span class="cv">#f99d26</span>;
+  <span class="ca">transform</span>: <span class="cv">translateY(0)</span>;
+
+  <span class="cm">/* transition: 屬性 時間 時間函數 */</span>
+  <span class="ca">transition</span>: <span class="cv">transform 0.2s ease, box-shadow 0.2s ease</span>;
+
+  <span class="cm">/* 也可以寫 all，讓所有屬性都有過渡 */</span>
+  <span class="cm">/* transition: all 0.3s ease; */</span>
+}
+
+<span class="cs">.btn:hover</span> {
+  <span class="ca">transform</span>: <span class="cv">translateY(-4px)</span>;  <span class="cm">/* hover 時往上移 4px */</span>
+  <span class="ca">box-shadow</span>: <span class="cv">0 8px 24px rgba(249,157,38,0.4)</span>;
+}
+    </div>
+
+    <div class="demo">
+        <div class="label">LIVE DEMO — 滑鼠移過去看效果</div>
+        <button class="trans-btn">Explore Data</button>
+        <button class="trans-btn" style="background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.3);">Taiwan Focus</button>
+        <div style="margin-top: 16px; display:inline-block;">
+            <div class="trans-card">
+                <div style="font-size:1.2rem;color:#f99d26;font-weight:bold;">城市卡片</div>
+                <div style="font-size:0.85rem;color:rgba(255,255,255,0.5);margin-top:6px;">hover 看浮起效果</div>
+            </div>
+        </div>
+    </div>
+
+    <h3>常用的 transition timing function（時間函數）</h3>
+    <div class="code-block">
+<span class="ca">transition</span>: <span class="cv">all 0.3s ease</span>;           <span class="cm">/* 開始結束都慢（最自然）*/</span>
+<span class="ca">transition</span>: <span class="cv">all 0.3s linear</span>;         <span class="cm">/* 均速 */</span>
+<span class="ca">transition</span>: <span class="cv">all 0.3s ease-in</span>;       <span class="cm">/* 開始慢，結束快 */</span>
+<span class="ca">transition</span>: <span class="cv">all 0.3s ease-out</span>;      <span class="cm">/* 開始快，結束慢（滑入感）*/</span>
+<span class="ca">transition</span>: <span class="cv">all 1.3s cubic-bezier(0.4, 0, 0.2, 1)</span>;  <span class="cm">/* 自訂曲線（SDG11 進度條）*/</span>
+    </div>
+
+    <!-- ── transform ── -->
+    <h2>transform — 變形</h2>
+    <div class="code-block">
+<span class="ca">transform</span>: <span class="cv">translateY(-7px)</span>;    <span class="cm">/* 往上移 7px（不影響其他元素！）*/</span>
+<span class="ca">transform</span>: <span class="cv">translateX(20px)</span>;    <span class="cm">/* 往右移 */</span>
+<span class="ca">transform</span>: <span class="cv">scale(1.05)</span>;          <span class="cm">/* 放大 5% */</span>
+<span class="ca">transform</span>: <span class="cv">rotate(45deg)</span>;        <span class="cm">/* 旋轉 45 度 */</span>
+
+<span class="cm">/* 組合使用 */</span>
+<span class="ca">transform</span>: <span class="cv">translateY(-50%) scale(1.1)</span>;
+    </div>
+
+    <div class="tip">
+        <strong>為什麼用 transform 而不是 margin？</strong><br>
+        transform 移動不會影響其他元素的位置，且由 GPU 加速，動畫更順。SDG11 的卡片 hover 效果都用 <code>translateY</code> 而不是改 margin-top。
+    </div>
+
+    <!-- ── Keyframes ── -->
+    <h2>@keyframes — 關鍵影格動畫</h2>
+    <p>transition 是「A → B 平滑」，keyframes 是「循環播放的動畫」。</p>
+    <div class="code-block">
+<span class="cm">/* 定義動畫 */</span>
+@<span class="cs">keyframes bounce</span> {
+  <span class="cv">0%</span>, <span class="cv">100%</span> { <span class="ca">transform</span>: <span class="cv">translateY(0)</span>; }
+  <span class="cv">50%</span>      { <span class="ca">transform</span>: <span class="cv">translateY(-12px)</span>; }
+}
+
+<span class="cm">/* 套用在元素上 */</span>
+<span class="cs">.scroll-arrow</span> {
+  <span class="ca">animation</span>: <span class="cv">bounce 2s infinite</span>;
+  <span class="cm">/*           名稱  時長  循環次數 */</span>
+}
+
+<span class="cm">/* 進場動畫（SDG11 fade-up 效果的概念）*/</span>
+@<span class="cs">keyframes fadeUp</span> {
+  <span class="cv">from</span> { <span class="ca">opacity</span>: <span class="cv">0</span>; <span class="ca">transform</span>: <span class="cv">translateY(36px)</span>; }
+  <span class="cv">to</span>   { <span class="ca">opacity</span>: <span class="cv">1</span>; <span class="ca">transform</span>: <span class="cv">translateY(0)</span>; }
+}
+<span class="cs">.card</span> {
+  <span class="ca">animation</span>: <span class="cv">fadeUp 0.65s ease forwards</span>;
+  <span class="cm">/* forwards = 停在最後一幀 */</span>
+}
+
+<span class="cm">/* 延遲動畫（讓卡片一張一張進場）*/</span>
+<span class="cs">.card:nth-child(2)</span> { <span class="ca">animation-delay</span>: <span class="cv">0.1s</span>; }
+<span class="cs">.card:nth-child(3)</span> { <span class="ca">animation-delay</span>: <span class="cv">0.2s</span>; }
+    </div>
+
+    <div class="demo">
+        <div class="label">LIVE DEMO — @keyframes 動畫</div>
+        <div style="display:flex; flex-wrap:wrap;">
+            <div class="anim-box">
+                <div class="anim-dot bounce"></div>
+                <span>bounce</span>
+            </div>
+            <div class="anim-box">
+                <div class="anim-dot spin"></div>
+                <span>spin</span>
+            </div>
+            <div class="anim-box">
+                <div class="anim-dot fade"></div>
+                <span>fadeIn</span>
+            </div>
+            <div class="anim-box">
+                <div class="anim-dot pulse"></div>
+                <span>pulse</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── Media Query ── -->
+    <h2>@media — 媒體查詢（手機版）</h2>
+    <p>根據螢幕寬度套用不同的 CSS，這就是讓網頁自動適應手機的方式。</p>
+    <div class="code-block">
+<span class="cm">/* 螢幕寬度 ≤ 768px 時（手機版）*/</span>
+@<span class="cs">media (max-width: 768px)</span> {
+  <span class="cs">nav ul</span>       { <span class="ca">display</span>: <span class="cv">none</span>; }           <span class="cm">/* 隱藏導覽列 */</span>
+  <span class="cs">.nav-hamburger</span> { <span class="ca">display</span>: <span class="cv">flex</span>; }          <span class="cm">/* 顯示漢堡按鈕 */</span>
+  <span class="cs">#hero h1</span>     { <span class="ca">font-size</span>: <span class="cv">2rem</span>; }         <span class="cm">/* 標題字縮小 */</span>
+  <span class="cs">section</span>      { <span class="ca">padding</span>: <span class="cv">60px 20px</span>; }     <span class="cm">/* 左右 padding 縮小 */</span>
+  <span class="cs">.tw-city-card</span> { <span class="ca">width</span>: <span class="cv">100%</span>; }           <span class="cm">/* 卡片全寬 */</span>
+}
+
+<span class="cm">/* 也可以用 min-width（從手機設計，往大螢幕加）*/</span>
+@<span class="cs">media (min-width: 769px)</span> {
+  <span class="cm">/* 平板和桌機的樣式 */</span>
+}
+
+<span class="cm">/* 常見斷點 */</span>
+<span class="cm">/* 手機：max-width: 480px */</span>
+<span class="cm">/* 平板：max-width: 768px */</span>
+<span class="cm">/* 桌機：min-width: 1024px */</span>
+    </div>
+
+    <div class="demo">
+        <div class="label">LIVE DEMO — 縮小瀏覽器寬度，看顏色變化</div>
+        <div class="responsive-demo" id="rDemo">
+            現在是桌機版（綠色）— 把瀏覽器縮窄到 600px 以下會變橘色
+        </div>
+    </div>
+
+    <!-- ── backdrop-filter ── -->
+    <h2>backdrop-filter — 毛玻璃效果</h2>
+    <p>讓元素背後的內容模糊，做出玻璃質感。SDG11 導覽列和 Modal 都有用。</p>
+    <div class="code-block">
+<span class="cs">nav</span> {
+  <span class="ca">background</span>: <span class="cv">rgba(249, 157, 38, 0.88)</span>;  <span class="cm">/* 半透明背景 */</span>
+  <span class="ca">backdrop-filter</span>: <span class="cv">blur(14px)</span>;          <span class="cm">/* 背後模糊 */</span>
+  <span class="ca">-webkit-backdrop-filter</span>: <span class="cv">blur(14px)</span>;   <span class="cm">/* Safari 需要加前綴 */</span>
+}
+    </div>
+
+    <div class="demo">
+        <div class="label">LIVE DEMO — backdrop-filter: blur()</div>
+        <div class="blur-demo">
+            <div style="position:absolute;inset:0;display:flex;gap:20px;align-items:center;justify-content:center;opacity:0.4;">
+                <div style="width:60px;height:60px;background:#f99d26;border-radius:50%;"></div>
+                <div style="width:80px;height:80px;background:#7ecfff;border-radius:12px;"></div>
+                <div style="width:50px;height:50px;background:#6bcf7f;border-radius:50%;"></div>
+                <div style="width:70px;height:70px;background:#c792ea;border-radius:8px;"></div>
+            </div>
+            <div class="blur-card">導覽列毛玻璃效果</div>
+        </div>
+    </div>
+
+    <!-- ── Gradient ── -->
+    <h2>漸層（Gradient）</h2>
+    <div class="code-block">
+<span class="cm">/* 線性漸層 */</span>
+<span class="ca">background</span>: <span class="cv">linear-gradient(135deg, #0f0c29, #302b63, #24243e)</span>;
+<span class="cm">/*                         角度       顏色1       顏色2       顏色3 */</span>
+
+<span class="cm">/* 由上到下 */</span>
+<span class="ca">background</span>: <span class="cv">linear-gradient(to bottom, rgba(0,0,0,0.8), rgba(0,0,0,0))</span>;
+
+<span class="cm">/* SDG11 場景 Modal 底部遮罩 */</span>
+<span class="ca">background</span>: <span class="cv">linear-gradient(
+  to top,
+  rgba(0,0,0,0.88) 0%,    /* 底部很暗 */
+  rgba(0,0,0,0.35) 55%,   /* 中間半透明 */
+  rgba(0,0,0,0.18) 100%   /* 頂部幾乎透明 */
+)</span>;
+    </div>
+
+    <div style="display:flex;gap:12px;flex-wrap:wrap;margin:16px 0 28px;">
+        <div style="width:120px;height:60px;border-radius:8px;background:linear-gradient(135deg,#0f0c29,#302b63,#24243e);"></div>
+        <div style="width:120px;height:60px;border-radius:8px;background:linear-gradient(90deg,#f99d26,#e07b00);"></div>
+        <div style="width:120px;height:60px;border-radius:8px;background:linear-gradient(to bottom,rgba(0,0,0,0),rgba(0,0,0,0.8));border:1px solid rgba(255,255,255,0.1);"></div>
+        <div style="width:120px;height:60px;border-radius:8px;background:linear-gradient(135deg,#1a1a2e,#16213e);"></div>
+    </div>
+
+    <!-- ── box-shadow ── -->
+    <h2>box-shadow — 陰影</h2>
+    <div class="code-block">
+<span class="cm">/* box-shadow: X偏移 Y偏移 模糊 擴散 顏色 */</span>
+<span class="ca">box-shadow</span>: <span class="cv">0 4px 24px rgba(0,0,0,0.08)</span>;         <span class="cm">/* 輕柔陰影 */</span>
+<span class="ca">box-shadow</span>: <span class="cv">0 8px 32px rgba(249,157,38,0.4)</span>;      <span class="cm">/* 橘色光暈 */</span>
+<span class="ca">box-shadow</span>: <span class="cv">0 2px 12px rgba(0,0,0,0.5)</span>;           <span class="cm">/* 文字陰影 */</span>
+
+<span class="cm">/* text-shadow 給文字加陰影 */</span>
+<span class="ca">text-shadow</span>: <span class="cv">0 2px 12px rgba(0,0,0,0.5)</span>;
+    </div>
+
+    <div style="display:flex;gap:20px;flex-wrap:wrap;margin:16px 0 28px;">
+        <div style="background:#1a1a2e;padding:20px 28px;border-radius:12px;box-shadow:0 4px 24px rgba(0,0,0,0.3);font-size:0.85rem;">輕柔陰影</div>
+        <div style="background:#1a1a2e;padding:20px 28px;border-radius:12px;box-shadow:0 8px 32px rgba(249,157,38,0.4);font-size:0.85rem;">橘色光暈</div>
+        <div style="background:#1a1a2e;padding:20px 28px;border-radius:12px;box-shadow:0 0 0 2px rgba(249,157,38,0.5);font-size:0.85rem;">邊框光暈</div>
+    </div>
+
+    <div class="tip">
+        <strong>📌 SDG11 進度條動畫原理：</strong><br>
+        1. HTML 裡用 <code>data-value="55"</code> 存儲數值<br>
+        2. CSS 設 <code>transition: width 1.3s cubic-bezier(...)</code><br>
+        3. JS 用 <code>IntersectionObserver</code> 偵測到元素進入視窗時，設定 <code>style.width = '55%'</code><br>
+        4. width 從 0% 平滑動到 55%，看起來就像動畫
+    </div>
+
+</div>
+</body>
+</html>

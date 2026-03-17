@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>01 — HTML 基礎</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', sans-serif; background: #0f0f1a; color: #e0e0e0; line-height: 1.7; }
+        a.back { display: inline-block; margin: 24px 32px; color: #f99d26; text-decoration: none; font-size: 0.9rem; }
+        a.back:hover { text-decoration: underline; }
+        .hero { background: linear-gradient(135deg, #1a1a2e, #16213e); padding: 56px 40px; text-align: center; }
+        .hero h1 { font-size: 2.4rem; color: #f99d26; margin-bottom: 10px; }
+        .hero p { color: rgba(255,255,255,0.45); }
+        .content { max-width: 860px; margin: 0 auto; padding: 40px 32px 100px; }
+
+        h2 { font-size: 1.4rem; color: #f99d26; margin: 48px 0 18px; padding-left: 14px; border-left: 3px solid #f99d26; }
+        h3 { font-size: 1.05rem; color: rgba(249,157,38,0.8); margin: 28px 0 10px; }
+        p { color: rgba(255,255,255,0.7); margin-bottom: 14px; }
+        ul, ol { color: rgba(255,255,255,0.65); padding-left: 22px; margin-bottom: 14px; }
+        li { margin-bottom: 6px; }
+        strong { color: #f99d26; font-weight: 600; }
+        code { background: rgba(249,157,38,0.12); color: #f99d26; padding: 2px 7px; border-radius: 5px; font-family: 'Courier New', monospace; font-size: 0.92em; }
+
+        .code-block {
+            background: #12121f;
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            padding: 24px 28px;
+            margin: 16px 0 24px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.88rem;
+            line-height: 1.85;
+            overflow-x: auto;
+            position: relative;
+        }
+        .code-block .comment { color: #5a6a8a; }
+        .code-block .tag { color: #7ecfff; }
+        .code-block .attr { color: #f99d26; }
+        .code-block .val { color: #a8e6a3; }
+        .code-block .text { color: #e0e0e0; }
+
+        .demo-box {
+            background: #1e1e32;
+            border: 1px solid rgba(249,157,38,0.2);
+            border-radius: 12px;
+            padding: 24px 28px;
+            margin: 8px 0 28px;
+        }
+        .demo-box .label {
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: rgba(249,157,38,0.5);
+            margin-bottom: 14px;
+        }
+
+        .tip {
+            background: rgba(249,157,38,0.07);
+            border-left: 3px solid rgba(249,157,38,0.5);
+            padding: 14px 18px;
+            border-radius: 0 10px 10px 0;
+            margin: 16px 0;
+            font-size: 0.88rem;
+            color: rgba(255,255,255,0.6);
+        }
+        .tip strong { color: #f99d26; }
+
+        .tag-table { width: 100%; border-collapse: collapse; margin: 16px 0 28px; }
+        .tag-table th { background: rgba(249,157,38,0.15); color: #f99d26; padding: 10px 16px; text-align: left; font-size: 0.85rem; }
+        .tag-table td { padding: 10px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 0.85rem; color: rgba(255,255,255,0.65); }
+        .tag-table td:first-child { font-family: 'Courier New', monospace; color: #7ecfff; }
+        .tag-table tbody tr:hover td { background: rgba(249,157,38,0.04); }
+
+        .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0 28px; }
+        .compare-box { background: #12121f; border-radius: 10px; padding: 18px 20px; border: 1px solid rgba(255,255,255,0.06); }
+        .compare-box .clabel { font-size: 0.72rem; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 12px; }
+        .compare-box.good .clabel { color: #6bcf7f; }
+        .compare-box.bad .clabel { color: #e07070; }
+        .compare-box pre { font-family: 'Courier New', monospace; font-size: 0.82rem; line-height: 1.7; color: #ccc; white-space: pre-wrap; }
+    </style>
+</head>
+<body>
+
+<a class="back" href="index.html">← 返回目錄</a>
+
+<div class="hero">
+    <h1>01 — HTML 基礎</h1>
+    <p>網頁的骨架 · 瀏覽器讀的語言</p>
+</div>
+
+<div class="content">
+
+    <!-- ── 什麼是 HTML ── -->
+    <h2>HTML 是什麼？</h2>
+    <p>HTML（HyperText Markup Language）是用來描述網頁<strong>內容結構</strong>的語言。它告訴瀏覽器「這是標題」「這是段落」「這是圖片」，但不管顏色或動畫——那是 CSS 和 JavaScript 的事。</p>
+
+    <div class="tip">
+        <strong>🏠 比喻：</strong>HTML = 房子的牆壁和樓板（結構）／CSS = 油漆和裝潢（外觀）／JS = 電燈開關和電梯（互動）
+    </div>
+
+    <!-- ── 基本結構 ── -->
+    <h2>每個 HTML 檔案的基本結構</h2>
+    <div class="code-block">
+<span class="comment">&lt;!-- 告訴瀏覽器：這是 HTML5 文件 --&gt;</span>
+<span class="tag">&lt;!DOCTYPE html&gt;</span>
+<span class="tag">&lt;html</span> <span class="attr">lang</span>=<span class="val">"zh-TW"</span><span class="tag">&gt;</span>
+
+  <span class="tag">&lt;head&gt;</span>  <span class="comment">&lt;!-- 給瀏覽器看的資訊，不顯示在畫面上 --&gt;</span>
+    <span class="tag">&lt;meta</span> <span class="attr">charset</span>=<span class="val">"UTF-8"</span><span class="tag">&gt;</span>          <span class="comment">&lt;!-- 支援中文 --&gt;</span>
+    <span class="tag">&lt;meta</span> <span class="attr">name</span>=<span class="val">"viewport"</span> <span class="attr">content</span>=<span class="val">"width=device-width, initial-scale=1.0"</span><span class="tag">&gt;</span>  <span class="comment">&lt;!-- 手機支援 --&gt;</span>
+    <span class="tag">&lt;title&gt;</span><span class="text">頁面標題（出現在分頁）</span><span class="tag">&lt;/title&gt;</span>
+  <span class="tag">&lt;/head&gt;</span>
+
+  <span class="tag">&lt;body&gt;</span>  <span class="comment">&lt;!-- 畫面上看得到的東西都在這裡 --&gt;</span>
+    <span class="tag">&lt;h1&gt;</span><span class="text">我是標題</span><span class="tag">&lt;/h1&gt;</span>
+    <span class="tag">&lt;p&gt;</span><span class="text">我是段落</span><span class="tag">&lt;/p&gt;</span>
+  <span class="tag">&lt;/body&gt;</span>
+
+<span class="tag">&lt;/html&gt;</span>
+    </div>
+
+    <div class="tip">
+        <strong>規則：</strong>大部分標籤都有<strong>開標籤</strong> <code>&lt;p&gt;</code> 和<strong>關標籤</strong> <code>&lt;/p&gt;</code>。少數例外不需要關標籤（叫 void element）：<code>&lt;img&gt;</code>、<code>&lt;input&gt;</code>、<code>&lt;br&gt;</code>、<code>&lt;meta&gt;</code>
+    </div>
+
+    <!-- ── 常用標籤 ── -->
+    <h2>最常用的標籤</h2>
+
+    <h3>文字類</h3>
+    <table class="tag-table">
+        <thead><tr><th>標籤</th><th>用途</th><th>例子</th></tr></thead>
+        <tbody>
+            <tr><td>&lt;h1&gt; ~ &lt;h6&gt;</td><td>標題，h1 最大，h6 最小</td><td>文章標題、章節標題</td></tr>
+            <tr><td>&lt;p&gt;</td><td>段落</td><td>一般文章內容</td></tr>
+            <tr><td>&lt;strong&gt;</td><td>粗體（語意：重要）</td><td>關鍵字</td></tr>
+            <tr><td>&lt;em&gt;</td><td>斜體（語意：強調）</td><td>書名、術語</td></tr>
+            <tr><td>&lt;br&gt;</td><td>換行</td><td>地址分行</td></tr>
+            <tr><td>&lt;span&gt;</td><td>行內容器（沒有語意）</td><td>部分文字加樣式</td></tr>
+        </tbody>
+    </table>
+
+    <h3>結構類（語意元素）</h3>
+    <table class="tag-table">
+        <thead><tr><th>標籤</th><th>代表意義</th></tr></thead>
+        <tbody>
+            <tr><td>&lt;header&gt;</td><td>頁首區域</td></tr>
+            <tr><td>&lt;nav&gt;</td><td>導覽列</td></tr>
+            <tr><td>&lt;main&gt;</td><td>主要內容</td></tr>
+            <tr><td>&lt;section&gt;</td><td>一個獨立區塊（有主題）</td></tr>
+            <tr><td>&lt;article&gt;</td><td>獨立文章</td></tr>
+            <tr><td>&lt;footer&gt;</td><td>頁尾</td></tr>
+            <tr><td>&lt;div&gt;</td><td>通用容器（沒有語意，用來排版）</td></tr>
+        </tbody>
+    </table>
+
+    <div class="tip">
+        <strong>語意元素 vs div：</strong>用 <code>&lt;nav&gt;</code> 而不是 <code>&lt;div id="nav"&gt;</code>，讓程式碼更清楚，也讓搜尋引擎和螢幕閱讀器更容易理解頁面。SDG 11 專案就是這樣寫的。
+    </div>
+
+    <!-- ── 屬性 ── -->
+    <h2>屬性（Attributes）</h2>
+    <p>標籤可以加屬性來補充資訊，格式是 <code>屬性名="值"</code>，寫在開標籤裡面。</p>
+
+    <div class="code-block">
+<span class="comment">&lt;!-- 連結：href 決定要去哪，target="_blank" 表示新分頁開 --&gt;</span>
+<span class="tag">&lt;a</span> <span class="attr">href</span>=<span class="val">"https://example.com"</span> <span class="attr">target</span>=<span class="val">"_blank"</span><span class="tag">&gt;</span><span class="text">點我</span><span class="tag">&lt;/a&gt;</span>
+
+<span class="comment">&lt;!-- 圖片：src 是圖片路徑，alt 是圖片讀不出來時顯示的文字 --&gt;</span>
+<span class="tag">&lt;img</span> <span class="attr">src</span>=<span class="val">"images/photo.jpg"</span> <span class="attr">alt</span>=<span class="val">"城市夜景"</span> <span class="attr">width</span>=<span class="val">"400"</span><span class="tag">&gt;</span>
+
+<span class="comment">&lt;!-- id 是唯一識別（一頁只能有一個同樣的 id）--&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">id</span>=<span class="val">"hero"</span><span class="tag">&gt;</span><span class="text">...</span><span class="tag">&lt;/div&gt;</span>
+
+<span class="comment">&lt;!-- class 可以重複用，多個元素共用同一個樣式 --&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"card"</span><span class="tag">&gt;</span><span class="text">卡片 A</span><span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"card"</span><span class="tag">&gt;</span><span class="text">卡片 B</span><span class="tag">&lt;/div&gt;</span>
+
+<span class="comment">&lt;!-- data- 屬性：自訂資料，SDG11 用來存中英文 --&gt;</span>
+<span class="tag">&lt;span</span> <span class="attr">data-en</span>=<span class="val">"Statistics"</span> <span class="attr">data-zh</span>=<span class="val">"統計數據"</span><span class="tag">&gt;</span><span class="text">Statistics</span><span class="tag">&lt;/span&gt;</span>
+    </div>
+
+    <!-- ── id vs class ── -->
+    <h2>id vs class — 最常搞混的概念</h2>
+    <div class="compare">
+        <div class="compare-box good">
+            <div class="clabel">✅ id — 唯一，一個就好</div>
+            <pre>&lt;nav id="main-nav"&gt;...&lt;/nav&gt;
+&lt;section id="hero"&gt;...&lt;/section&gt;
+&lt;footer id="footer"&gt;...&lt;/footer&gt;
+
+用途：
+- CSS: #hero { ... }
+- JS: document.getElementById('hero')</pre>
+        </div>
+        <div class="compare-box good">
+            <div class="clabel">✅ class — 可重複，多個元素共用</div>
+            <pre>&lt;div class="card"&gt;台北&lt;/div&gt;
+&lt;div class="card"&gt;高雄&lt;/div&gt;
+&lt;div class="card"&gt;台中&lt;/div&gt;
+
+用途：
+- CSS: .card { ... }
+- JS: querySelectorAll('.card')</pre>
+        </div>
+    </div>
+
+    <!-- ── 表格 ── -->
+    <h2>表格（Table）</h2>
+    <p>SDG 11 的「城市案例」區塊就是用 table 做的。</p>
+    <div class="code-block">
+<span class="tag">&lt;table&gt;</span>
+  <span class="tag">&lt;thead&gt;</span>  <span class="comment">&lt;!-- 表頭 --&gt;</span>
+    <span class="tag">&lt;tr&gt;</span>  <span class="comment">&lt;!-- tr = table row 一列 --&gt;</span>
+      <span class="tag">&lt;th&gt;</span><span class="text">城市</span><span class="tag">&lt;/th&gt;</span>  <span class="comment">&lt;!-- th = table header 粗體標題欄 --&gt;</span>
+      <span class="tag">&lt;th&gt;</span><span class="text">國家</span><span class="tag">&lt;/th&gt;</span>
+    <span class="tag">&lt;/tr&gt;</span>
+  <span class="tag">&lt;/thead&gt;</span>
+  <span class="tag">&lt;tbody&gt;</span>  <span class="comment">&lt;!-- 表格內容 --&gt;</span>
+    <span class="tag">&lt;tr&gt;</span>
+      <span class="tag">&lt;td&gt;</span><span class="text">台北</span><span class="tag">&lt;/td&gt;</span>  <span class="comment">&lt;!-- td = table data 一格 --&gt;</span>
+      <span class="tag">&lt;td&gt;</span><span class="text">台灣</span><span class="tag">&lt;/td&gt;</span>
+    <span class="tag">&lt;/tr&gt;</span>
+    <span class="tag">&lt;tr&gt;</span>
+      <span class="tag">&lt;td&gt;</span><span class="text">哥本哈根</span><span class="tag">&lt;/td&gt;</span>
+      <span class="tag">&lt;td&gt;</span><span class="text">丹麥</span><span class="tag">&lt;/td&gt;</span>
+    <span class="tag">&lt;/tr&gt;</span>
+  <span class="tag">&lt;/tbody&gt;</span>
+<span class="tag">&lt;/table&gt;</span>
+    </div>
+
+    <!-- ── 列表 ── -->
+    <h2>列表</h2>
+    <div class="code-block">
+<span class="comment">&lt;!-- 無序列表（圓點）--&gt;</span>
+<span class="tag">&lt;ul&gt;</span>
+  <span class="tag">&lt;li&gt;</span><span class="text">台北</span><span class="tag">&lt;/li&gt;</span>
+  <span class="tag">&lt;li&gt;</span><span class="text">高雄</span><span class="tag">&lt;/li&gt;</span>
+<span class="tag">&lt;/ul&gt;</span>
+
+<span class="comment">&lt;!-- 有序列表（數字）--&gt;</span>
+<span class="tag">&lt;ol&gt;</span>
+  <span class="tag">&lt;li&gt;</span><span class="text">第一步</span><span class="tag">&lt;/li&gt;</span>
+  <span class="tag">&lt;li&gt;</span><span class="text">第二步</span><span class="tag">&lt;/li&gt;</span>
+<span class="tag">&lt;/ol&gt;</span>
+
+<span class="comment">&lt;!-- nav 的導覽列就是用 ul + li 做的 --&gt;</span>
+<span class="tag">&lt;nav&gt;</span>
+  <span class="tag">&lt;ul&gt;</span>
+    <span class="tag">&lt;li&gt;&lt;a</span> <span class="attr">href</span>=<span class="val">"#stats"</span><span class="tag">&gt;</span><span class="text">Statistics</span><span class="tag">&lt;/a&gt;&lt;/li&gt;</span>
+    <span class="tag">&lt;li&gt;&lt;a</span> <span class="attr">href</span>=<span class="val">"#taiwan"</span><span class="tag">&gt;</span><span class="text">Taiwan Focus</span><span class="tag">&lt;/a&gt;&lt;/li&gt;</span>
+  <span class="tag">&lt;/ul&gt;</span>
+<span class="tag">&lt;/nav&gt;</span>
+    </div>
+
+    <!-- ── 表單 ── -->
+    <h2>表單（Form）</h2>
+    <div class="code-block">
+<span class="tag">&lt;form</span> <span class="attr">action</span>=<span class="val">"/submit"</span> <span class="attr">method</span>=<span class="val">"post"</span><span class="tag">&gt;</span>
+
+  <span class="comment">&lt;!-- label 的 for 要對應 input 的 id --&gt;</span>
+  <span class="tag">&lt;label</span> <span class="attr">for</span>=<span class="val">"name"</span><span class="tag">&gt;</span><span class="text">姓名</span><span class="tag">&lt;/label&gt;</span>
+  <span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="val">"text"</span> <span class="attr">id</span>=<span class="val">"name"</span> <span class="attr">name</span>=<span class="val">"name"</span> <span class="attr">placeholder</span>=<span class="val">"請輸入姓名"</span><span class="tag">&gt;</span>
+
+  <span class="comment">&lt;!-- 各種 type --&gt;</span>
+  <span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="val">"email"</span>    <span class="attr">placeholder</span>=<span class="val">"電子郵件"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="val">"password"</span> <span class="attr">placeholder</span>=<span class="val">"密碼"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="val">"number"</span>   <span class="attr">min</span>=<span class="val">"0"</span> <span class="attr">max</span>=<span class="val">"100"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="val">"checkbox"</span><span class="tag">&gt;</span> <span class="text">我同意條款</span>
+  <span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="val">"radio"</span> <span class="attr">name</span>=<span class="val">"city"</span> <span class="attr">value</span>=<span class="val">"taipei"</span><span class="tag">&gt;</span> <span class="text">台北</span>
+
+  <span class="comment">&lt;!-- 下拉選單 --&gt;</span>
+  <span class="tag">&lt;select&gt;</span>
+    <span class="tag">&lt;option</span> <span class="attr">value</span>=<span class="val">"taipei"</span><span class="tag">&gt;</span><span class="text">台北</span><span class="tag">&lt;/option&gt;</span>
+    <span class="tag">&lt;option</span> <span class="attr">value</span>=<span class="val">"kaohsiung"</span><span class="tag">&gt;</span><span class="text">高雄</span><span class="tag">&lt;/option&gt;</span>
+  <span class="tag">&lt;/select&gt;</span>
+
+  <span class="comment">&lt;!-- 送出 / 重設按鈕 --&gt;</span>
+  <span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="val">"submit"</span> <span class="attr">value</span>=<span class="val">"送出"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;button</span> <span class="attr">type</span>=<span class="val">"button"</span> <span class="attr">onclick</span>=<span class="val">"doSomething()"</span><span class="tag">&gt;</span><span class="text">自訂按鈕</span><span class="tag">&lt;/button&gt;</span>
+<span class="tag">&lt;/form&gt;</span>
+    </div>
+
+    <!-- ── 巢狀結構 ── -->
+    <h2>巢狀結構（Nesting）</h2>
+    <p>HTML 標籤可以互相包含，形成層層巢狀的結構。SDG 11 的城市卡片就是這樣：</p>
+    <div class="code-block">
+<span class="comment">&lt;!-- 城市卡片的實際結構 --&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"tw-city-card"</span><span class="tag">&gt;</span>          <span class="comment">&lt;!-- 最外層：整個卡片 --&gt;</span>
+
+  <span class="tag">&lt;h3&gt;</span>
+    <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"city-icon"</span><span class="tag">&gt;</span><span class="text">北</span><span class="tag">&lt;/div&gt;</span>   <span class="comment">&lt;!-- 圓形圖示 --&gt;</span>
+    <span class="tag">&lt;span&gt;</span><span class="text">Taipei</span><span class="tag">&lt;/span&gt;</span>              <span class="comment">&lt;!-- 城市名稱 --&gt;</span>
+  <span class="tag">&lt;/h3&gt;</span>
+
+  <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"progress-item"</span><span class="tag">&gt;</span>       <span class="comment">&lt;!-- 一條進度條 --&gt;</span>
+    <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"progress-label"</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;span&gt;</span><span class="text">Recycling Rate</span><span class="tag">&lt;/span&gt;</span>
+      <span class="tag">&lt;span&gt;</span><span class="text">55%</span><span class="tag">&lt;/span&gt;</span>
+    <span class="tag">&lt;/div&gt;</span>
+    <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"progress-track"</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"progress-fill"</span> <span class="attr">data-value</span>=<span class="val">"55"</span><span class="tag">&gt;&lt;/div&gt;</span>
+    <span class="tag">&lt;/div&gt;</span>
+  <span class="tag">&lt;/div&gt;</span>
+
+<span class="tag">&lt;/div&gt;</span>
+    </div>
+
+    <!-- ── 路徑 ── -->
+    <h2>路徑寫法（重要！）</h2>
+    <table class="tag-table">
+        <thead><tr><th>情境</th><th>路徑寫法</th></tr></thead>
+        <tbody>
+            <tr><td>同資料夾的圖片</td><td><code>src="photo.jpg"</code></td></tr>
+            <tr><td>子資料夾</td><td><code>src="images/photo.jpg"</code></td></tr>
+            <tr><td>上一層資料夾</td><td><code>src="../photo.jpg"</code></td></tr>
+            <tr><td>外部網址</td><td><code>src="https://example.com/photo.jpg"</code></td></tr>
+            <tr><td>頁面內跳轉</td><td><code>href="#section-id"</code></td></tr>
+        </tbody>
+    </table>
+
+    <div class="tip">
+        <strong>SDG11 的 images/新竹2.png</strong> 就是「子資料夾」的寫法。HTML 檔案在 <code>sdg11/</code>，圖片在 <code>sdg11/images/</code>，所以路徑寫 <code>images/新竹2.png</code>。
+    </div>
+
+    <!-- ── 注解 ── -->
+    <h2>注解（Comment）</h2>
+    <div class="code-block">
+<span class="comment">&lt;!-- 這是注解，瀏覽器不會顯示，給自己或隊友看的 --&gt;</span>
+
+<span class="comment">&lt;!-- Hero Section --&gt;</span>
+<span class="tag">&lt;section</span> <span class="attr">id</span>=<span class="val">"hero"</span><span class="tag">&gt;</span>
+  ...
+<span class="tag">&lt;/section&gt;</span>
+
+<span class="comment">&lt;!-- Stats Section --&gt;</span>
+<span class="tag">&lt;section</span> <span class="attr">id</span>=<span class="val">"stats"</span><span class="tag">&gt;</span>
+  ...
+<span class="tag">&lt;/section&gt;</span>
+    </div>
+
+    <div class="tip">
+        <strong>快捷鍵：</strong>在 VS Code 選取程式碼後按 <code>Ctrl + /</code> 可以快速加上/移除注解。
+    </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>06 — JavaScript DOM</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', sans-serif; background: #0f0f1a; color: #e0e0e0; line-height: 1.7; }
+        a.back { display: inline-block; margin: 24px 32px; color: #f99d26; text-decoration: none; font-size: 0.9rem; }
+        a.back:hover { text-decoration: underline; }
+        .hero { background: linear-gradient(135deg, #1a1a2e, #16213e); padding: 56px 40px; text-align: center; }
+        .hero h1 { font-size: 2.4rem; color: #f99d26; margin-bottom: 10px; }
+        .hero p { color: rgba(255,255,255,0.45); }
+        .content { max-width: 860px; margin: 0 auto; padding: 40px 32px 100px; }
+        h2 { font-size: 1.4rem; color: #f99d26; margin: 48px 0 18px; padding-left: 14px; border-left: 3px solid #f99d26; }
+        h3 { font-size: 1.05rem; color: rgba(249,157,38,0.8); margin: 28px 0 10px; }
+        p { color: rgba(255,255,255,0.7); margin-bottom: 14px; }
+        ul { color: rgba(255,255,255,0.65); padding-left: 22px; margin-bottom: 14px; }
+        li { margin-bottom: 6px; }
+        strong { color: #f99d26; }
+        code { background: rgba(249,157,38,0.12); color: #f99d26; padding: 2px 7px; border-radius: 5px; font-family: 'Courier New', monospace; font-size: 0.92em; }
+        .code-block { background: #12121f; border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 24px 28px; margin: 16px 0 24px; font-family: 'Courier New', monospace; font-size: 0.88rem; line-height: 1.85; overflow-x: auto; }
+        .cm { color: #5a6a8a; } .cs { color: #7ecfff; } .ck { color: #c792ea; } .cn { color: #a8e6a3; }
+        .cf { color: #82aaff; } .cx { color: #e0e0e0; } .cst { color: #f8c57a; }
+        .tip { background: rgba(249,157,38,0.07); border-left: 3px solid rgba(249,157,38,0.5); padding: 14px 18px; border-radius: 0 10px 10px 0; margin: 16px 0; font-size: 0.88rem; color: rgba(255,255,255,0.6); }
+        .tip strong { color: #f99d26; }
+        .demo { background: #1e1e32; border: 1px solid rgba(249,157,38,0.2); border-radius: 12px; padding: 24px 28px; margin: 8px 0 28px; }
+        .demo .label { font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; color: rgba(249,157,38,0.5); margin-bottom: 16px; }
+        .demo-btn { padding: 10px 20px; background: #f99d26; color: white; border: none; border-radius: 8px; font-size: 0.9rem; font-weight: bold; cursor: pointer; transition: background 0.2s; margin-right: 8px; margin-bottom: 8px; }
+        .demo-btn:hover { background: #e07b00; }
+        .demo-btn.ghost { background: transparent; border: 1px solid rgba(249,157,38,0.5); color: #f99d26; }
+        .demo-btn.ghost:hover { background: rgba(249,157,38,0.1); }
+        .tag-table { width: 100%; border-collapse: collapse; margin: 16px 0 28px; }
+        .tag-table th { background: rgba(249,157,38,0.15); color: #f99d26; padding: 10px 16px; text-align: left; font-size: 0.85rem; }
+        .tag-table td { padding: 10px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 0.85rem; color: rgba(255,255,255,0.65); }
+        .tag-table td:first-child { font-family: 'Courier New', monospace; color: #7ecfff; font-size: 0.82rem; }
+
+        /* ─── DEMOS ─── */
+        #demo-text { font-size: 1.2rem; color: white; padding: 16px; background: rgba(0,0,0,0.3); border-radius: 8px; margin: 12px 0; }
+        #demo-box { width: 80px; height: 80px; background: #f99d26; border-radius: 8px; transition: all 0.3s; margin: 16px auto; }
+
+        .modal-demo { display: none; position: fixed; inset: 0; z-index: 1000; background: rgba(0,0,0,0.8); align-items: center; justify-content: center; }
+        .modal-demo.active { display: flex; }
+        .modal-inner { background: #1a1a2e; border-radius: 16px; padding: 40px; text-align: center; max-width: 360px; width: 90%; border: 1px solid rgba(249,157,38,0.3); }
+        .modal-inner h3 { color: #f99d26; margin-bottom: 12px; }
+        .modal-inner p { color: rgba(255,255,255,0.6); margin-bottom: 20px; }
+
+        .event-log { background: #12121f; border-radius: 8px; padding: 12px 16px; min-height: 60px; font-family: 'Courier New', monospace; font-size: 0.82rem; color: #a8e6a3; }
+
+        .lang-demo-btn { padding: 8px 20px; border-radius: 20px; background: white; color: #f99d26; border: none; cursor: pointer; font-weight: bold; font-size: 0.9rem; }
+        .progress-demo-track { background: rgba(255,255,255,0.08); border-radius: 10px; height: 12px; overflow: hidden; margin: 8px 0; }
+        .progress-demo-fill { height: 100%; background: linear-gradient(90deg, #f99d26, #e07b00); border-radius: 10px; width: 0%; transition: width 1.2s cubic-bezier(0.4,0,0.2,1); }
+    </style>
+</head>
+<body>
+
+<a class="back" href="index.html">← 返回目錄</a>
+<div class="hero">
+    <h1>06 — JavaScript DOM</h1>
+    <p>用 JS 操控 HTML / CSS · SDG11 所有互動的核心</p>
+</div>
+<div class="content">
+
+    <!-- ── 什麼是 DOM ── -->
+    <h2>DOM 是什麼</h2>
+    <p>DOM（Document Object Model）是瀏覽器把 HTML 轉換成的樹狀結構。JavaScript 透過操作 DOM 來改變頁面。</p>
+    <div class="tip">
+        <strong>比喻：</strong>HTML 是蓋好的房子，DOM 是房子的平面圖（你可以看到每個房間）。JS 就是你手裡的改建工具，可以加房間、改顏色、拆牆。
+    </div>
+
+    <!-- ── 選取元素 ── -->
+    <h2>選取 HTML 元素</h2>
+    <div class="code-block">
+<span class="cm">// 用 id 選（最常用）</span>
+<span class="ck">const</span> <span class="cs">modal</span> = <span class="cf">document</span>.<span class="cf">getElementById</span>(<span class="cst">'scene-modal'</span>);
+
+<span class="cm">// 用 CSS 選擇器選（一個）</span>
+<span class="ck">const</span> <span class="cs">btn</span> = <span class="cf">document</span>.<span class="cf">querySelector</span>(<span class="cst">'.lang-btn'</span>);
+<span class="ck">const</span> <span class="cs">h1</span>  = <span class="cf">document</span>.<span class="cf">querySelector</span>(<span class="cst">'#hero h1'</span>);
+
+<span class="cm">// 用 CSS 選擇器選（所有符合的）</span>
+<span class="ck">const</span> <span class="cs">allCards</span>    = <span class="cf">document</span>.<span class="cf">querySelectorAll</span>(<span class="cst">'.tw-city-card'</span>);
+<span class="ck">const</span> <span class="cs">allI18nEl</span>   = <span class="cf">document</span>.<span class="cf">querySelectorAll</span>(<span class="cst">'[data-en]'</span>);
+<span class="cm">// ^ 選所有有 data-en 屬性的元素（SDG11 語言切換就這樣選）</span>
+
+<span class="cm">// 跑過每一個</span>
+<span class="cs">allCards</span>.<span class="cf">forEach</span>(<span class="cs">card</span> <span class="ck">=></span> {
+  <span class="cf">console</span>.<span class="cf">log</span>(<span class="cs">card</span>);
+});
+    </div>
+
+    <!-- ── 修改內容 ── -->
+    <h2>修改元素的內容和樣式</h2>
+    <div class="code-block">
+<span class="ck">const</span> <span class="cs">el</span> = <span class="cf">document</span>.<span class="cf">getElementById</span>(<span class="cst">'my-div'</span>);
+
+<span class="cm">// 改文字（安全，不解析 HTML）</span>
+<span class="cs">el</span>.<span class="cs">textContent</span> = <span class="cst">'新的文字'</span>;
+
+<span class="cm">// 改 HTML 內容（可以放標籤，但小心 XSS）</span>
+<span class="cs">el</span>.<span class="cs">innerHTML</span> = <span class="cst">'&lt;strong&gt;粗體&lt;/strong&gt;'</span>;
+
+<span class="cm">// 改 CSS 樣式</span>
+<span class="cs">el</span>.<span class="cs">style</span>.<span class="cs">color</span>        = <span class="cst">'#f99d26'</span>;
+<span class="cs">el</span>.<span class="cs">style</span>.<span class="cs">fontSize</span>     = <span class="cst">'1.5rem'</span>;
+<span class="cs">el</span>.<span class="cs">style</span>.<span class="cs">display</span>      = <span class="cst">'none'</span>;    <span class="cm">// 隱藏</span>
+<span class="cs">el</span>.<span class="cs">style</span>.<span class="cs">width</span>        = <span class="cst">'55%'</span>;     <span class="cm">// SDG11 進度條</span>
+
+<span class="cm">// 讀取屬性（data- 屬性）</span>
+<span class="ck">const</span> <span class="cs">enText</span> = <span class="cs">el</span>.<span class="cs">dataset</span>.<span class="cs">en</span>;   <span class="cm">// 讀 data-en 的值</span>
+<span class="ck">const</span> <span class="cs">value</span>  = <span class="cs">el</span>.<span class="cs">dataset</span>.<span class="cs">value</span>; <span class="cm">// 讀 data-value（進度條數值）</span>
+    </div>
+
+    <div class="demo">
+        <div class="label">LIVE DEMO — 修改元素內容和樣式</div>
+        <div id="demo-text">我是可以被修改的文字</div>
+        <button class="demo-btn" onclick="changeText()">改文字</button>
+        <button class="demo-btn" onclick="changeColor()">改顏色</button>
+        <button class="demo-btn" onclick="changeSize()">改大小</button>
+    </div>
+
+    <!-- ── classList ── -->
+    <h2>classList — 新增/移除 CSS class</h2>
+    <p>這是 SDG11 最常用的技巧。改 class 讓 CSS 自動處理樣式，比直接改 style 更乾淨。</p>
+    <div class="code-block">
+<span class="ck">const</span> <span class="cs">modal</span> = <span class="cf">document</span>.<span class="cf">getElementById</span>(<span class="cst">'scene-modal'</span>);
+
+<span class="cm">// 加 class</span>
+<span class="cs">modal</span>.<span class="cs">classList</span>.<span class="cf">add</span>(<span class="cst">'active'</span>);      <span class="cm">// 現在 modal 有 class="active"</span>
+
+<span class="cm">// 移除 class</span>
+<span class="cs">modal</span>.<span class="cs">classList</span>.<span class="cf">remove</span>(<span class="cst">'active'</span>);   <span class="cm">// 移除 active</span>
+
+<span class="cm">// 切換（有就移除，沒有就加）</span>
+<span class="cs">modal</span>.<span class="cs">classList</span>.<span class="cf">toggle</span>(<span class="cst">'open'</span>);
+
+<span class="cm">// 檢查有沒有這個 class</span>
+<span class="ck">if</span> (<span class="cs">modal</span>.<span class="cs">classList</span>.<span class="cf">contains</span>(<span class="cst">'active'</span>)) {
+  <span class="cf">console</span>.<span class="cf">log</span>(<span class="cst">'Modal 是開著的'</span>);
+}
+
+<span class="cm">// SDG11 openCity() 的核心：</span>
+<span class="ck">function</span> <span class="cf">openCity</span>(<span class="cs">name</span>) {
+  <span class="cm">// ... 設定內容 ...</span>
+  <span class="cf">document</span>.<span class="cf">getElementById</span>(<span class="cst">'scene-modal'</span>).<span class="cs">classList</span>.<span class="cf">add</span>(<span class="cst">'active'</span>);
+  <span class="cm">// CSS: #scene-modal.active { display: flex; }</span>
+}
+    </div>
+
+    <div class="demo">
+        <div class="label">LIVE DEMO — classList.toggle（漢堡選單概念）</div>
+        <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+            <div id="demo-box"></div>
+            <div>
+                <button class="demo-btn" onclick="demoToggleShape()">toggle 圓形</button>
+                <button class="demo-btn" onclick="demoToggleColor()">toggle 顏色</button>
+                <button class="demo-btn" onclick="demoToggleBig()">toggle 大小</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── 事件 ── -->
+    <h2>事件監聽（Event Listener）</h2>
+    <div class="code-block">
+<span class="ck">const</span> <span class="cs">btn</span> = <span class="cf">document</span>.<span class="cf">querySelector</span>(<span class="cst">'button'</span>);
+
+<span class="cm">// 方式1：addEventListener（推薦）</span>
+<span class="cs">btn</span>.<span class="cf">addEventListener</span>(<span class="cst">'click'</span>, <span class="ck">function</span>() {
+  <span class="cf">console</span>.<span class="cf">log</span>(<span class="cst">'按鈕被點了！'</span>);
+});
+
+<span class="cm">// 方式2：直接在 HTML 上加（簡單，SDG11 用這個）</span>
+<span class="cm">// &lt;button onclick="openCity('taipei')"&gt;台北&lt;/button&gt;</span>
+
+<span class="cm">// 常用事件</span>
+<span class="cs">el</span>.<span class="cf">addEventListener</span>(<span class="cst">'click'</span>,      <span class="cs">fn</span>);  <span class="cm">// 點擊</span>
+<span class="cs">el</span>.<span class="cf">addEventListener</span>(<span class="cst">'mouseover'</span>,  <span class="cs">fn</span>);  <span class="cm">// 滑鼠移入</span>
+<span class="cs">el</span>.<span class="cf">addEventListener</span>(<span class="cst">'mouseout'</span>,   <span class="cs">fn</span>);  <span class="cm">// 滑鼠移出</span>
+<span class="cs">el</span>.<span class="cf">addEventListener</span>(<span class="cst">'keydown'</span>,    <span class="cs">fn</span>);  <span class="cm">// 按鍵按下</span>
+<span class="cs">el</span>.<span class="cf">addEventListener</span>(<span class="cst">'input'</span>,      <span class="cs">fn</span>);  <span class="cm">// 輸入框內容改變</span>
+
+<span class="cm">// SDG11 鍵盤關閉 Modal</span>
+<span class="cf">document</span>.<span class="cf">addEventListener</span>(<span class="cst">'keydown'</span>, <span class="ck">function</span>(<span class="cs">e</span>) {
+  <span class="ck">if</span> (<span class="cs">e</span>.<span class="cs">key</span> === <span class="cst">'Escape'</span>) {
+    <span class="cf">closeScene</span>();   <span class="cm">// 按 Esc 關閉場景</span>
+    <span class="cf">closeSources</span>(); <span class="cm">// 按 Esc 關閉資料來源</span>
+  }
+});
+    </div>
+
+    <div class="demo">
+        <div class="label">LIVE DEMO — 事件</div>
+        <button class="demo-btn" id="event-btn" onclick="logEvent('click')">點我</button>
+        <button class="demo-btn ghost"
+            onmouseover="logEvent('mouseover')"
+            onmouseout="logEvent('mouseout')">滑過我</button>
+        <input type="text" placeholder="在這裡打字..." oninput="logEvent('input: '+this.value)"
+            style="padding:8px 14px;border-radius:8px;border:1px solid rgba(249,157,38,0.4);background:#12121f;color:#e0e0e0;font-size:0.9rem;outline:none;">
+        <div class="event-log" id="event-log" style="margin-top:12px;">（事件會出現在這裡）</div>
+    </div>
+
+    <!-- ── Modal 實作 ── -->
+    <h2>Modal 怎麼做的（SDG11 核心）</h2>
+    <div class="code-block">
+<span class="cm">/* CSS */</span>
+<span class="cs">#my-modal</span> {
+  <span class="ca">display</span>: <span class="cv">none</span>;           <span class="cm">/* 預設隱藏 */</span>
+  <span class="ca">position</span>: <span class="cv">fixed</span>;
+  <span class="ca">inset</span>: <span class="cv">0</span>;
+  <span class="ca">background</span>: <span class="cv">rgba(0,0,0,0.8)</span>;
+  <span class="ca">align-items</span>: <span class="cv">center</span>;
+  <span class="ca">justify-content</span>: <span class="cv">center</span>;
+}
+<span class="cs">#my-modal.active</span> {
+  <span class="ca">display</span>: <span class="cv">flex</span>;           <span class="cm">/* 加了 active class 才顯示 */</span>
+}
+
+<span class="cm">/* JavaScript */</span>
+<span class="ck">function</span> <span class="cf">openModal</span>() {
+  <span class="cf">document</span>.<span class="cf">getElementById</span>(<span class="cst">'my-modal'</span>).<span class="cs">classList</span>.<span class="cf">add</span>(<span class="cst">'active'</span>);
+}
+<span class="ck">function</span> <span class="cf">closeModal</span>() {
+  <span class="cf">document</span>.<span class="cf">getElementById</span>(<span class="cst">'my-modal'</span>).<span class="cs">classList</span>.<span class="cf">remove</span>(<span class="cst">'active'</span>);
+}
+    </div>
+
+    <div class="demo">
+        <div class="label">LIVE DEMO — Modal 開關</div>
+        <button class="demo-btn" onclick="openDemoModal()">開啟 Modal</button>
+    </div>
+
+    <!-- ── IntersectionObserver ── -->
+    <h2>IntersectionObserver — 滾到哪裡才出現</h2>
+    <p>SDG11 的卡片進場動畫（fade-up）就是靠這個。監聽元素有沒有進入視窗。</p>
+    <div class="code-block">
+<span class="cm">// 建立觀察器</span>
+<span class="ck">const</span> <span class="cs">observer</span> = <span class="ck">new</span> <span class="cf">IntersectionObserver</span>((<span class="cs">entries</span>) <span class="ck">=></span> {
+  <span class="cs">entries</span>.<span class="cf">forEach</span>(<span class="cs">entry</span> <span class="ck">=></span> {
+    <span class="ck">if</span> (<span class="cs">entry</span>.<span class="cs">isIntersecting</span>) {        <span class="cm">// 進入視窗了！</span>
+      <span class="cs">entry</span>.<span class="cs">target</span>.<span class="cs">classList</span>.<span class="cf">add</span>(<span class="cst">'visible'</span>);
+      <span class="cm">// CSS: .fade-up.visible { opacity: 1; transform: translateY(0); }</span>
+    }
+  });
+});
+
+<span class="cm">// 觀察所有有 .fade-up 的元素</span>
+<span class="cf">document</span>.<span class="cf">querySelectorAll</span>(<span class="cst">'.fade-up'</span>).<span class="cf">forEach</span>(<span class="cs">el</span> <span class="ck">=></span> {
+  <span class="cs">observer</span>.<span class="cf">observe</span>(<span class="cs">el</span>);
+});
+    </div>
+
+    <!-- ── 語言切換原理 ── -->
+    <h2>SDG11 語言切換的完整原理</h2>
+    <div class="code-block">
+<span class="cm">/* HTML 上面存好兩種語言 */</span>
+<span class="cs">&lt;span</span> <span class="cx">data-en</span>=<span class="cst">"Statistics"</span> <span class="cx">data-zh</span>=<span class="cst">"統計數據"</span><span class="cs">&gt;</span>Statistics<span class="cs">&lt;/span&gt;</span>
+
+<span class="cm">/* JavaScript 切換時 */</span>
+<span class="ck">let</span> <span class="cs">currentLang</span> = <span class="cst">'en'</span>;
+
+<span class="ck">function</span> <span class="cf">toggleLang</span>() {
+  <span class="cm">// 1. 切換語言狀態</span>
+  <span class="cs">currentLang</span> = <span class="cs">currentLang</span> === <span class="cst">'en'</span> ? <span class="cst">'zh'</span> : <span class="cst">'en'</span>;
+
+  <span class="cm">// 2. 更新按鈕文字</span>
+  <span class="cf">document</span>.<span class="cf">querySelector</span>(<span class="cst">'.lang-btn'</span>).<span class="cs">textContent</span>
+    = <span class="cs">currentLang</span> === <span class="cst">'en'</span> ? <span class="cst">'中文'</span> : <span class="cst">'English'</span>;
+
+  <span class="cm">// 3. 選所有有 data-en 屬性的元素，換文字</span>
+  <span class="cf">document</span>.<span class="cf">querySelectorAll</span>(<span class="cst">'[data-en]'</span>).<span class="cf">forEach</span>(<span class="cs">el</span> <span class="ck">=></span> {
+    <span class="cs">el</span>.<span class="cs">textContent</span> = <span class="cs">el</span>.<span class="cs">dataset</span>[<span class="cs">currentLang</span>];
+    <span class="cm">// el.dataset['en'] 或 el.dataset['zh']</span>
+  });
+}
+    </div>
+
+    <div class="demo">
+        <div class="label">LIVE DEMO — 語言切換（SDG11 原理）</div>
+        <div style="display:flex;align-items:center;gap:16px;background:rgba(249,157,38,0.15);padding:16px;border-radius:10px;">
+            <span style="font-size:1.1rem;font-weight:bold;color:#f99d26;">SDG 11</span>
+            <span data-en="Statistics" data-zh="統計數據" style="color:white;">Statistics</span>
+            <span data-en="Taiwan Focus" data-zh="台灣焦點" style="color:white;">Taiwan Focus</span>
+            <span data-en="Goals" data-zh="目標" style="color:white;">Goals</span>
+            <button class="lang-demo-btn" onclick="demoToggleLang(this)">中文</button>
+        </div>
+    </div>
+
+    <!-- ── 進度條 ── -->
+    <h2>SDG11 進度條動畫原理</h2>
+    <div class="demo">
+        <div class="label">LIVE DEMO — 進度條動畫</div>
+        <div>
+            <div style="display:flex;justify-content:space-between;font-size:0.82rem;color:rgba(255,255,255,0.5);margin-bottom:4px;">
+                <span>Recycling Rate</span><span>55%</span>
+            </div>
+            <div class="progress-demo-track">
+                <div class="progress-demo-fill" id="prog1" data-value="55"></div>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-size:0.82rem;color:rgba(255,255,255,0.5);margin-bottom:4px;margin-top:8px;">
+                <span>Solar Energy</span><span>70%</span>
+            </div>
+            <div class="progress-demo-track">
+                <div class="progress-demo-fill" id="prog2" data-value="70"></div>
+            </div>
+        </div>
+        <button class="demo-btn" onclick="animateProgress()" style="margin-top:14px;">播放動畫</button>
+        <button class="demo-btn ghost" onclick="resetProgress()" style="margin-top:14px;">重置</button>
+    </div>
+
+</div>
+
+<!-- Modal Demo -->
+<div class="modal-demo" id="demo-modal">
+    <div class="modal-inner">
+        <h3>這是 Modal！</h3>
+        <p>用 classList.add('active') 開啟，classList.remove('active') 關閉。<br><br>
+        SDG11 的城市場景和資料來源都是用這個原理。</p>
+        <button class="demo-btn" onclick="closeDemoModal()">關閉</button>
+    </div>
+</div>
+
+<script>
+    // 修改文字
+    const texts = ['我是可以被修改的文字', '✅ textContent 改了！', '🌆 Sustainable Cities', '永續城市與社區'];
+    let textIdx = 0;
+    function changeText() {
+        textIdx = (textIdx + 1) % texts.length;
+        document.getElementById('demo-text').textContent = texts[textIdx];
+    }
+    const colors = ['white', '#f99d26', '#7ecfff', '#6bcf7f', '#c792ea'];
+    let colorIdx = 0;
+    function changeColor() {
+        colorIdx = (colorIdx + 1) % colors.length;
+        document.getElementById('demo-text').style.color = colors[colorIdx];
+    }
+    const sizes = ['1.2rem', '0.8rem', '1.6rem', '1rem'];
+    let sizeIdx = 0;
+    function changeSize() {
+        sizeIdx = (sizeIdx + 1) % sizes.length;
+        document.getElementById('demo-text').style.fontSize = sizes[sizeIdx];
+    }
+
+    // classList demo
+    function demoToggleShape() {
+        const el = document.getElementById('demo-box');
+        const isRound = el.style.borderRadius === '50%';
+        el.style.borderRadius = isRound ? '8px' : '50%';
+    }
+    function demoToggleColor() {
+        const el = document.getElementById('demo-box');
+        const isOrange = el.style.background === '' || el.style.background === '#f99d26' || !el.style.background.includes('7e');
+        el.style.background = isOrange ? '#7ecfff' : '#f99d26';
+    }
+    function demoToggleBig() {
+        const el = document.getElementById('demo-box');
+        const isBig = el.style.width === '120px';
+        el.style.width  = isBig ? '80px' : '120px';
+        el.style.height = isBig ? '80px' : '120px';
+    }
+
+    // 事件 log
+    let eventCount = 0;
+    function logEvent(type) {
+        eventCount++;
+        const log = document.getElementById('event-log');
+        log.textContent = `[${eventCount}] 事件：${type}`;
+    }
+
+    // Modal
+    function openDemoModal() {
+        document.getElementById('demo-modal').classList.add('active');
+    }
+    function closeDemoModal() {
+        document.getElementById('demo-modal').classList.remove('active');
+    }
+    document.getElementById('demo-modal').addEventListener('click', function(e) {
+        if (e.target === this) closeDemoModal();
+    });
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') closeDemoModal();
+    });
+
+    // 語言切換
+    let demoLangState = 'en';
+    function demoToggleLang(btn) {
+        demoLangState = demoLangState === 'en' ? 'zh' : 'en';
+        btn.textContent = demoLangState === 'en' ? '中文' : 'English';
+        document.querySelectorAll('.demo [data-en]').forEach(el => {
+            el.textContent = el.dataset[demoLangState];
+        });
+    }
+
+    // 進度條
+    function animateProgress() {
+        ['prog1', 'prog2'].forEach(id => {
+            const el = document.getElementById(id);
+            el.style.width = el.dataset.value + '%';
+        });
+    }
+    function resetProgress() {
+        ['prog1', 'prog2'].forEach(id => {
+            document.getElementById(id).style.width = '0%';
+        });
+    }
+</script>
+</body>
+</html>
